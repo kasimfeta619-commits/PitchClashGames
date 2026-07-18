@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин - Pitch Clash</title>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 400px; }
+        .shop-item { background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .buy-btn { background: #6a1b9a; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1>🛒 Магазин</h1>
+    
+    <div class="shop-item">
+        <div><strong>Енергийна напитка</strong><br><small>+50 Енергия</small></div>
+        <button class="buy-btn" onclick="alert('Купено!')">50 🪙</button>
+    </div>
+
+    <div class="shop-item">
+        <div><strong>Треньорски пакет</strong><br><small>+2 OVR</small></div>
+        <button class="buy-btn" onclick="alert('Купено!')">200 🪙</button>
+    </div>
+
+    <button onclick="location.href='index.html'" style="width:100%; padding:10px; margin-top:20px; background:#333; border:none; color:white; border-radius:4px; cursor:pointer;">НАЗАД</button>
+</div>
+
+</body>
+</html>

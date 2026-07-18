@@ -2,81 +2,36 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Clash Hub</title>
+    <title>Pitch Clash</title>
     <style>
         body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 400px; padding-bottom: 60px; }
+        .app-container { width: 100%; max-width: 400px; padding-bottom: 70px; }
         
-        /* Секции */
-        .box { background: #161616; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+        /* Връзките да изглеждат като линкове */
+        .nav-link { cursor: pointer; text-decoration: none; color: inherit; }
         
-        /* Горна статистика */
-        .top-bar { display: flex; justify-content: space-between; font-size: 12px; color: #aaa; margin-bottom: 10px; }
-        
-        /* Бонус панел */
-        .bonus-box { background: #1e1a10; border: 1px solid #d4a017; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 8px; }
-        .bonus-btn { background: #d4a017; border: none; width: 100%; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 8px; }
-
-        /* Играч */
-        .player-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        
-        /* Големи бутони */
-        .menu-grid { display: flex; gap: 5px; margin-bottom: 15px; }
-        .menu-btn { flex: 1; padding: 15px 5px; border-radius: 6px; text-align: center; font-size: 10px; font-weight: bold; cursor: pointer; }
-
-        /* Мачове */
-        .match-card { background: #1a1a1a; padding: 12px; border-radius: 8px; margin-bottom: 8px; text-align: center; border: 1px solid #333; }
-        .match-title { font-size: 9px; color: #888; margin-bottom: 5px; }
-
         /* Долна навигация */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 400px; background: #0f0f0f; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 400px; background: #0f0f0f; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #333; }
+        .nav-item { text-align: center; font-size: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- Горна лента -->
-    <div class="top-bar">
-        <span>⭐ 1</span> <span>⚡ 100 | 🪙 500</span>
+    <!-- Трите големи бутона в средата -->
+    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+        <div class="nav-link" onclick="location.href='index.html'" style="flex: 1; padding: 15px; background:#d4a017; border-radius:8px; text-align:center; font-weight:bold;">СЪСТЕЗАНИЯ</div>
+        <div class="nav-link" onclick="location.href='shop.html'" style="flex: 1; padding: 15px; background:#6a1b9a; border-radius:8px; text-align:center; font-weight:bold;">МАГАЗИН</div>
+        <div class="nav-link" onclick="location.href='team.html'" style="flex: 1; padding: 15px; background:#1565c0; border-radius:8px; text-align:center; font-weight:bold;">ОТБОРНО</div>
     </div>
 
-    <!-- Бонус -->
-    <div class="bonus-box">
-        <div style="font-size: 12px;">📅 Ежедневен бонус (Ден 1 от 7)</div>
-        <button class="bonus-btn">Вземи бонуса</button>
-    </div>
-
-    <!-- Играч -->
-    <div class="box player-info">
-        <div><strong>kasim11233</strong><br><span style="font-size: 10px; color: #888;">Академия А - ST</span></div>
-        <div style="text-align: right;">OVR<br><strong style="font-size: 20px;">42</strong></div>
-    </div>
-
-    <!-- Бутони -->
-    <div class="menu-grid">
-        <div class="menu-btn" style="background:#d4a017;">🏆 СЪСТЕЗАНИЯ</div>
-        <div class="menu-btn" style="background:#6a1b9a;">🛒 МАГАЗИН</div>
-        <div class="menu-btn" style="background:#1565c0;">🥇 ОТБОР</div>
-    </div>
-
-    <!-- Мачове -->
-    <div class="match-card">
-        <div class="match-title">🏆 ЛИГА - ДЕН 1/26</div>
-        <div style="font-size: 18px; font-weight: bold;">0 - 1</div>
-    </div>
-    
-    <div class="match-card">
-        <div class="match-title">🏆 ЛИГА - ДЕН 1/26</div>
-        <button style="background:#1565c0; color:white; border:none; padding:8px 25px; border-radius:4px; cursor:pointer;" onclick="location.href='match.html'">ИГРАЙ</button>
-    </div>
-
-    <!-- Долна навигация -->
+    <!-- Долна навигация (Работеща) -->
     <div class="bottom-nav">
-        <div onclick="location.href='index.html'">🏆</div>
-        <div onclick="location.href='training.html'">⚡</div>
-        <div onclick="location.href='index.html'">🏠</div>
-        <div onclick="location.href='team.html'">👥</div>
-        <div onclick="location.href='profile.html'">👤</div>
+        <div class="nav-item" onclick="location.href='index.html'">🏆<br>Мачове</div>
+        <div class="nav-item" onclick="location.href='training.html'">⚡<br>Трен.</div>
+        <div class="nav-item" onclick="location.href='index.html'" style="color:#00e676;">🏠<br>Начало</div>
+        <div class="nav-item" onclick="location.href='team.html'">👥<br>Отбор</div>
+        <div class="nav-item" onclick="location.href='profile.html'">👤<br>Профил</div>
     </div>
 </div>
 
