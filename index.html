@@ -6,11 +6,12 @@
     <style>
         body { background: #121212; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
         .hub-container { max-width: 800px; margin: auto; }
-        .header { background: #1e1e1e; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333; }
+        .header { background: #1e1e1e; padding: 30px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333; }
+        .team-name { color: #00e676; font-size: 24px; font-weight: bold; margin: 10px 0; }
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .menu-btn { background: #2a2a2a; color: #fff; padding: 30px; border-radius: 12px; border: 2px solid #00e676; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
         .menu-btn:hover { background: #00e676; color: #000; }
-        .logout-btn { margin-top: 40px; background: #ff5252; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+        .logout-btn { margin-top: 40px; background: #333; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -18,28 +19,31 @@
 <div class="hub-container">
     <div class="header">
         <h1>Добре дошъл, играчо!</h1>
-        <p>Твоят път към величието започва тук.</p>
+        <p>Твоят клуб:</p>
+        <div class="team-name" id="displayTeamName"></div>
     </div>
 
     <div class="menu-grid">
-        <button class="menu-btn" onclick="alert('Отваряне на тренировка...')">ТРЕНИРОВКА</button>
-        <button class="menu-btn" onclick="alert('Търсене на мач...')">МАЧ</button>
-        <button class="menu-btn" onclick="alert('Твоят профил...')">ПРОФИЛ</button>
-        <button class="menu-btn" onclick="alert('Класиране...')">КЛАСИРАНЕ</button>
+        <button class="menu-btn">ТРЕНИРОВКА</button>
+        <button class="menu-btn">МАЧ</button>
+        <button class="menu-btn">ПРОФИЛ</button>
+        <button class="menu-btn">КЛАСИРАНЕ</button>
     </div>
 
     <button class="logout-btn" onclick="logout()">ИЗХОД</button>
 </div>
 
 <script>
-    // 1. ЗАЩИТА: Ако не е логнат, го връща в login.html
+    // 1. ЗАЩИТА
     if (localStorage.getItem('isAuthenticated') !== 'true') {
         window.location.href = 'login.html';
     }
 
-    // 2. ФУНКЦИЯ ЗА ИЗХОД
+    // 2. ПОКАЗВАНЕ НА ОТБОРА
+    const team = localStorage.getItem('playerTeam');
+    document.getElementById('displayTeamName').innerText = team ? team : "Няма отбор";
+
     function logout() {
-        // Изчистваме сесията
         localStorage.removeItem('isAuthenticated');
         window.location.href = 'login.html';
     }
