@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Pitch Clash - Login</title>
+    <style>
+        body { background-color: #121212; color: #fff; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { width: 360px; padding: 20px; text-align: center; }
+        .input-field { width: 100%; padding: 12px; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; color: #fff; margin-bottom: 15px; }
+        .btn { width: 100%; padding: 14px; background: #00e676; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Добре дошъл</h1>
+        <input type="text" id="name" class="input-field" placeholder="Въведи име">
+        <input type="text" id="club" class="input-field" placeholder="Въведи клуб">
+        <button class="btn" onclick="saveAndGo()">СТАРТИРАЙ КАРИЕРАТА</button>
+    </div>
+
+    <script>
+        function saveAndGo() {
+            const name = document.getElementById('name').value;
+            const club = document.getElementById('club').value;
+            // Запазваме данните в браузъра
+            localStorage.setItem('playerName', name);
+            localStorage.setItem('playerClub', club);
+            // Прехвърляме към основния Hub
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
