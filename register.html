@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация - Pitch Clash</title>
+    <title>Pitch Clash - Регистрация</title>
     <style>
         body { background: #121212; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
         .screen { display: none; }
@@ -11,56 +11,90 @@
         input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: none; box-sizing: border-box; }
         input { background: #2a2a2a; color: #fff; border: 1px solid #444; }
         .btn { background: #00e676; font-weight: bold; cursor: pointer; color: #000; }
-        .academy-btn { background: #2a2a2a; color: #fff; border: 2px solid #00e676; padding: 15px; margin-top: 10px; cursor: pointer; }
         .pos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
-        .pos-btn { background: #2a2a2a; color: #00e676; border: 1px solid #00e676; padding: 8px; cursor: pointer; }
+        .pos-btn { background: #2a2a2a; color: #00e676; border: 1px solid #00e676; padding: 8px; cursor: pointer; border-radius: 4px; }
         .pos-btn.selected { background: #00e676; color: #000; }
+        .academy-btn { background: #2a2a2a; color: #fff; border: 2px solid #00e676; padding: 15px; margin-top: 10px; cursor: pointer; width: 100%; border-radius: 6px; }
     </style>
 </head>
 <body>
 
 <div class="box">
-    <!-- Скрин 0: Регистрация -->
+    <!-- СТЪПКА 0: РЕГИСТРАЦИЯ -->
     <div id="screen0" class="screen active">
         <h1>РЕГИСТРАЦИЯ</h1>
-        <input type="email" id="email" placeholder="Имейл">
-        <input type="password" id="pass" placeholder="Парола">
-        <button class="btn" onclick="next(1)">ПРОДЪЛЖИ</button>
+        <input type="email" id="email" placeholder="Имейл адрес">
+        <input type="password" id="pass" placeholder="Парола (минимум 6 символа)">
+        <button class="btn" onclick="register()">ПРОДЪЛЖИ</button>
     </div>
 
-    <!-- Скрин 1: Играч -->
+    <!-- СТЪПКА 1: ИГРАЧ -->
     <div id="screen1" class="screen">
         <h1>ТВОЯТ ИГРАЧ</h1>
-        <input type="text" id="playerName" placeholder="Име">
+        <input type="text" id="playerName" placeholder="Име на играча">
         <div class="pos-grid">
             <button class="pos-btn" onclick="selectPos('GK', this)">GK</button>
+            <button class="pos-btn" onclick="selectPos('CB', this)">CB</button>
+            <button class="pos-btn" onclick="selectPos('LB', this)">LB</button>
+            <button class="pos-btn" onclick="selectPos('CM', this)">CM</button>
+            <button class="pos-btn" onclick="selectPos('CAM', this)">CAM</button>
+            <button class="pos-btn" onclick="selectPos('LW', this)">LW</button>
+            <button class="pos-btn" onclick="selectPos('RW', this)">RW</button>
             <button class="pos-btn" onclick="selectPos('ST', this)">ST</button>
-            <!-- Добави останалите позиции тук -->
         </div>
-        <button class="btn" onclick="next(2)">КЪМ АКАДЕМИЯ</button>
+        <button class="btn" onclick="validatePlayer()">КЪМ АКАДЕМИЯ</button>
     </div>
 
-    <!-- Скрин 2: Академия -->
+    <!-- СТЪПКА 2: АКАДЕМИЯ -->
     <div id="screen2" class="screen">
         <h1>ИЗБЕРИ АКАДЕМИЯ</h1>
-        <button class="academy-btn" onclick="finish('Академия А')">Академия А (Техническа)</button>
-        <button class="academy-btn" onclick="finish('Академия Б')">Академия Б (Физическа)</button>
+        <button class="academy-btn" onclick="finish('Академия А')">Академия А (Техника)</button>
+        <button class="academy-btn" onclick="finish('Академия Б')">Академия Б (Физика)</button>
     </div>
 </div>
 
 <script>
     let pos = "";
-    function next(step) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen' + step).classList.add('active');
+
+    function register() {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('pass').value;
+        
+        // Валидация на паролата
+        if(email !== "" && pass.length >= 6) {
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPass', pass); // Съхраняваме паролата за проверка в login
+            localStorage.setItem('registrationComplete', 'true');
+            next(1);
+        } else {
+            alert("Моля, въведи валиден имейл и парола с поне 6 символа!");
+        }
     }
+
     function selectPos(p, btn) {
         pos = p;
         document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
     }
+
+    function validatePlayer() {
+        const name = document.getElementById('playerName').value;
+        if(name !== "" && pos !== "") {
+            localStorage.setItem('playerName', name);
+            localStorage.setItem('playerPosition', pos);
+            next(2);
+        } else {
+            alert("Моля, въведи име и избери позиция!");
+        }
+    }
+
+    function next(step) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen' + step).classList.add('active');
+    }
+
     function finish(academy) {
-        localStorage.setItem('registrationComplete', 'true');
+        localStorage.setItem('playerAcademy', academy);
         window.location.href = 'login.html';
     }
 </script>
