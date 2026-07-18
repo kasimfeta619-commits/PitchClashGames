@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-    <meta charset="UTF-8">
-    <title>Вход - Pitch Clash</title>
-</head>
-<body>
-    <h1>Вход / Регистрация</h1>
-    <input type="email" placeholder="Имейл">
-    <input type="password" placeholder="Парола">
-    
-    <!-- При клик, препраща към началната страница на играта -->
-    <button onclick="window.location.href='index.html'">ВХОД</button>
-</body>
-</html>
+<div class="box" style="max-width: 400px; margin: 100px auto; background: #1e1e1e; padding: 30px; border-radius: 12px; text-align: center; color: white;">
+    <h1>ВХОД</h1>
+    <input type="email" id="loginEmail" placeholder="Имейл" style="width: 100%; padding: 10px; margin: 10px 0;">
+    <button onclick="checkLogin()" style="width: 100%; padding: 10px; background: #00e676; border: none; cursor: pointer;">ВЛЕЗ</button>
+</div>
+
+<script>
+    function checkLogin() {
+        if (localStorage.getItem('registrationComplete') === 'true') {
+            localStorage.setItem('isAuthenticated', 'true');
+            window.location.href = 'index.html';
+        } else {
+            alert("Първо се регистрирай!");
+            window.location.href = 'register.html';
+        }
+    }
+</script>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация - Pitch Clash</title>
+    <style>
+        body { background: #121212; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .box { max-width: 450px; margin: 40px auto; background: #1e1e1e; padding: 30px; border-radius: 12px; border: 1px solid #333; }
+        input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: none; box-sizing: border-box; }
+        input { background: #2a2a2a; color: #fff; border: 1px solid #444; }
+        .btn { background: #00e676; font-weight: bold; cursor: pointer; color: #000; }
+        .academy-btn { background: #2a2a2a; color: #fff; border: 2px solid #00e676; padding: 15px; margin-top: 10px; cursor: pointer; }
+        .pos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
+        .pos-btn { background: #2a2a2a; color: #00e676; border: 1px solid #00e676; padding: 8px; cursor: pointer; }
+        .pos-btn.selected { background: #00e676; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <!-- Скрин 0: Регистрация -->
+    <div id="screen0" class="screen active">
+        <h1>РЕГИСТРАЦИЯ</h1>
+        <input type="email" id="email" placeholder="Имейл">
+        <input type="password" id="pass" placeholder="Парола">
+        <button class="btn" onclick="next(1)">ПРОДЪЛЖИ</button>
+    </div>
+
+    <!-- Скрин 1: Играч -->
+    <div id="screen1" class="screen">
+        <h1>ТВОЯТ ИГРАЧ</h1>
+        <input type="text" id="playerName" placeholder="Име">
+        <div class="pos-grid">
+            <button class="pos-btn" onclick="selectPos('GK', this)">GK</button>
+            <button class="pos-btn" onclick="selectPos('ST', this)">ST</button>
+            <!-- Добави останалите позиции тук -->
+        </div>
+        <button class="btn" onclick="next(2)">КЪМ АКАДЕМИЯ</button>
+    </div>
+
+    <!-- Скрин 2: Академия -->
+    <div id="screen2" class="screen">
+        <h1>ИЗБЕРИ АКАДЕМИЯ</h1>
+        <button class="academy-btn" onclick="finish('Академия А')">Академия А (Техническа)</button>
+        <button class="academy-btn" onclick="finish('Академия Б')">Академия Б (Физическа)</button>
+    </div>
+</div>
+
+<script>
+    let pos = "";
+    function next(step) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen' + step).classList.add('active');
+    }
+    function selectPos(p, btn) {
+        pos = p;
+        document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+    }
+    function finish(academy) {
+        localStorage.setItem('registrationComplete', 'true');
+        window.location.href = 'login.html';
+    }
+</script>
+</body>
+</html>

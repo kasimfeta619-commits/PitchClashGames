@@ -4,37 +4,46 @@
     <meta charset="UTF-8">
     <title>Pitch Clash Hub</title>
     <style>
-        .screen { display: none; }
-        .active { display: block; }
+        body { background: #121212; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .hub-container { max-width: 800px; margin: auto; }
+        .header { background: #1e1e1e; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .menu-btn { background: #2a2a2a; color: #fff; padding: 30px; border-radius: 12px; border: 2px solid #00e676; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
+        .menu-btn:hover { background: #00e676; color: #000; }
+        .logout-btn { margin-top: 40px; background: #ff5252; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- Екран 1: Създаване на играч -->
-    <div id="screen1" class="screen active">
-        <h1>Създай своя играч</h1>
-        <input type="text" id="playerName" placeholder="Име на играча">
-        <button onclick="showScreen('screen2')">Избери Академия</button>
+<div class="hub-container">
+    <div class="header">
+        <h1>Добре дошъл, играчо!</h1>
+        <p>Твоят път към величието започва тук.</p>
     </div>
 
-    <!-- Екран 2: Академия -->
-    <div id="screen2" class="screen">
-        <h1>Избери Академия</h1>
-        <button onclick="showScreen('screen3')">Академия А</button>
-        <button onclick="showScreen('screen3')">Академия Б</button>
+    <div class="menu-grid">
+        <button class="menu-btn" onclick="alert('Отваряне на тренировка...')">ТРЕНИРОВКА</button>
+        <button class="menu-btn" onclick="alert('Търсене на мач...')">МАЧ</button>
+        <button class="menu-btn" onclick="alert('Твоят профил...')">ПРОФИЛ</button>
+        <button class="menu-btn" onclick="alert('Класиране...')">КЛАСИРАНЕ</button>
     </div>
 
-    <!-- Екран 3: HUB (Целият сайт) -->
-    <div id="screen3" class="screen">
-        <h1>Твоят Hub</h1>
-        <button onclick="window.location.href='login.html'">ИЗХОД</button>
-    </div>
+    <button class="logout-btn" onclick="logout()">ИЗХОД</button>
+</div>
 
-    <script>
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-    </script>
+<script>
+    // 1. ЗАЩИТА: Ако не е логнат, го връща в login.html
+    if (localStorage.getItem('isAuthenticated') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    // 2. ФУНКЦИЯ ЗА ИЗХОД
+    function logout() {
+        // Изчистваме сесията
+        localStorage.removeItem('isAuthenticated');
+        window.location.href = 'login.html';
+    }
+</script>
+
 </body>
 </html>
