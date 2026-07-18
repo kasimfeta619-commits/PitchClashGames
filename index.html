@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Football Career</title>
+    <title>Football Career - Multiplayer</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: Arial, sans-serif; display: flex; justify-content: center; height: 100vh; margin: 0; }
         .main-container { text-align: center; width: 360px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
@@ -22,23 +22,23 @@
 <body>
 
     <div class="main-container">
-        <!-- Екран 1 -->
+        <!-- Екран 1: Име и Позиция -->
         <div id="screen1" class="screen active">
             <div class="app-icon">⚽</div>
             <h1>Football Career</h1>
             <input type="text" id="playerName" class="input-field" placeholder="Въведи име на отбора...">
             <div class="positions-grid">
-                <button class="pos-btn">GK</button><button class="pos-btn">CB</button>
-                <button class="pos-btn">LB</button><button class="pos-btn">RB</button>
-                <button class="pos-btn">CDM</button><button class="pos-btn">CM</button>
-                <button class="pos-btn">CAM</button><button class="pos-btn">LW</button>
-                <button class="pos-btn">RW</button><button class="pos-btn">ST</button>
-                <button class="pos-btn">CF</button>
+                <button class="pos-btn" onclick="selectPos(this)">GK</button><button class="pos-btn" onclick="selectPos(this)">CB</button>
+                <button class="pos-btn" onclick="selectPos(this)">LB</button><button class="pos-btn" onclick="selectPos(this)">RB</button>
+                <button class="pos-btn" onclick="selectPos(this)">CDM</button><button class="pos-btn" onclick="selectPos(this)">CM</button>
+                <button class="pos-btn" onclick="selectPos(this)">CAM</button><button class="pos-btn" onclick="selectPos(this)">LW</button>
+                <button class="pos-btn" onclick="selectPos(this)">RW</button><button class="pos-btn" onclick="selectPos(this)">ST</button>
+                <button class="pos-btn" onclick="selectPos(this)">CF</button>
             </div>
-            <button class="next-btn" onclick="saveNameAndNext()">Следваща стъпка →</button>
+            <button class="next-btn" onclick="saveAndNext()">Следваща стъпка →</button>
         </div>
 
-        <!-- Екран 2 и 3 -->
+        <!-- Екран 2: Избор на клуб -->
         <div id="screen2" class="screen">
             <div class="app-icon">🏰</div>
             <h1>Избери своя клуб</h1>
@@ -53,7 +53,7 @@
                 <button class="club-btn" onclick="selectClub(this)">Младеж Изток</button>
                 <button class="club-btn" onclick="selectClub(this)">Младеж Запад</button>
             </div>
-            <button id="confirmBtn" class="next-btn" style="display:none" onclick="alert('Успешна регистрация!')">✔ Потвърди — Избери клуб</button>
+            <button id="confirmBtn" class="next-btn" style="display:none" onclick="alert('Отборът е готов!')">✔ Потвърди — Избери клуб</button>
             <div class="back-link" onclick="showScreen('screen1')">← Назад</div>
         </div>
     </div>
@@ -63,10 +63,13 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
-        function saveNameAndNext() {
+        function selectPos(btn) {
+            document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        function saveAndNext() {
             const name = document.getElementById('playerName').value;
             if (name.trim() === "") { alert("Моля, въведи име на отбора!"); return; }
-            localStorage.setItem('teamName', name);
             showScreen('screen2');
         }
         function selectClub(btn) {
@@ -76,10 +79,6 @@
             conf.style.display = 'block';
             conf.innerText = '✔ Потвърди — ' + btn.innerText;
         }
-        document.querySelectorAll('.pos-btn').forEach(b => b.addEventListener('click', () => {
-            document.querySelectorAll('.pos-btn').forEach(btn => btn.classList.remove('active'));
-            b.classList.add('active');
-        }));
     </script>
 </body>
 </html>
