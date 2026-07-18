@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Football Career</title>
+    <title>Football Career - Multiplayer</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: Arial, sans-serif; display: flex; justify-content: center; height: 100vh; margin: 0; }
         .main-container { text-align: center; width: 360px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
@@ -10,74 +10,70 @@
         .screen.active { display: block; }
         .app-icon { width: 64px; height: 64px; background-color: #00e676; border-radius: 16px; display: flex; justify-content: center; align-items: center; margin: 20px auto; font-size: 30px; }
         h1 { color: #00e676; margin-bottom: 5px; }
-        .input-field { width: 100%; padding: 12px; background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; color: #fff; margin-bottom: 20px; text-align: center; box-sizing: border-box; }
-        .positions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .pos-btn, .league-btn, .club-btn { background-color: #1e1e1e; border: 1px solid #333; color: #a0a0a0; padding: 10px 5px; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 10px; }
-        .pos-btn.active, .club-btn.active { background-color: #00e676; color: #000; border-color: #00e676; font-weight: bold; }
+        .input-field { width: 100%; padding: 12px; background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; color: #fff; margin-bottom: 20px; text-align: center; }
+        .league-btn { background-color: #1e1e1e; border: 1px solid #333; color: #a0a0a0; padding: 10px; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        .league-btn.active { background-color: #006030; color: #fff; border-color: #00e676; font-weight: bold; }
         .clubs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .club-btn { background-color: #1e1e1e; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .club-btn small { display: block; color: #00e676; font-size: 10px; margin-top: 4px; }
+        .club-btn.active { background-color: #006030; border-color: #00e676; }
         .next-btn { width: 100%; padding: 14px; background: #00e676; color: #121212; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; display: block; }
-        .back-link { color: #a0a0a0; cursor: pointer; margin-top: 20px; text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <!-- Екран 1: Име на играч и Позиция -->
+        <!-- Екран 1 -->
         <div id="screen1" class="screen active">
             <div class="app-icon">⚽</div>
             <h1>Football Career</h1>
             <input type="text" id="playerName" class="input-field" placeholder="Въведи име на играча...">
-            <div class="positions-grid">
-                <button class="pos-btn" onclick="selectPos(this)">GK</button><button class="pos-btn" onclick="selectPos(this)">CB</button>
-                <button class="pos-btn" onclick="selectPos(this)">LB</button><button class="pos-btn" onclick="selectPos(this)">RB</button>
-                <button class="pos-btn" onclick="selectPos(this)">CDM</button><button class="pos-btn" onclick="selectPos(this)">CM</button>
-                <button class="pos-btn" onclick="selectPos(this)">CAM</button><button class="pos-btn" onclick="selectPos(this)">LW</button>
-                <button class="pos-btn" onclick="selectPos(this)">RW</button><button class="pos-btn" onclick="selectPos(this)">ST</button>
-                <button class="pos-btn" onclick="selectPos(this)">CF</button>
-            </div>
             <button class="next-btn" onclick="saveAndNext()">Следваща стъпка →</button>
         </div>
 
-        <!-- Екран 2: Избор на клуб -->
+        <!-- Екран 2 -->
         <div id="screen2" class="screen">
-            <div class="app-icon">🏰</div>
             <h1>Избери своя клуб</h1>
             <div id="leagues">
-                <button class="league-btn" onclick="document.getElementById('clubs').style.display='grid'">Академия 3</button>
-                <button class="league-btn">Академия 2</button>
-                <button class="league-btn">Трета лига</button>
+                <button class="league-btn" onclick="selectLeague(this, 'Академия 3')">Академия 3</button>
+                <button class="league-btn" onclick="selectLeague(this, 'Академия 2')">Академия 2</button>
             </div>
-            <div id="clubs" class="clubs-grid" style="display:none">
-                <button class="club-btn" onclick="selectClub(this)">Академия А</button>
-                <button class="club-btn" onclick="selectClub(this)">Академия Б</button>
-                <button class="club-btn" onclick="selectClub(this)">Младеж Изток</button>
-                <button class="club-btn" onclick="selectClub(this)">Младеж Запад</button>
-            </div>
-            <button id="confirmBtn" class="next-btn" style="display:none" onclick="alert('Регистрацията е завършена!')">✔ Потвърди — Избери клуб</button>
-            <div class="back-link" onclick="showScreen('screen1')">← Назад</div>
+            <div id="clubs" class="clubs-grid" style="display:none"></div>
+            <button id="confirmBtn" class="next-btn" style="display:none" onclick="alert('Регистрацията завършена!')">✔ Потвърди</button>
         </div>
     </div>
 
     <script>
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-        function selectPos(btn) {
-            document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
+        const teamsData = {
+            "Академия 3": [{name: "Академия А", status: "Търси играчи"}, {name: "Академия Б", status: "Активен"}],
+            "Академия 2": [{name: "Титан ФК", status: "Пълен"}, {name: "Звезди 2", status: "Търси играчи"}]
+        };
+
         function saveAndNext() {
             const name = document.getElementById('playerName').value;
-            if (name.trim() === "") { alert("Моля, въведи име на играча!"); return; }
-            showScreen('screen2');
+            if (name.trim() === "") { alert("Въведи име!"); return; }
+            localStorage.setItem('playerName', name);
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen2').classList.add('active');
         }
-        function selectClub(btn) {
-            document.querySelectorAll('.club-btn').forEach(b => b.classList.remove('active'));
+
+        function selectLeague(btn, leagueName) {
+            document.querySelectorAll('.league-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const conf = document.getElementById('confirmBtn');
-            conf.style.display = 'block';
-            conf.innerText = '✔ Потвърди — ' + btn.innerText;
+            const clubsContainer = document.getElementById('clubs');
+            clubsContainer.innerHTML = '';
+            teamsData[leagueName].forEach(team => {
+                const b = document.createElement('button');
+                b.className = 'club-btn';
+                b.innerHTML = `${team.name}<small>${team.status}</small>`;
+                b.onclick = () => {
+                    document.querySelectorAll('.club-btn').forEach(c => c.classList.remove('active'));
+                    b.classList.add('active');
+                    document.getElementById('confirmBtn').style.display = 'block';
+                };
+                clubsContainer.appendChild(b);
+            });
+            clubsContainer.style.display = 'grid';
         }
     </script>
 </body>
