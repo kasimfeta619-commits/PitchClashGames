@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Clash - Регистрация</title>
+    <title>Регистрация - Pitch Clash</title>
     <style>
         body { background: #121212; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
         .screen { display: none; }
@@ -14,7 +14,7 @@
         .pos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
         .pos-btn { background: #2a2a2a; color: #00e676; border: 1px solid #00e676; padding: 8px; cursor: pointer; border-radius: 4px; }
         .pos-btn.selected { background: #00e676; color: #000; }
-        .academy-btn { background: #2a2a2a; color: #fff; border: 2px solid #00e676; padding: 15px; margin-top: 10px; cursor: pointer; width: 100%; border-radius: 6px; }
+        .academy-btn { background: #2a2a2a; color: #fff; border: 2px solid #00e676; padding: 15px; margin: 5px 0; cursor: pointer; width: 100%; border-radius: 6px; }
     </style>
 </head>
 <body>
@@ -24,7 +24,7 @@
     <div id="screen0" class="screen active">
         <h1>РЕГИСТРАЦИЯ</h1>
         <input type="email" id="email" placeholder="Имейл адрес">
-        <input type="password" id="pass" placeholder="Парола (минимум 6 символа)">
+        <input type="password" id="pass" placeholder="Парола (мин. 6 символа)">
         <button class="btn" onclick="register()">ПРОДЪЛЖИ</button>
     </div>
 
@@ -42,32 +42,38 @@
             <button class="pos-btn" onclick="selectPos('RW', this)">RW</button>
             <button class="pos-btn" onclick="selectPos('ST', this)">ST</button>
         </div>
-        <button class="btn" onclick="validatePlayer()">КЪМ АКАДЕМИЯ</button>
+        <button class="btn" onclick="validatePlayer()">ИЗБЕРИ АКАДЕМИЯ</button>
     </div>
 
-    <!-- СТЪПКА 2: АКАДЕМИЯ -->
+    <!-- СТЪПКА 2: АКАДЕМИЯ И ОТБОР -->
     <div id="screen2" class="screen">
-        <h1>ИЗБЕРИ АКАДЕМИЯ</h1>
-        <button class="academy-btn" onclick="finish('Академия А')">Академия А (Техника)</button>
-        <button class="academy-btn" onclick="finish('Академия Б')">Академия Б (Физика)</button>
+        <h1>АКАДЕМИЯ И ОТБОР</h1>
+        <div id="step-academy">
+            <p>Избери фокус:</p>
+            <button class="academy-btn" onclick="selectAcademy('Академия А')">Академия А (Техника)</button>
+            <button class="academy-btn" onclick="selectAcademy('Академия Б')">Академия Б (Физика)</button>
+        </div>
+        <div id="step-team" style="display: none;">
+            <p id="academy-text" style="color: #00e676; font-weight: bold;"></p>
+            <input type="text" id="customTeamName" placeholder="Име на твоя отбор...">
+            <button class="btn" onclick="finishRegistration()">ЗАПОЧНИ ИГРАТА</button>
+        </div>
     </div>
 </div>
 
 <script>
     let pos = "";
+    let selectedAcademy = "";
 
     function register() {
         const email = document.getElementById('email').value;
         const pass = document.getElementById('pass').value;
-        
-        // Валидация на паролата
-        if(email !== "" && pass.length >= 6) {
+        if(email && pass.length >= 6) {
             localStorage.setItem('userEmail', email);
-            localStorage.setItem('userPass', pass); // Съхраняваме паролата за проверка в login
-            localStorage.setItem('registrationComplete', 'true');
+            localStorage.setItem('userPass', pass);
             next(1);
         } else {
-            alert("Моля, въведи валиден имейл и парола с поне 6 символа!");
+            alert("Въведи валиден имейл и парола (мин. 6 символа)!");
         }
     }
 
@@ -79,23 +85,37 @@
 
     function validatePlayer() {
         const name = document.getElementById('playerName').value;
-        if(name !== "" && pos !== "") {
+        if(name && pos) {
             localStorage.setItem('playerName', name);
             localStorage.setItem('playerPosition', pos);
             next(2);
         } else {
-            alert("Моля, въведи име и избери позиция!");
+            alert("Въведи име и избери позиция!");
+        }
+    }
+
+    function selectAcademy(academy) {
+        selectedAcademy = academy;
+        document.getElementById('step-academy').style.display = 'none';
+        document.getElementById('step-team').style.display = 'block';
+        document.getElementById('academy-text').innerText = "Избра: " + academy;
+    }
+
+    function finishRegistration() {
+        const teamName = document.getElementById('customTeamName').value;
+        if (teamName) {
+            localStorage.setItem('playerAcademy', selectedAcademy);
+            localStorage.setItem('playerTeam', teamName);
+            localStorage.setItem('registrationComplete', 'true');
+            window.location.href = 'login.html';
+        } else {
+            alert("Моля, дай име на своя отбор!");
         }
     }
 
     function next(step) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen' + step).classList.add('active');
-    }
-
-    function finish(academy) {
-        localStorage.setItem('playerAcademy', academy);
-        window.location.href = 'login.html';
     }
 </script>
 </body>
