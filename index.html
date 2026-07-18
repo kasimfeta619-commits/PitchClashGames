@@ -2,14 +2,49 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Clash PRO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шахматно бойно поле</title>
     <style>
-        body { background: #1a1a1a; color: #fff; text-align: center; font-family: sans-serif; }
+        body { font-family: sans-serif; background-color: #121212; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         h1 { color: #4CAF50; }
+        .grid { display: grid; grid-template-columns: repeat(3, 100px); gap: 10px; margin: 20px 0; }
+        .zone { width: 100px; height: 100px; background-color: #333; border: 2px solid #555; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; font-weight: bold; }
+        .zone:hover { background-color: #444; }
+        .controls { display: flex; gap: 10px; }
+        button { padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; }
+        .btn-stop { background-color: #f44336; }
+        .btn-goal { background-color: #2196F3; }
+        .btn-assist { background-color: #FF9800; }
+        #status { margin-top: 20px; font-size: 1.2rem; color: #4CAF50; }
     </style>
 </head>
 <body>
-    <h1>Добре дошъл в Pitch Clash PRO!</h1>
-    <p>Играта се зарежда...</p>
+
+    <h1>Шахматно бойно поле</h1>
+    <div id="status">Избери зона от терена</div>
+
+    <div class="grid" id="field">
+        <!-- Зони от 1 до 11 -->
+        <script>
+            for(let i=1; i<=11; i++) {
+                document.write(`<div class="zone" onclick="selectZone(${i})">Зона ${i}</div>`);
+            }
+            function selectZone(n) {
+                document.getElementById('status').innerText = "Избрана зона: " + n;
+            }
+        </script>
+    </div>
+
+    <div class="controls">
+        <button class="btn-stop" onclick="action('СТОП')">СТОП</button>
+        <button class="btn-goal" onclick="action('ГОЛ')">ГОЛ</button>
+        <button class="btn-assist" onclick="action('АСИСТЕНТ')">АСИСТЕНТ</button>
+    </div>
+
+    <script>
+        function action(type) {
+            alert("Изпълняваш тактика: " + type);
+        }
+    </script>
 </body>
 </html>
