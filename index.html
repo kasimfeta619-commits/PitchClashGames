@@ -4,49 +4,87 @@
     <meta charset="UTF-8">
     <title>Pitch Clash Hub</title>
     <style>
-        body { background: #121212; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .hub-container { max-width: 800px; margin: auto; }
-        .header { background: #1e1e1e; padding: 30px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333; }
-        .team-name { color: #00e676; font-size: 24px; font-weight: bold; margin: 10px 0; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .menu-btn { background: #2a2a2a; color: #fff; padding: 30px; border-radius: 12px; border: 2px solid #00e676; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
-        .menu-btn:hover { background: #00e676; color: #000; }
-        .logout-btn { margin-top: 40px; background: #333; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 400px; }
+        .box { background: #161616; border: 1px solid #222; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+
+        /* Горна лента */
+        .top-bar { display: flex; justify-content: space-between; font-size: 13px; color: #ccc; margin-bottom: 8px; background: #161616; padding: 10px; border-radius: 8px; border: 1px solid #222; }
+
+        /* Бонус */
+        .bonus-btn { background: #d4a017; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+
+        /* Карта играч */
+        .player-info { display: flex; justify-content: space-between; align-items: center; }
+
+        /* Икони (СЪСТЕЗАНИЯ, МАГАЗИН, ОТБОР) */
+        .menu-bar { display: flex; gap: 8px; margin-bottom: 8px; }
+        .menu-item { flex: 1; text-align: center; padding: 15px 0; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; cursor: pointer; font-size: 20px; }
+
+        /* Списък мачове */
+        .match-card { background: #1e1e1e; border: 1px solid #333; padding: 12px; border-radius: 8px; margin-bottom: 8px; text-align: center; }
+        .match-title { font-size: 10px; color: #aaa; margin-bottom: 4px; text-transform: uppercase; }
+        .match-score { font-size: 18px; font-weight: bold; margin: 5px 0; }
+        .play-btn { background: #007bff; color: white; border: none; padding: 6px 20px; border-radius: 4px; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="hub-container">
-    <div class="header">
-        <h1>Добре дошъл, играчо!</h1>
-        <p>Твоят клуб:</p>
-        <div class="team-name" id="displayTeamName"></div>
+<div class="app-container">
+    <!-- Ресурси -->
+    <div class="top-bar">
+        <span>⭐ 0/80</span>
+        <span>⚡ 100 | 🪙 500</span>
     </div>
 
-    <div class="menu-grid">
-        <button class="menu-btn">ТРЕНИРОВКА</button>
-        <button class="menu-btn">МАЧ</button>
-        <button class="menu-btn">ПРОФИЛ</button>
-        <button class="menu-btn">КЛАСИРАНЕ</button>
+    <!-- Бонус -->
+    <div class="box">
+        <div style="font-size: 12px; text-align: center;">📅 Ежедневен бонус (Ден 1 от 7)</div>
+        <button class="bonus-btn">Вземи бонуса</button>
     </div>
 
-    <button class="logout-btn" onclick="logout()">ИЗХОД</button>
+    <!-- Играч -->
+    <div class="box player-info">
+        <div>
+            <div style="font-weight: bold;" id="playerName">Kasim</div>
+            <div style="font-size: 12px; color: #888;">Академия А - ST</div>
+        </div>
+        <div style="font-size: 20px; font-weight: bold;">42</div>
+    </div>
+
+    <!-- Меню икони -->
+    <div class="menu-bar">
+        <div class="menu-item">🏆</div>
+        <div class="menu-item">🛒</div>
+        <div class="menu-item">🥇</div>
+    </div>
+
+    <!-- Списък мачове -->
+    <div class="match-card">
+        <div class="match-title">🏆 ЛИГА - ДЕН 1/26</div>
+        <div class="match-score">2 - 1</div>
+    </div>
+
+    <div class="match-card">
+        <div class="match-title">🏆 ЛИГА - ДЕН 1/26</div>
+        <button class="play-btn">ИГРАЙ</button>
+    </div>
+
+    <div class="match-card">
+        <div class="match-title">⚽ ШАМПИОНСКА ЛИГА - ГРУПОВА ФАЗА</div>
+        <div style="font-size: 16px; margin: 5px 0;">УТРЕ 23:06</div>
+    </div>
 </div>
 
 <script>
-    // 1. ЗАЩИТА
+    // Защита: Ако не е логнат, връща към логин
     if (localStorage.getItem('isAuthenticated') !== 'true') {
         window.location.href = 'login.html';
     }
 
-    // 2. ПОКАЗВАНЕ НА ОТБОРА
-    const team = localStorage.getItem('playerTeam');
-    document.getElementById('displayTeamName').innerText = team ? team : "Няма отбор";
-
-    function logout() {
-        localStorage.removeItem('isAuthenticated');
-        window.location.href = 'login.html';
-    }
+    // Зареждане на името от регистрацията
+    const name = localStorage.getItem('playerName');
+    if (name) document.getElementById('playerName').innerText = name;
 </script>
 
 </body>

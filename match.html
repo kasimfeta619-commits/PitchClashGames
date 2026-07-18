@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Играй Мач</title>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .match-box { background: #1e1e1e; padding: 30px; border-radius: 12px; max-width: 400px; margin: auto; }
+        #result { font-size: 32px; font-weight: bold; margin: 20px 0; color: #00e676; }
+    </style>
+</head>
+<body>
+
+<div class="match-box">
+    <h1>Мачът започна!</h1>
+    <div id="status">Играем...</div>
+    <div id="result">---</div>
+    <button onclick="window.location.href='index.html'" style="padding: 10px 20px;">ОБРАТНО В HUB</button>
+</div>
+
+<script>
+    // Взимаме силата на играча от localStorage (или задаваме начална 42)
+    const playerPower = 42; 
+
+    function simulateMatch() {
+        const status = document.getElementById('status');
+        const result = document.getElementById('result');
+        
+        // Симулация на резултат: колкото по-силен си, толкова по-голям шанс за голям резултат
+        const opponentPower = 40 + Math.floor(Math.random() * 10);
+        const myGoals = Math.floor(Math.random() * (playerPower / 10));
+        const oppGoals = Math.floor(Math.random() * (opponentPower / 10));
+
+        status.innerText = "Мачът приключи!";
+        result.innerText = myGoals + " - " + oppGoals;
+    }
+
+    // Стартираме симулацията веднага
+    setTimeout(simulateMatch, 1500);
+</script>
+</body>
+</html>

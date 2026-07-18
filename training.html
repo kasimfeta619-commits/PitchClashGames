@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Тренировка - Pitch Clash</title>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .box { background: #161616; padding: 20px; border-radius: 12px; max-width: 400px; margin: auto; border: 1px solid #333; }
+        .train-btn { background: #00e676; color: #000; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .stat-val { font-size: 24px; color: #00e676; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>ТРЕНИРОВЪЧНА БАЗА</h1>
+    <p>Твой текущ OVR:</p>
+    <div class="stat-val" id="currentOvr">42</div>
+    <p>Тренировка: +1 OVR (Цена: 20 Енергия)</p>
+    
+    <button class="train-btn" onclick="train()">ТРЕНИРАЙ</button>
+    <br><br>
+    <button onclick="window.location.href='index.html'">ОБРАТНО</button>
+</div>
+
+<script>
+    // Зареждаме OVR от localStorage или задаваме начален
+    let ovr = parseInt(localStorage.getItem('playerOvr')) || 42;
+    document.getElementById('currentOvr').innerText = ovr;
+
+    function train() {
+        // Логика: Тук бихме проверили за енергия (ще я добавим следващия път)
+        ovr += 1;
+        localStorage.setItem('playerOvr', ovr);
+        document.getElementById('currentOvr').innerText = ovr;
+        alert("Тренировката премина успешно! Твоят OVR се увеличи.");
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Твоят Отбор</title>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
+        .app-container { max-width: 400px; margin: auto; }
+        .player-card { background: #1e1e1e; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #333; display: flex; justify-content: space-between; }
+        .pos-badge { background: #007bff; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1>Твоят Отбор</h1>
+    <div id="teamList">
+        <!-- Тук ще се зареждат играчите -->
+    </div>
+    <button onclick="window.location.href='index.html'" style="width: 100%; padding: 10px; margin-top: 20px;">ОБРАТНО</button>
+</div>
+
+<script>
+    // Примерни данни за отбора (това ще го правим динамично по-късно)
+    const myTeam = [
+        { name: "Kasim", pos: "ST", ovr: 42 },
+        { name: "Иван Иванов", pos: "GK", ovr: 38 },
+        { name: "Петър Петров", pos: "CM", ovr: 40 }
+    ];
+
+    const list = document.getElementById('teamList');
+    myTeam.forEach(player => {
+        list.innerHTML += `
+            <div class="player-card">
+                <div>
+                    <span class="pos-badge">${player.pos}</span>
+                    <strong>${player.name}</strong>
+                </div>
+                <div>${player.ovr} OVR</div>
+            </div>
+        `;
+    });
+</script>
+</body>
+</html>

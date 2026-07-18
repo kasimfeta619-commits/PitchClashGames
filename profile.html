@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Моят Профил</title>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
+        .app-container { max-width: 400px; margin: auto; }
+        .profile-box { background: #1e1e1e; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center; }
+        .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
+        .logout-btn { background: #ff4d4d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 20px; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1>Профил</h1>
+    <div class="profile-box">
+        <h2 id="playerName">---</h2>
+        <div class="stat-row"><span>Академия:</span> <span id="playerAcademy">---</span></div>
+        <div class="stat-row"><span>Позиция:</span> <span id="playerPos">---</span></div>
+        <div class="stat-row"><span>Общ рейтинг (OVR):</span> <span id="playerOvr">42</span></div>
+        <div class="stat-row"><span>Изиграни мачове:</span> <span id="matchCount">0</span></div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">ИЗХОД ОТ ПРОФИЛА</button>
+    <button onclick="window.location.href='index.html'" style="width: 100%; padding: 10px; margin-top: 10px; background: #333; color: #fff; border: none; border-radius: 6px;">НАЗАД</button>
+</div>
+
+<script>
+    // Зареждане на данните от localStorage
+    document.getElementById('playerName').innerText = localStorage.getItem('playerName') || "Играч";
+    document.getElementById('playerAcademy').innerText = localStorage.getItem('playerAcademy') || "Академия А";
+    document.getElementById('playerPos').innerText = localStorage.getItem('playerPosition') || "ST";
+    document.getElementById('playerOvr').innerText = localStorage.getItem('playerOvr') || "42";
+    document.getElementById('matchCount').innerText = localStorage.getItem('matchesPlayed') || "0";
+
+    function logout() {
+        if(confirm("Сигурен ли си, че искаш да излезеш?")) {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+    }
+</script>
+</body>
+</html>
