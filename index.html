@@ -4,90 +4,82 @@
     <meta charset="UTF-8">
     <title>Football Career</title>
     <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .main-container { text-align: center; width: 360px; padding: 20px; }
-        .app-icon {
-            width: 64px; height: 64px; background-color: #00e676;
-            border-radius: 16px; display: flex; justify-content: center;
-            align-items: center; margin: 0 auto 20px auto;
-        }
-        h1 { color: #00e676; margin-bottom: 10px; }
-        .input-field {
-            width: 100%; padding: 12px; background-color: #1e1e1e;
-            border: 1px solid #333; border-radius: 8px; color: #fff;
-            margin-bottom: 30px; text-align: center; box-sizing: border-box;
-        }
-        .positions-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 10px; margin-bottom: 30px;
-        }
-        .pos-btn {
-            background-color: #1e1e1e; border: 1px solid #333;
-            color: #a0a0a0; padding: 10px 5px; border-radius: 6px;
-            cursor: pointer; transition: all 0.2s;
-        }
-        /* Ето тук се случва магията за избор */
-        .pos-btn.active {
-            background-color: #fff;
-            color: #000;
-            border-color: #fff;
-            font-weight: bold;
-        }
-        .next-btn {
-            width: 100%; padding: 14px; background: #00e676;
-            color: #121212; border: none; border-radius: 8px;
-            font-weight: bold; cursor: pointer;
-        }
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 60px;
-            background-color: #1e1e1e; border-top: 1px solid #333;
-            display: flex; justify-content: space-around; align-items: center;
-        }
+        body { background-color: #121212; color: #e0e0e0; font-family: Arial, sans-serif; display: flex; justify-content: center; height: 100vh; margin: 0; }
+        .main-container { text-align: center; width: 360px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .screen { display: none; width: 100%; }
+        .screen.active { display: block; }
+        .app-icon { width: 64px; height: 64px; background-color: #00e676; border-radius: 16px; display: flex; justify-content: center; align-items: center; margin: 20px auto; font-size: 30px; }
+        h1 { color: #00e676; margin-bottom: 5px; }
+        .input-field { width: 100%; padding: 12px; background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; color: #fff; margin-bottom: 20px; text-align: center; box-sizing: border-box; }
+        .positions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .pos-btn, .league-btn, .club-btn { background-color: #1e1e1e; border: 1px solid #333; color: #a0a0a0; padding: 10px 5px; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        .pos-btn.active, .club-btn.active { background-color: #00e676; color: #000; border-color: #00e676; font-weight: bold; }
+        .clubs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .next-btn { width: 100%; padding: 14px; background: #00e676; color: #121212; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; display: block; }
+        .back-link { color: #a0a0a0; cursor: pointer; margin-top: 20px; text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <div class="app-icon">⚽</div>
-        <h1>Football Career</h1>
-        <p>Създай своя играч и избери клуб</p>
-        <input type="text" class="input-field" value="kasim112233">
-
-        <div class="positions-grid" id="posGrid">
-            <button class="pos-btn">GK</button>
-            <button class="pos-btn">CB</button>
-            <button class="pos-btn">LB</button>
-            <button class="pos-btn">RB</button>
-            <button class="pos-btn">CDM</button>
-            <button class="pos-btn">CM</button>
-            <button class="pos-btn">CAM</button>
-            <button class="pos-btn">LW</button>
-            <button class="pos-btn">RW</button>
-            <button class="pos-btn">ST</button>
-            <button class="pos-btn">CF</button>
+        <!-- Екран 1 -->
+        <div id="screen1" class="screen active">
+            <div class="app-icon">⚽</div>
+            <h1>Football Career</h1>
+            <input type="text" id="playerName" class="input-field" placeholder="Въведи име на отбора...">
+            <div class="positions-grid">
+                <button class="pos-btn">GK</button><button class="pos-btn">CB</button>
+                <button class="pos-btn">LB</button><button class="pos-btn">RB</button>
+                <button class="pos-btn">CDM</button><button class="pos-btn">CM</button>
+                <button class="pos-btn">CAM</button><button class="pos-btn">LW</button>
+                <button class="pos-btn">RW</button><button class="pos-btn">ST</button>
+                <button class="pos-btn">CF</button>
+            </div>
+            <button class="next-btn" onclick="saveNameAndNext()">Следваща стъпка →</button>
         </div>
 
-        <button class="next-btn">Следваща стъпка →</button>
+        <!-- Екран 2 и 3 -->
+        <div id="screen2" class="screen">
+            <div class="app-icon">🏰</div>
+            <h1>Избери своя клуб</h1>
+            <div id="leagues">
+                <button class="league-btn" onclick="document.getElementById('clubs').style.display='grid'">Академия 3</button>
+                <button class="league-btn">Академия 2</button>
+                <button class="league-btn">Трета лига</button>
+            </div>
+            <div id="clubs" class="clubs-grid" style="display:none">
+                <button class="club-btn" onclick="selectClub(this)">Академия А</button>
+                <button class="club-btn" onclick="selectClub(this)">Академия Б</button>
+                <button class="club-btn" onclick="selectClub(this)">Младеж Изток</button>
+                <button class="club-btn" onclick="selectClub(this)">Младеж Запад</button>
+            </div>
+            <button id="confirmBtn" class="next-btn" style="display:none" onclick="alert('Успешна регистрация!')">✔ Потвърди — Избери клуб</button>
+            <div class="back-link" onclick="showScreen('screen1')">← Назад</div>
+        </div>
     </div>
 
     <script>
-        // Логика за избор на позиция
-        const buttons = document.querySelectorAll('.pos-btn');
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                buttons.forEach(b => b.classList.remove('active'));
-                button.classList.add('active');
-            });
-        });
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+        function saveNameAndNext() {
+            const name = document.getElementById('playerName').value;
+            if (name.trim() === "") { alert("Моля, въведи име на отбора!"); return; }
+            localStorage.setItem('teamName', name);
+            showScreen('screen2');
+        }
+        function selectClub(btn) {
+            document.querySelectorAll('.club-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const conf = document.getElementById('confirmBtn');
+            conf.style.display = 'block';
+            conf.innerText = '✔ Потвърди — ' + btn.innerText;
+        }
+        document.querySelectorAll('.pos-btn').forEach(b => b.addEventListener('click', () => {
+            document.querySelectorAll('.pos-btn').forEach(btn => btn.classList.remove('active'));
+            b.classList.add('active');
+        }));
     </script>
 </body>
 </html>
