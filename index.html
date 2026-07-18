@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Football Career - Multiplayer</title>
+    <title>Football Career</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: Arial, sans-serif; display: flex; justify-content: center; height: 100vh; margin: 0; }
         .main-container { text-align: center; width: 360px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
@@ -22,11 +22,11 @@
 <body>
 
     <div class="main-container">
-        <!-- Екран 1: Име и Позиция -->
+        <!-- Екран 1: Име на играч и Позиция -->
         <div id="screen1" class="screen active">
             <div class="app-icon">⚽</div>
             <h1>Football Career</h1>
-            <input type="text" id="playerName" class="input-field" placeholder="Въведи име на отбора...">
+            <input type="text" id="playerName" class="input-field" placeholder="Въведи име на играча...">
             <div class="positions-grid">
                 <button class="pos-btn" onclick="selectPos(this)">GK</button><button class="pos-btn" onclick="selectPos(this)">CB</button>
                 <button class="pos-btn" onclick="selectPos(this)">LB</button><button class="pos-btn" onclick="selectPos(this)">RB</button>
@@ -53,7 +53,7 @@
                 <button class="club-btn" onclick="selectClub(this)">Младеж Изток</button>
                 <button class="club-btn" onclick="selectClub(this)">Младеж Запад</button>
             </div>
-            <button id="confirmBtn" class="next-btn" style="display:none" onclick="alert('Отборът е готов!')">✔ Потвърди — Избери клуб</button>
+            <button id="confirmBtn" class="next-btn" style="display:none" onclick="alert('Регистрацията е завършена!')">✔ Потвърди — Избери клуб</button>
             <div class="back-link" onclick="showScreen('screen1')">← Назад</div>
         </div>
     </div>
@@ -69,7 +69,7 @@
         }
         function saveAndNext() {
             const name = document.getElementById('playerName').value;
-            if (name.trim() === "") { alert("Моля, въведи име на отбора!"); return; }
+            if (name.trim() === "") { alert("Моля, въведи име на играча!"); return; }
             showScreen('screen2');
         }
         function selectClub(btn) {
