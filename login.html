@@ -1,17 +1,48 @@
-<div class="box" style="max-width: 400px; margin: 100px auto; background: #1e1e1e; padding: 30px; border-radius: 12px; text-align: center; color: white;">
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход - Pitch Clash</title>
+    <style>
+        body { background: #f4f4f4; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #1e1e1e; padding: 40px; border-radius: 12px; width: 350px; text-align: center; color: white; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: none; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 12px; background: #00e676; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: #000; }
+        .register-link { margin-top: 20px; font-size: 14px; color: #aaa; }
+        .register-link a { color: #00e676; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="box">
     <h1>ВХОД</h1>
-    <input type="email" id="loginEmail" placeholder="Имейл" style="width: 100%; padding: 10px; margin: 10px 0;">
-    <button onclick="checkLogin()" style="width: 100%; padding: 10px; background: #00e676; border: none; cursor: pointer;">ВЛЕЗ</button>
+    <input type="email" id="loginEmail" placeholder="Имейл">
+    <input type="password" id="loginPass" placeholder="Парола">
+    
+    <button class="btn-login" onclick="checkLogin()">ВЛЕЗ</button>
+    
+    <div class="register-link">
+        Нямаш профил? <a href="register.html">Регистрирай се тук</a>
+    </div>
 </div>
 
 <script>
     function checkLogin() {
-        if (localStorage.getItem('registrationComplete') === 'true') {
+        const inputEmail = document.getElementById('loginEmail').value;
+        const inputPass = document.getElementById('loginPass').value;
+        
+        // Вземаме данните от localStorage (записани при регистрацията)
+        const savedEmail = localStorage.getItem('userEmail');
+        const savedPass = localStorage.getItem('userPass');
+        
+        if (inputEmail === savedEmail && inputPass === savedPass && savedEmail !== null) {
             localStorage.setItem('isAuthenticated', 'true');
             window.location.href = 'index.html';
         } else {
-            alert("Първо се регистрирай!");
-            window.location.href = 'register.html';
+            alert("Грешен имейл или парола!");
         }
     }
 </script>
+
+</body>
+</html>
