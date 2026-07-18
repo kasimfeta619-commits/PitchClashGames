@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Football Career - Multiplayer</title>
+    <title>Football Career</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: Arial, sans-serif; display: flex; justify-content: center; height: 100vh; margin: 0; }
         .main-container { text-align: center; width: 360px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
@@ -11,6 +11,9 @@
         .app-icon { width: 64px; height: 64px; background-color: #00e676; border-radius: 16px; display: flex; justify-content: center; align-items: center; margin: 20px auto; font-size: 30px; }
         h1 { color: #00e676; margin-bottom: 5px; }
         .input-field { width: 100%; padding: 12px; background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; color: #fff; margin-bottom: 20px; text-align: center; }
+        .positions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; width: 100%; }
+        .pos-btn { background-color: #1e1e1e; border: 1px solid #333; color: #a0a0a0; padding: 10px; border-radius: 6px; cursor: pointer; }
+        .pos-btn.active { background-color: #006030; color: #fff; border-color: #00e676; font-weight: bold; }
         .league-btn { background-color: #1e1e1e; border: 1px solid #333; color: #a0a0a0; padding: 10px; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 10px; }
         .league-btn.active { background-color: #006030; color: #fff; border-color: #00e676; font-weight: bold; }
         .clubs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -28,6 +31,14 @@
             <div class="app-icon">⚽</div>
             <h1>Football Career</h1>
             <input type="text" id="playerName" class="input-field" placeholder="Въведи име на играча...">
+            
+            <div class="positions-grid">
+                <button class="pos-btn" onclick="selectPos(this)">GK</button>
+                <button class="pos-btn" onclick="selectPos(this)">CB</button>
+                <button class="pos-btn" onclick="selectPos(this)">CAM</button>
+                <button class="pos-btn" onclick="selectPos(this)">ST</button>
+            </div>
+
             <button class="next-btn" onclick="saveAndNext()">Следваща стъпка →</button>
         </div>
 
@@ -48,6 +59,11 @@
             "Академия 3": [{name: "Академия А", status: "Търси играчи"}, {name: "Академия Б", status: "Активен"}],
             "Академия 2": [{name: "Титан ФК", status: "Пълен"}, {name: "Звезди 2", status: "Търси играчи"}]
         };
+
+        function selectPos(btn) {
+            document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
         function saveAndNext() {
             const name = document.getElementById('playerName').value;
