@@ -5,87 +5,80 @@
     <title>Pitch Clash Hub</title>
     <style>
         body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 400px; }
-        .box { background: #161616; border: 1px solid #222; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+        .app-container { width: 100%; max-width: 400px; padding-bottom: 60px; }
+        
+        /* Секции */
+        .box { background: #161616; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+        
+        /* Горна статистика */
+        .top-bar { display: flex; justify-content: space-between; font-size: 12px; color: #aaa; margin-bottom: 10px; }
+        
+        /* Бонус панел */
+        .bonus-box { background: #1e1a10; border: 1px solid #d4a017; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 8px; }
+        .bonus-btn { background: #d4a017; border: none; width: 100%; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 8px; }
 
-        /* Горна лента */
-        .top-bar { display: flex; justify-content: space-between; font-size: 13px; color: #ccc; margin-bottom: 8px; background: #161616; padding: 10px; border-radius: 8px; border: 1px solid #222; }
+        /* Играч */
+        .player-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        
+        /* Големи бутони */
+        .menu-grid { display: flex; gap: 5px; margin-bottom: 15px; }
+        .menu-btn { flex: 1; padding: 15px 5px; border-radius: 6px; text-align: center; font-size: 10px; font-weight: bold; cursor: pointer; }
 
-        /* Бонус */
-        .bonus-btn { background: #d4a017; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+        /* Мачове */
+        .match-card { background: #1a1a1a; padding: 12px; border-radius: 8px; margin-bottom: 8px; text-align: center; border: 1px solid #333; }
+        .match-title { font-size: 9px; color: #888; margin-bottom: 5px; }
 
-        /* Карта играч */
-        .player-info { display: flex; justify-content: space-between; align-items: center; }
-
-        /* Икони (СЪСТЕЗАНИЯ, МАГАЗИН, ОТБОР) */
-        .menu-bar { display: flex; gap: 8px; margin-bottom: 8px; }
-        .menu-item { flex: 1; text-align: center; padding: 15px 0; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; cursor: pointer; font-size: 20px; }
-
-        /* Списък мачове */
-        .match-card { background: #1e1e1e; border: 1px solid #333; padding: 12px; border-radius: 8px; margin-bottom: 8px; text-align: center; }
-        .match-title { font-size: 10px; color: #aaa; margin-bottom: 4px; text-transform: uppercase; }
-        .match-score { font-size: 18px; font-weight: bold; margin: 5px 0; }
-        .play-btn { background: #007bff; color: white; border: none; padding: 6px 20px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        /* Долна навигация */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 400px; background: #0f0f0f; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- Ресурси -->
+    <!-- Горна лента -->
     <div class="top-bar">
-        <span>⭐ 0/80</span>
-        <span>⚡ 100 | 🪙 500</span>
+        <span>⭐ 1</span> <span>⚡ 100 | 🪙 500</span>
     </div>
 
     <!-- Бонус -->
-    <div class="box">
-        <div style="font-size: 12px; text-align: center;">📅 Ежедневен бонус (Ден 1 от 7)</div>
+    <div class="bonus-box">
+        <div style="font-size: 12px;">📅 Ежедневен бонус (Ден 1 от 7)</div>
         <button class="bonus-btn">Вземи бонуса</button>
     </div>
 
     <!-- Играч -->
     <div class="box player-info">
-        <div>
-            <div style="font-weight: bold;" id="playerName">Kasim</div>
-            <div style="font-size: 12px; color: #888;">Академия А - ST</div>
-        </div>
-        <div style="font-size: 20px; font-weight: bold;">42</div>
+        <div><strong>kasim11233</strong><br><span style="font-size: 10px; color: #888;">Академия А - ST</span></div>
+        <div style="text-align: right;">OVR<br><strong style="font-size: 20px;">42</strong></div>
     </div>
 
-    <!-- Меню икони -->
-    <div class="menu-bar">
-        <div class="menu-item">🏆</div>
-        <div class="menu-item">🛒</div>
-        <div class="menu-item">🥇</div>
+    <!-- Бутони -->
+    <div class="menu-grid">
+        <div class="menu-btn" style="background:#d4a017;">🏆 СЪСТЕЗАНИЯ</div>
+        <div class="menu-btn" style="background:#6a1b9a;">🛒 МАГАЗИН</div>
+        <div class="menu-btn" style="background:#1565c0;">🥇 ОТБОР</div>
     </div>
 
-    <!-- Списък мачове -->
+    <!-- Мачове -->
     <div class="match-card">
         <div class="match-title">🏆 ЛИГА - ДЕН 1/26</div>
-        <div class="match-score">2 - 1</div>
+        <div style="font-size: 18px; font-weight: bold;">0 - 1</div>
     </div>
-
+    
     <div class="match-card">
         <div class="match-title">🏆 ЛИГА - ДЕН 1/26</div>
-        <button class="play-btn">ИГРАЙ</button>
+        <button style="background:#1565c0; color:white; border:none; padding:8px 25px; border-radius:4px; cursor:pointer;" onclick="location.href='match.html'">ИГРАЙ</button>
     </div>
 
-    <div class="match-card">
-        <div class="match-title">⚽ ШАМПИОНСКА ЛИГА - ГРУПОВА ФАЗА</div>
-        <div style="font-size: 16px; margin: 5px 0;">УТРЕ 23:06</div>
+    <!-- Долна навигация -->
+    <div class="bottom-nav">
+        <div onclick="location.href='index.html'">🏆</div>
+        <div onclick="location.href='training.html'">⚡</div>
+        <div onclick="location.href='index.html'">🏠</div>
+        <div onclick="location.href='team.html'">👥</div>
+        <div onclick="location.href='profile.html'">👤</div>
     </div>
 </div>
-
-<script>
-    // Защита: Ако не е логнат, връща към логин
-    if (localStorage.getItem('isAuthenticated') !== 'true') {
-        window.location.href = 'login.html';
-    }
-
-    // Зареждане на името от регистрацията
-    const name = localStorage.getItem('playerName');
-    if (name) document.getElementById('playerName').innerText = name;
-</script>
 
 </body>
 </html>
