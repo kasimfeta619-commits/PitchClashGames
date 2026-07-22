@@ -2,47 +2,35 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Clash - Мултиплейър отбори</title>
+    <title>Team HTPL - Отбор и Хазна</title>
     <style>
         * { box-sizing: border-box; }
         body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
         
         /* Топ хедър бар с ресурси */
-        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 13px; }
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
         .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
-        .shop-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
-        .shop-btn:hover { background: #3e445b; }
 
-        /* Заглавие и бутон Създай */
-        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        h2 { font-size: 18px; margin: 0; }
-        .subtitle { font-size: 12px; color: #8a8f9d; margin-top: 2px; }
+        /* Отборна хазна карта */
+        .team-treasury-box { background: linear-gradient(135deg, #1a1c24, #121318); border: 1px solid #d4a017; border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: center; }
+        .treasury-amount { font-size: 22px; font-weight: bold; color: #d4a017; margin: 5px 0; }
+        .vote-section { background: #121318; border: 1px solid #2a2e3d; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 11px; text-align: left; }
+        .vote-bar { background: #2a2e3d; border-radius: 4px; height: 8px; width: 100%; margin: 6px 0; overflow: hidden; }
+        .vote-progress { background: #00e676; height: 100%; width: 75%; }
         
-        .create-team-btn { background: #1b3a26; border: 1px solid #00e676; color: #00e676; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px; }
-        .create-team-btn:hover { background: #00e676; color: #000; }
+        /* Състав на отбора */
+        .section-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #00e676; display: flex; justify-content: space-between; align-items: center; }
+        .player-row { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .p-info b { display: block; font-size: 13px; margin-bottom: 2px; }
+        .p-status { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .status-active { background: #12261e; color: #00e676; border: 1px solid #00e676; }
+        .status-ghost { background: #261a12; color: #ff9800; border: 1px solid #ff9800; }
+        
+        .kick-btn { background: #2a2e3d; color: #ff5252; border: 1px solid #ff5252; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
+        .kick-btn:hover { background: #ff5252; color: #000; }
 
-        /* Статус блок - Не си в отбор или Вече си в отбор */
-        .no-team-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 25px 15px; text-align: center; margin-bottom: 20px; color: #8a8f9d; font-size: 13px; }
-        .no-team-icon { font-size: 24px; margin-bottom: 8px; display: block; }
-        .no-team-title { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 5px; }
-
-        /* Секция Отворени отбори */
-        .section-title { font-size: 11px; color: #8a8f9d; text-transform: uppercase; font-weight: bold; margin-bottom: 10px; letter-spacing: 0.5px; }
-        
-        .team-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .team-info { display: flex; align-items: center; gap: 12px; }
-        .team-shield { background: #121318; border: 1px solid #32384a; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-        .t-name { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
-        .t-details { font-size: 11px; color: #8a8f9d; }
-        
-        .join-btn { background: #1b3a26; border: 1px solid #00e676; color: #00e676; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
-        .join-btn:hover { background: #00e676; color: #000; }
-        
-        .leave-btn { background: #3a1b1b; border: 1px solid #ff5252; color: #ff5252; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; margin-top: 10px; }
-        .leave-btn:hover { background: #ff5252; color: #000; }
-
-        /* Навигационен бар долу */
+        /* Долен навигационен бар */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
         .nav-item { color: #8a8f9d; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
         .nav-item.active { color: #00e676; }
@@ -53,44 +41,66 @@
 
 <div class="app-container">
     
-    <!-- ТОП БАР С ЕНЕРГИЯ И КЕШ -->
+    <!-- ТОП БАР С РЕСУРСИ -->
     <div class="top-bar">
-        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span>/100</div>
+        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
+        <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
         <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
-        <button class="shop-btn" onclick="location.href='shop.html'">Магазин</button>
     </div>
 
-    <!-- ЗАГЛАВИЕ И БУТОН ЗА СЪЗДАВАНЕ -->
-    <div class="header-section">
-        <div>
-            <h2>Отбор</h2>
-            <div class="subtitle">Мултиплейър отбори</div>
-        </div>
-        <button class="create-team-btn" onclick="createTeamModal()">+ Създай</button>
-    </div>
-
-    <!-- СТАТУС БЛОК (Динамичен спрямо това дали играчът е в отбор) -->
-    <div id="teamStatusContainer">
-        <div class="no-team-card">
-            <span class="no-team-icon">👥</span>
-            <div class="no-team-title">Не си в отбор</div>
-            <div>Създай свой или се присъедини към съществуващ</div>
-        </div>
-    </div>
-
-    <!-- СПИСЪК С ОТВОРЕНИ ОТБОРИ -->
-    <div class="section-title">Отворени отбори</div>
-    
-    <div id="teamsList">
-        <div class="team-card">
-            <div class="team-info">
-                <div class="team-shield">🛡️</div>
-                <div>
-                    <div class="t-name">BulTeam1</div>
-                    <div class="t-details">Капитан: arch5235 • 5 играча</div>
-                </div>
+    <!-- ОТБОРНА ХАЗНА И ДЕМОКРАТИЧЕН ВОТ -->
+    <div class="team-treasury-box">
+        <small style="color: #8a8f9d; font-size: 11px;">ОБЩА ОТБОРНА ХАЗНА</small>
+        <div class="treasury-amount">1,250 🪙</div>
+        
+        <div class="vote-section">
+            <div>🏛️ Текущ вот: <b>Ъпгрейд на Стадион (Ниво 2)</b></div>
+            <div class="vote-bar"><div class="vote-progress"></div></div>
+            <div style="display: flex; justify-content: space-between; color: #8a8f9d; font-size: 10px;">
+                <span>Одобрение: 78% (Нужни 75%)</span>
+                <span style="color: #00e676; cursor: pointer;" onclick="alert('Гласът ти беше отчетен!')">[ Гласувай ]</span>
             </div>
-            <button class="join-btn" onclick="joinTeam('BulTeam1')">Влез</button>
+        </div>
+    </div>
+
+    <!-- СЪСТАВ НА ОТБОРА (СПИСЪК И МЕРИТОКРАЦИЯ) -->
+    <div class="section-title">
+        <span>👥 Състав на отбора (<span id="teamNameLbl">BulTeam1</span>)</span>
+        <span style="font-size: 11px; color: #8a8f9d;">Капитански права</span>
+    </div>
+
+    <!-- ИГРАЧ 1 -->
+    <div class="player-row">
+        <div class="p-info">
+            <b>kasim112233 (Ти)</b>
+            <span style="color: #8a8f9d; font-size: 10px;">OVR: 42 • Капитан</span>
+        </div>
+        <div>
+            <span class="p-status status-active">Активен</span>
+        </div>
+    </div>
+
+    <!-- ИГРАЧ 2 -->
+    <div class="player-row">
+        <div class="p-info">
+            <b>Stoyan_99</b>
+            <span style="color: #8a8f9d; font-size: 10px;">OVR: 39 • Халф</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="p-status status-active">Активен</span>
+            <button class="kick-btn" onclick="kickPlayer('Stoyan_99')">Изключи</button>
+        </div>
+    </div>
+
+    <!-- ИГРАЧ 3 (ПРИЗРАК / НЕАКТИВЕН) -->
+    <div class="player-row" style="border-color: #3e2714;">
+        <div class="p-info">
+            <b>Ivan_Ghost</b>
+            <span style="color: #8a8f9d; font-size: 10px;">OVR: 35 • Нападател</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="p-status status-ghost">Ghost (Отсъстващ)</span>
+            <button class="kick-btn" onclick="kickPlayer('Ivan_Ghost')">Изключи</button>
         </div>
     </div>
 
@@ -106,46 +116,18 @@
 </div>
 
 <script>
-    // Зареждане на ресурси и статус на отбора
+    // Зареждане на ресурси
     let energy = parseInt(localStorage.getItem('energy')) || 100;
     let cash = parseInt(localStorage.getItem('cash')) || 500;
-    let myTeam = localStorage.getItem('myTeam');
+    let teamName = localStorage.getItem('playerTeam') || "BulTeam1";
 
     document.getElementById('topEnergy').innerText = energy;
     document.getElementById('topCash').innerText = cash;
+    document.getElementById('teamNameLbl').innerText = teamName;
 
-    // Проверка дали играчът вече е в отбор, за да променим изгледа
-    if (myTeam) {
-        document.getElementById('teamStatusContainer').innerHTML = `
-            <div class="no-team-card" style="border-color: #00e676;">
-                <span class="no-team-icon">🛡️</span>
-                <div class="no-team-title" style="color: #00e676;">${myTeam}</div>
-                <div>Ти си член на този отбор.</div>
-                <button class="leave-btn" onclick="leaveTeam()">Напусни отбора</button>
-            </div>
-        `;
-    }
-
-    function joinTeam(teamName) {
-        localStorage.setItem('myTeam', teamName);
-        alert(`Успешно се присъедини към отбор ${teamName}!`);
-        location.reload();
-    }
-
-    function createTeamModal() {
-        let name = prompt("Въведи име на новия отбор:");
-        if (name) {
-            localStorage.setItem('myTeam', name);
-            alert(`Отбор "${name}" бе създаден успешно! Ти си капитан.`);
-            location.reload();
-        }
-    }
-
-    function leaveTeam() {
-        if (confirm("Сигурен ли си, че искаш да напуснеш отбора?")) {
-            localStorage.removeItem('myTeam');
-            alert("Ти напусна отбора.");
-            location.reload();
+    function kickPlayer(playerName) {
+        if (confirm(`Сигурен ли си, че искаш да изключиш играча ${playerName} от отбора заради липса на активност?`)) {
+            alert(`Играчът ${playerName} беше успешно отстранен от отбора.`);
         }
     }
 </script>

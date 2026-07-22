@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Clash - Главен Хъб</title>
+    <title>Team HTPL - Главен Хъб</title>
     <style>
         * { box-sizing: border-box; }
         body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
@@ -14,21 +14,18 @@
         .shop-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
         .shop-btn:hover { background: #3e445b; }
 
-        /* Ежедневен бонус блок */
-        .bonus-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: center; }
-        .bonus-title { font-size: 14px; font-weight: bold; color: #ff9800; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .days-row { display: flex; justify-content: space-between; gap: 4px; margin-bottom: 12px; }
-        .day-box { background: #121318; border: 1px solid #2a2e3d; padding: 8px 4px; border-radius: 6px; font-size: 10px; flex: 1; text-align: center; color: #8a8f9d; }
-        .day-box.active { border-color: #ff9800; color: #fff; background: #221c12; }
-        .claim-btn { width: 100%; padding: 10px; background: #ff9800; border: none; color: #000; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px; }
-        .claim-btn:hover { background: #f57c00; }
-
-        /* Профил карта */
+        /* Профил и Отбор карта */
         .profile-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .p-name { font-weight: bold; font-size: 15px; margin-bottom: 3px; }
         .p-sub { font-size: 12px; color: #8a8f9d; }
         .p-ovr-box { background: #121318; border: 1px solid #32384a; padding: 8px 14px; border-radius: 8px; text-align: center; }
         .p-ovr-val { font-size: 20px; font-weight: bold; color: #00e676; }
+
+        /* Отборна хазна и Глас */
+        .treasury-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 12px 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .treasury-info b { color: #d4a017; }
+        .vote-badge { background: #221c12; border: 1px solid #ff9800; color: #ff9800; padding: 5px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
+        .vote-badge:hover { background: #ff9800; color: #000; }
 
         /* Бързи бутони */
         .quick-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
@@ -36,15 +33,16 @@
         .quick-btn:hover { border-color: #3e445b; }
         .quick-btn span { font-size: 18px; }
 
-        /* Мачове / Лиги списък */
-        .match-row { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 12px; margin-bottom: 8px; text-align: center; }
-        .league-title { font-size: 10px; color: #d4a017; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
-        .match-teams { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; }
-        .team-pill { background: #121318; padding: 6px 12px; border-radius: 6px; border: 1px solid #32384a; font-size: 11px; }
-        .play-match-btn { background: #00e676; color: #000; border: none; padding: 6px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; text-decoration: none; display: inline-block; }
-        .play-match-btn:hover { background: #00c853; }
+        /* Live мач в 20:00 ч. блок */
+        .live-match-card { background: linear-gradient(135deg, #1a1c24, #121318); border: 1px solid #00e676; border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: center; }
+        .live-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #00e676; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .match-teams-box { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+        .team-pill { background: #121318; padding: 6px 12px; border-radius: 6px; border: 1px solid #32384a; font-size: 12px; }
+        .enter-match-btn { width: 100%; background: #00e676; color: #000; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; text-decoration: none; display: block; text-align: center; }
+        .enter-match-btn:hover { background: #00c853; }
+        .ai-note { font-size: 10px; color: #8a8f9d; margin-top: 8px; }
 
-        /* Навигационен бар долу */
+        /* Долен навигационен бар */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
         .nav-item { color: #8a8f9d; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
         .nav-item.active { color: #00e676; }
@@ -60,32 +58,14 @@
         <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
         <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
         <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
-        <button class="shop-btn" onclick="location.href='shop.html'">Магазин</button>
-    </div>
-
-    <!-- ЕЖЕДНЕВЕН БОНУС -->
-    <div class="bonus-card">
-        <div class="bonus-title">
-            <span>🎁 Ежедневен бонус</span>
-            <span style="font-size: 11px; color: #8a8f9d;">Ден 1 от 7</span>
-        </div>
-        <div class="days-row">
-            <div class="day-box active">Ден 1<br>⚡ 20</div>
-            <div class="day-box">Ден 2<br>🪙 100</div>
-            <div class="day-box">Ден 3<br>⚡ 30</div>
-            <div class="day-box">Ден 4<br>💎 5</div>
-            <div class="day-box">Ден 5<br>⚡ 50</div>
-            <div class="day-box">Ден 6<br>🪙 300</div>
-            <div class="day-box">Ден 7<br>💎 15</div>
-        </div>
-        <button class="claim-btn" onclick="claimDailyBonus()">Вземи бонуса (20 Енергия)</button>
+        <button class="shop-btn" onclick="location.href='shop.html'">Тактически център</button>
     </div>
 
     <!-- ПРОФИЛНА КАРТА -->
     <div class="profile-card">
         <div>
             <div class="p-name" id="userName">kasim112233</div>
-            <div class="p-sub" id="userTeam">Академия А • ST</div>
+            <div class="p-sub" id="userTeam">BulTeam1 • Капитан</div>
         </div>
         <div class="p-ovr-box">
             <small style="font-size: 9px; color: #8a8f9d; display:block;">OVR</small>
@@ -93,42 +73,38 @@
         </div>
     </div>
 
+    <!-- ОТБОРНА ХАЗНА И ВОТ -->
+    <div class="treasury-card">
+        <div class="treasury-info">
+            🏛️ Обща хазна: <b><span id="teamTreasury">1,250</span> 🪙</b><br>
+            <small style="color: #8a8f9d;">Активен вот: Упгрейд стадион (78%)</small>
+        </div>
+        <button class="vote-badge" onclick="alert('Отворена е системата за демократичен вот на отбора!')">Гласувай</button>
+    </div>
+
     <!-- БЪРЗИ БУТОНИ -->
     <div class="quick-grid">
-        <a href="matches.html" class="quick-btn"><span>🏆</span> Състезания</a>
+        <a href="matches.html" class="quick-btn"><span>🏆</span> Лига</a>
         <a href="shop.html" class="quick-btn"><span>🛒</span> Магазин</a>
         <a href="team.html" class="quick-btn"><span>👥</span> Отбор</a>
     </div>
 
-    <!-- СПИСЪК С МАЧОВЕ И ЛИГИ -->
-    <div class="match-row">
-        <div class="league-title">🏆 Лига — Ден 1/26</div>
-        <div class="match-teams">
-            <span class="team-pill">Академия А</span>
-            <span style="color: #00e676; font-size: 16px;">0 - 0</span>
+    <!-- LIVE МАЧ В 20:00 Ч. -->
+    <div class="live-match-card">
+        <div class="live-header">
+            <span>🔴 Live Мач в 20:00 ч.</span>
+            <span>Сезон 1 • Ден 1</span>
+        </div>
+        <div class="match-teams-box">
+            <span class="team-pill">BulTeam1</span>
+            <span style="color: #00e676; font-size: 14px;">VS</span>
             <span class="team-pill">Ювентус Изток</span>
         </div>
+        <a href="matches.html" class="enter-match-btn">ВЛЕЗ В МАЧА (Присъстващ)</a>
+        <div class="ai-note">⚠️ Ако отсъствате, AI поема отбора с +50 Енергия бонус (без лични награди).</div>
     </div>
 
-    <div class="match-row" style="border-color: #00e676;">
-        <div class="league-title">🏆 Лига — Ден 1/26</div>
-        <div class="match-teams">
-            <span class="team-pill">Мадрид Северен</span>
-            <a href="matches.html" class="play-match-btn">ИГРАЙ</a>
-            <span class="team-pill">Академия А</span>
-        </div>
-    </div>
-
-    <div class="match-row">
-        <div class="league-title">🌍 Национална купа — Групова фаза</div>
-        <div class="match-teams">
-            <span class="team-pill">Академия А</span>
-            <span style="color: #ff9800; font-size: 12px;">⏰ УТРЕ 23:03</span>
-            <span class="team-pill">Левски А</span>
-        </div>
-    </div>
-
-    <!-- ДОЛЕН НАВИГАЦИОНЕН БАР (ОПРАВЕН ДА СОЧИ КЪМ team.html) -->
+    <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
     <div class="nav-bar">
         <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
         <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
@@ -140,35 +116,18 @@
 </div>
 
 <script>
-    // Зареждаме и показваме актуалните данни от localStorage
+    // Зареждане на данни от localStorage
     let energy = parseInt(localStorage.getItem('energy')) || 100;
     let diamonds = parseInt(localStorage.getItem('diamonds')) || 10;
     let cash = parseInt(localStorage.getItem('cash')) || 500;
     let ovr = parseInt(localStorage.getItem('playerOvr')) || 42;
-    let teamName = localStorage.getItem('playerTeam') || "Академия А";
+    let teamName = localStorage.getItem('playerTeam') || "BulTeam1";
 
     document.getElementById('topEnergy').innerText = energy;
     document.getElementById('topDiamonds').innerText = diamonds;
     document.getElementById('topCash').innerText = cash;
     document.getElementById('userOvr').innerText = ovr;
-    document.getElementById('userTeam').innerText = teamName + " • ST";
-
-    function claimDailyBonus() {
-        let lastClaim = localStorage.getItem('lastBonusDate');
-        let today = new Date().toDateString();
-
-        if (lastClaim === today) {
-            alert("Вече си взе днешния бонус! Върни се утре.");
-            return;
-        }
-
-        energy += 20;
-        localStorage.setItem('energy', energy);
-        localStorage.setItem('lastBonusDate', today);
-
-        document.getElementById('topEnergy').innerText = energy;
-        alert("Успешно взе своя дневен бонус: +20 Енергия!");
-    }
+    document.getElementById('userTeam').innerText = teamName + " • Капитан";
 </script>
 
 </body>
