@@ -22,7 +22,7 @@
         .create-team-btn { background: #1b3a26; border: 1px solid #00e676; color: #00e676; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px; }
         .create-team-btn:hover { background: #00e676; color: #000; }
 
-        /* Статус блок - Не си в отбор */
+        /* Статус блок - Не си в отбор или Вече си в отбор */
         .no-team-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 25px 15px; text-align: center; margin-bottom: 20px; color: #8a8f9d; font-size: 13px; }
         .no-team-icon { font-size: 24px; margin-bottom: 8px; display: block; }
         .no-team-title { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 5px; }
@@ -38,6 +38,9 @@
         
         .join-btn { background: #1b3a26; border: 1px solid #00e676; color: #00e676; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
         .join-btn:hover { background: #00e676; color: #000; }
+        
+        .leave-btn { background: #3a1b1b; border: 1px solid #ff5252; color: #ff5252; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; margin-top: 10px; }
+        .leave-btn:hover { background: #ff5252; color: #000; }
 
         /* Навигационен бар долу */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
@@ -66,11 +69,13 @@
         <button class="create-team-btn" onclick="createTeamModal()">+ Създай</button>
     </div>
 
-    <!-- СТАТУС - НЕ СИ В ОТБОР -->
-    <div class="no-team-card">
-        <span class="no-team-icon">👥</span>
-        <div class="no-team-title">Не си в отбор</div>
-        <div>Създай свой или се присъедини към съществуващ</div>
+    <!-- СТАТУС БЛОК (Динамичен спрямо това дали играчът е в отбор) -->
+    <div id="teamStatusContainer">
+        <div class="no-team-card">
+            <span class="no-team-icon">👥</span>
+            <div class="no-team-title">Не си в отбор</div>
+            <div>Създай свой или се присъедини към съществуващ</div>
+        </div>
     </div>
 
     <!-- СПИСЪК С ОТВОРЕНИ ОТБОРИ -->
@@ -94,19 +99,32 @@
         <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
         <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
         <a href="index.html" class="nav-item"><span>🏠</span> Хъб</a>
-        <a href="shop.html" class="nav-item active"><span>🛒</span> Отбор</a>
+        <a href="team.html" class="nav-item active"><span>👥</span> Отбор</a>
         <a href="profile.html" class="nav-item"><span>👤</span> Профил</a>
     </div>
 
 </div>
 
 <script>
-    // Зареждане на ресурси
+    // Зареждане на ресурси и статус на отбора
     let energy = parseInt(localStorage.getItem('energy')) || 100;
     let cash = parseInt(localStorage.getItem('cash')) || 500;
+    let myTeam = localStorage.getItem('myTeam');
 
     document.getElementById('topEnergy').innerText = energy;
     document.getElementById('topCash').innerText = cash;
+
+    // Проверка дали играчът вече е в отбор, за да променим изгледа
+    if (myTeam) {
+        document.getElementById('teamStatusContainer').innerHTML = `
+            <div class="no-team-card" style="border-color: #00e676;">
+                <span class="no-team-icon">🛡️</span>
+                <div class="no-team-title" style="color: #00e676;">${myTeam}</div>
+                <div>Ти си член на този отбор.</div>
+                <button class="leave-btn" onclick="leaveTeam()">Напусни отбора</button>
+            </div>
+        `;
+    }
 
     function joinTeam(teamName) {
         localStorage.setItem('myTeam', teamName);
@@ -118,7 +136,15 @@
         let name = prompt("Въведи име на новия отбор:");
         if (name) {
             localStorage.setItem('myTeam', name);
-            alert(`Отбор "${name" бе създаден успешно! Ти си капитан.`);
+            alert(`Отбор "${name}" бе създаден успешно! Ти си капитан.`);
+            location.reload();
+        }
+    }
+
+    function leaveTeam() {
+        if (confirm("Сигурен ли си, че искаш да напуснеш отбора?")) {
+            localStorage.removeItem('myTeam');
+            alert("Ти напусна отбора.");
             location.reload();
         }
     }
