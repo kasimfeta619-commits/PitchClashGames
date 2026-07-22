@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Pitch Clash - Pro Version</title>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .main-container { display: flex; gap: 20px; align-items: flex-start; }
+        
+        .zones-col { display: flex; flex-direction: column; gap: 4px; }
+        .zone-item { padding: 8px 15px; background: #1a1a1a; border: 1px solid #333; text-align: center; font-size: 11px; cursor: pointer; }
+        .zone-item.active { border: 1px solid #d4a017; color: #d4a017; font-weight: bold; }
+
+        .pitch { width: 300px; height: 500px; background: #2e7d32; border: 3px solid #fff; position: relative; overflow: hidden; }
+        .mid-line { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,255,255,0.5); }
+        
+        .token { width: 40px; height: 40px; border-radius: 50%; position: absolute; left: 43%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; transition: top 0.4s ease; z-index: 2; }
+        #myToken { background: #d4a017; top: 52%; }
+        #oppToken { background: #ff4757; top: 44%; }
+        
+        /* Топка */
+        #ball { width: 15px; height: 15px; background: white; border-radius: 50%; position: absolute; left: 48%; top: 52%; transition: top 0.4s ease; z-index: 3; }
+        
+        /* Бонус икона */
+        #bonusItem { position: absolute; top: 20%; left: 45%; font-size: 24px; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="zones-col" id="zoneList">
+        <!-- 11 зони -->
+        <script>for(let i=1; i<=11; i++) document.write(`<div class="zone-item" onclick="selectZone(${i}, this)">ЗОНА ${i}</div>`);</script>
+    </div>
+
+    <div class="game-panel">
+        <div class="pitch">
+            <div class="mid-line"></div>
+            <div id="bonusItem">🎁</div>
+            <div id="ball"></div>
+            <div id="oppToken" class="token">OPP</div>
+            <div id="myToken" class="token">ST</div>
+        </div>
+
+        <input type="range" id="energyRange" min="1" max="20" value="10" style="width:100%; margin:15px 0;">
+        <button onclick="executeSprint()" style="width:100%; padding:20px; background:#ff4757; border:none; color:white; cursor:pointer; font-weight:bold;">SPRINT</button>
+    </div>
+</div>
+
+<script>
+    let currentZone = 1;
+    let myTop = 52;
+    let oppTop = 44;
+    const items = ['🧤', '🎁', '👟', '🏋️'];
+
+    function selectZone(z, el) {
+        currentZone = z;
+        document.querySelectorAll('.zone-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        // Промяна на произволен бонус предмет
+        document.getElementById('bonusItem').innerText = items[Math.floor(Math.random() * items.length)];
+    }
+
+    function executeSprint() {
+        let energy = parseInt(document.getElementById('energyRange').value);
+        let bonus = (currentZone === 5) ? 2 : 1;
+        let push = (energy * bonus) / 10;
+
+        myTop -= push;
+        oppTop -= push;
+
+        document.getElementById('myToken').style.top = myTop + "%";
+        document.getElementById('oppToken').style.top = oppTop + "%";
+        document.getElementById('ball').style.top = (myTop - 2) + "%"; // Топката следва играча
+    }
+</script>
+
+</body>
+</html>

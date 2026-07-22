@@ -2,45 +2,95 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Моят Профил</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team HTPL - Зала на славата</title>
     <style>
-        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
-        .app-container { max-width: 400px; margin: auto; }
-        .profile-box { background: #1e1e1e; padding: 20px; border-radius: 12px; border: 1px solid #333; text-align: center; }
-        .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
-        .logout-btn { background: #ff4d4d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 20px; width: 100%; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f1016; color: #ffffff; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; }
+        .card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        h2 { color: #4CAF50; font-size: 20px; margin-bottom: 15px; }
+        .profile-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .level-badge { background: #4CAF50; color: white; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 14px; }
+        .xp-bar-container { background: #121318; border-radius: 6px; height: 10px; width: 100%; overflow: hidden; margin-top: 5px; }
+        .xp-bar-fill { background: #4CAF50; height: 100%; width: 75%; }
+        .trophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .trophy-item { background: #121318; padding: 12px; border-radius: 8px; border: 1px solid #32384a; font-size: 14px; }
+        .trophy-count { font-size: 18px; font-weight: bold; color: #FFD700; margin-top: 4px; }
+        .back-link { display: block; text-align: center; margin-top: 15px; color: #8a8f9d; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <h1>Профил</h1>
-    <div class="profile-box">
-        <h2 id="playerName">---</h2>
-        <div class="stat-row"><span>Академия:</span> <span id="playerAcademy">---</span></div>
-        <div class="stat-row"><span>Позиция:</span> <span id="playerPos">---</span></div>
-        <div class="stat-row"><span>Общ рейтинг (OVR):</span> <span id="playerOvr">42</span></div>
-        <div class="stat-row"><span>Изиграни мачове:</span> <span id="matchCount">0</span></div>
+    <div class="container">
+        
+        <!-- ПРОФИЛ И НИВО -->
+        <div class="card">
+            <div class="profile-header">
+                <div>
+                    <h2 style="margin: 0;">Captain_Ivan</h2>
+                    <span style="font-size: 13px; color: #8a8f9d;">Мениджър на Team HTPL</span>
+                </div>
+                <div class="level-badge">Ниво 24</div>
+            </div>
+            <div style="font-size: 13px; color: #b0b5c1; display: flex; justify-content: space-between;">
+                <span>XP Прогрес</span>
+                <span>84,500 / 90,000</span>
+            </div>
+            <div class="xp-bar-container">
+                <div class="xp-bar-fill"></div>
+            </div>
+        </div>
+
+        <!-- ЗАЛА НА СЛАВАТА (КУПИ И ТРОФЕИ) -->
+        <div class="card">
+            <h2>🏆 Витрина с Трофеи</h2>
+            <div class="trophy-grid">
+                <div class="trophy-item">
+                    🥇 Шампионски купи
+                    <div class="trophy-count">1</div>
+                </div>
+                <div class="trophy-item">
+                    🏆 Национални купи
+                    <div class="trophy-count">2</div>
+                </div>
+                <div class="trophy-item">
+                    ⚽ Златна топка
+                    <div class="trophy-count">1</div>
+                </div>
+                <div class="trophy-item">
+                    ⭐ Лига купи
+                    <div class="trophy-count">3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ИНДИВИДУАЛНИ И КАПИТАНСКИ ТИТЛИ -->
+        <div class="card">
+            <h2>⭐ Индивидуални и Капитански Награди</h2>
+            <div class="trophy-grid">
+                <div class="trophy-item">
+                    MVP Титли (Играч)
+                    <div class="trophy-count" style="color: #4CAF50;">14</div>
+                </div>
+                <div class="trophy-item">
+                    SVP Титли (Играч)
+                    <div class="trophy-count" style="color: #2196F3;">5</div>
+                </div>
+                <div class="trophy-item">
+                    👑 Капитански MVP
+                    <div class="trophy-count" style="color: #FF5722;">4</div>
+                </div>
+                <div class="trophy-item">
+                    🥈 Капитански SVP
+                    <div class="trophy-count" style="color: #9c27b0;">2</div>
+                </div>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">← Обратно към началния екран</a>
     </div>
 
-    <button class="logout-btn" onclick="logout()">ИЗХОД ОТ ПРОФИЛА</button>
-    <button onclick="window.location.href='index.html'" style="width: 100%; padding: 10px; margin-top: 10px; background: #333; color: #fff; border: none; border-radius: 6px;">НАЗАД</button>
-</div>
-
-<script>
-    // Зареждане на данните от localStorage
-    document.getElementById('playerName').innerText = localStorage.getItem('playerName') || "Играч";
-    document.getElementById('playerAcademy').innerText = localStorage.getItem('playerAcademy') || "Академия А";
-    document.getElementById('playerPos').innerText = localStorage.getItem('playerPosition') || "ST";
-    document.getElementById('playerOvr').innerText = localStorage.getItem('playerOvr') || "42";
-    document.getElementById('matchCount').innerText = localStorage.getItem('matchesPlayed') || "0";
-
-    function logout() {
-        if(confirm("Сигурен ли си, че искаш да излезеш?")) {
-            localStorage.clear();
-            window.location.href = 'login.html';
-        }
-    }
-</script>
 </body>
 </html>

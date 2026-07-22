@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team HTPL - Отборна хазна и вот</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f1016; color: #ffffff; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; }
+        .card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        h2 { color: #FFD700; font-size: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .treasury-stats { display: flex; justify-content: space-between; background: #121318; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-weight: bold; border: 1px solid #32384a; }
+        .currency-cash { color: #4CAF50; }
+        .currency-diamonds { color: #00bcd4; }
+        .proposal-box { background: #121318; padding: 15px; border-radius: 8px; border: 1px solid #32384a; margin-bottom: 15px; }
+        .vote-bar { background: #2a2e3d; border-radius: 6px; height: 12px; width: 100%; overflow: hidden; display: flex; margin: 10px 0; }
+        .vote-yes { background: #4CAF50; width: 64%; }
+        .vote-no { background: #f44336; width: 36%; }
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .btn { padding: 10px; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .btn-yes { background-color: #4CAF50; }
+        .btn-yes:hover { background-color: #43a047; }
+        .btn-no { background-color: #f44336; }
+        .btn-no:hover { background-color: #e53935; }
+        .btn-veto { background-color: #9c27b0; width: 100%; margin-top: 10px; }
+        .btn-veto:hover { background-color: #8e24aa; }
+        .back-link { display: block; text-align: center; margin-top: 15px; color: #8a8f9d; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- ОБЩА ХАЗНА -->
+        <div class="card">
+            <h2>🏛️ Отборна Хазна</h2>
+            <div class="treasury-stats">
+                <div>Общ Кеш: <span class="currency-cash" id="shared-cash">45,250 💰</span></div>
+                <div>Общи Диаманти: <span class="currency-diamonds" id="shared-diamonds">340 💎</span></div>
+            </div>
+            <p style="font-size: 13px; color: #8a8f9d;">Ресурсите тук се събират от отбора и се инвестират само след демократично гласуване.</p>
+        </div>
+
+        <!-- АКТИВНО ПРЕДЛОЖЕНИЕ ЗА ВОТ -->
+        <div class="card">
+            <h2>🗳️ Активно предложение</h2>
+            <div class="proposal-box">
+                <p style="font-size: 15px; font-weight: bold; margin-bottom: 5px;">Ъпгрейд на стадиона до 1000 фенове</p>
+                <p style="font-size: 13px; color: #8a8f9d; margin-bottom: 10px;">Необходими средства: 5,000 Кеш</p>
+                
+                <div style="font-size: 12px; display: flex; justify-content: space-between;">
+                    <span>ЗА: 64% (16 гласа)</span>
+                    <span>ПРОТИВ: 36% (9 гласа)</span>
+                </div>
+                <div class="vote-bar">
+                    <div class="vote-yes"></div>
+                    <div class="vote-no"></div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-yes" onclick="vote('ЗА')">Гласувай ЗА</button>
+                <button class="btn btn-no" onclick="vote('ПРОТИВ')">Гласувай ПРОТИВ</button>
+            </div>
+
+            <!-- Капитанско вето -->
+            <button class="btn btn-veto" onclick="captainVeto()">👑 Капитанско Вето (Спри вота)</button>
+        </div>
+
+        <a href="index.html" class="back-link">← Обратно към началния екран</a>
+    </div>
+
+    <script>
+        function vote(choice) {
+            alert(`Твоят глас "${choice" беше отзет успешно!`);
+        }
+
+        function captainVeto() {
+            let confirmVeto = confirm("Сигурен ли си, че искаш да използваш Капитанското вето и да прекратиш това предложение?");
+            if (confirmVeto) {
+                alert("Ветото е задействано! Предложението е отменено от Капитана.");
+            }
+        }
+    </script>
+
+</body>
+</html>

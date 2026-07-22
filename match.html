@@ -2,41 +2,105 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Играй Мач</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team HTPL - Live Мач</title>
     <style>
-        body { background: #0f0f0f; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .match-box { background: #1e1e1e; padding: 30px; border-radius: 12px; max-width: 400px; margin: auto; }
-        #result { font-size: 32px; font-weight: bold; margin: 20px 0; color: #00e676; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f1016; color: #ffffff; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; }
+        .card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+        h2 { color: #FF5722; font-size: 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .match-scoreboard { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: bold; background: #121318; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; }
+        .team-box { width: 45%; }
+        .score { font-size: 28px; color: #4CAF50; }
+        .btn { width: 100%; padding: 12px; background-color: #FF5722; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn:hover { background-color: #f4511e; }
+        .btn-sub { background-color: #2196F3; }
+        .btn-sub:hover { background-color: #1e88e5; }
+        .chat-box { background: #121318; height: 120px; border-radius: 6px; padding: 10px; overflow-y: auto; font-size: 13px; color: #b0b5c1; margin-bottom: 10px; border: 1px solid #32384a; }
+        .chat-input-group { display: flex; gap: 8px; }
+        .chat-input { flex: 1; padding: 8px; background: #121318; border: 1px solid #32384a; border-radius: 4px; color: white; }
+        .back-link { display: block; text-align: center; margin-top: 15px; color: #8a8f9d; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-<div class="match-box">
-    <h1>Мачът започна!</h1>
-    <div id="status">Играем...</div>
-    <div id="result">---</div>
-    <button onclick="window.location.href='index.html'" style="padding: 10px 20px;">ОБРАТНО В HUB</button>
-</div>
+    <div class="container">
+        <div class="card">
+            <h2>🔴 LIVE МАЧ <span id="timer">21' / 33'</span></h2>
+            
+            <div class="match-scoreboard">
+                <div class="team-box">
+                    <div>Team HTPL (Ти)</div>
+                    <div class="score" id="home-score">1</div>
+                    <div style="font-size: 12px; color: #8a8f9d;">Голове запас: <span id="home-goals">0</span></div>
+                </div>
+                <div>VS</div>
+                <div class="team-box">
+                    <div>Опонент (+50 AI)</div>
+                    <div class="score" id="away-score">0</div>
+                    <div style="font-size: 12px; color: #8a8f9d;">Голове запас: <span id="away-goals">1</span></div>
+                </div>
+            </div>
 
-<script>
-    // Взимаме силата на играча от localStorage (или задаваме начална 42)
-    const playerPower = 42; 
+            <!-- Тактически действия -->
+            <button class="btn" id="shoot-btn" onclick="shootGoal()">ИЗСТРЭЛЯЙ ЕДИНСТВЕНИЯ ГОЛ</button>
+            <button class="btn btn-sub" onclick="makeSubstitution()">НАПРАВИ СМЯНА (<span id="subs-left">5</span>/5)</button>
+        </div>
 
-    function simulateMatch() {
-        const status = document.getElementById('status');
-        const result = document.getElementById('result');
-        
-        // Симулация на резултат: колкото по-силен си, толкова по-голям шанс за голям резултат
-        const opponentPower = 40 + Math.floor(Math.random() * 10);
-        const myGoals = Math.floor(Math.random() * (playerPower / 10));
-        const oppGoals = Math.floor(Math.random() * (opponentPower / 10));
+        <!-- Отборен чат в реално време -->
+        <div class="card">
+            <h3>💬 Отборен чат на живо</h3>
+            <div class="chat-box" id="chat-messages">
+                <div><strong>Капитана:</strong> Пазете енергията за 25-тата минута!</div>
+                <div><strong>user_99:</strong> Готов съм за тактическия изстрел.</div>
+            </div>
+            <div class="chat-input-group">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Напиши съобщение...">
+                <button class="btn" style="width: auto; margin-top: 0; padding: 8px 15px;" onclick="sendMessage()">Изпрати</button>
+            </div>
+        </div>
 
-        status.innerText = "Мачът приключи!";
-        result.innerText = myGoals + " - " + oppGoals;
-    }
+        <a href="index.html" class="back-link">← Обратно към началния екран</a>
+    </div>
 
-    // Стартираме симулацията веднага
-    setTimeout(simulateMatch, 1500);
-</script>
+    <script>
+        let subsLeft = 5;
+        let hasShot = false;
+
+        function shootGoal() {
+            if(hasShot) {
+                alert("Вече изразходва своя единствен гол в този мач!");
+                return;
+            }
+            hasShot = true;
+            document.getElementById('home-score').innerText = "2";
+            document.getElementById('home-goals').innerText = "0";
+            document.getElementById('shoot-btn').style.backgroundColor = "#555";
+            document.getElementById('shoot-btn').innerText = "ГОЛЪТ Е ИЗПОЛЗВАН";
+            alert("Успешен удар! Отбеляза своя единствен гол!");
+        }
+
+        function makeSubstitution() {
+            if(subsLeft > 0) {
+                subsLeft--;
+                document.getElementById('subs-left').innerText = subsLeft;
+                alert("Успешна смяна! EGI индексът е освежен.");
+            } else {
+                alert("Изчерпа всичките си 5 смени за мача!");
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            if(!input.value.trim()) return;
+            const chatBox = document.getElementById('chat-messages');
+            chatBox.innerHTML += `<div><strong>Ти:</strong> ${input.value}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+
 </body>
 </html>

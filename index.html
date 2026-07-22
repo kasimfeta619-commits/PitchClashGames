@@ -2,38 +2,126 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Clash</title>
+    <title>Pitch Clash - Главен Хъб</title>
     <style>
-        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 400px; padding-bottom: 70px; }
+        * { box-sizing: border-box; }
+        body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; }
         
-        /* Връзките да изглеждат като линкове */
-        .nav-link { cursor: pointer; text-decoration: none; color: inherit; }
+        .header-card { background: #1a1c24; padding: 20px; border-radius: 12px; border: 1px solid #2a2e3d; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .player-info h2 { font-size: 18px; margin: 0 0 5px 0; color: #00e676; }
+        .player-info p { font-size: 13px; margin: 0; color: #8a8f9d; }
         
-        /* Долна навигация */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 400px; background: #0f0f0f; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #333; }
-        .nav-item { text-align: center; font-size: 10px; cursor: pointer; }
+        .ovr-badge { background: #222530; border: 1px solid #00e676; color: #00e676; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 16px; text-align: center; }
+
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .menu-btn { background: #1a1c24; border: 1px solid #2a2e3d; color: white; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: 0.2s; }
+        .menu-btn:hover { border-color: #00e676; background: #222530; }
+        .menu-btn span { font-size: 20px; }
+
+        .btn-full { grid-column: span 2; background: #00e676; color: #000; border: none; }
+        .btn-full:hover { background: #00c853; }
+
+        /* Бонус панел стилове */
+        .bonus-box { background: #1a1c24; border: 1px solid #2a2e3d; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+        .bonus-btn { width: 100%; padding: 10px; background: #d4a017; border: none; color: #000; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 5px; }
+        .bonus-btn:hover { background: #c29113; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- Трите големи бутона в средата -->
-    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
-        <div class="nav-link" onclick="location.href='index.html'" style="flex: 1; padding: 15px; background:#d4a017; border-radius:8px; text-align:center; font-weight:bold;">СЪСТЕЗАНИЯ</div>
-        <div class="nav-link" onclick="location.href='shop.html'" style="flex: 1; padding: 15px; background:#6a1b9a; border-radius:8px; text-align:center; font-weight:bold;">МАГАЗИН</div>
-        <div class="nav-link" onclick="location.href='team.html'" style="flex: 1; padding: 15px; background:#1565c0; border-radius:8px; text-align:center; font-weight:bold;">ОТБОРНО</div>
+    
+    <!-- ГОРЕН ХЕДЪР С ИНФО ЗА ИГРАЧА -->
+    <div class="header-card">
+        <div class="player-info">
+            <h2 id="displayName">Капитан</h2>
+            <p id="displayTeam">Отбор: ---</p>
+        </div>
+        <div class="ovr-badge">
+            <div id="displayOvr">42</div>
+            <div style="font-size: 10px; color: #8a8f9d;">OVR</div>
+        </div>
     </div>
 
-    <!-- Долна навигация (Работеща) -->
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="location.href='index.html'">🏆<br>Мачове</div>
-        <div class="nav-item" onclick="location.href='training.html'">⚡<br>Трен.</div>
-        <div class="nav-item" onclick="location.href='index.html'" style="color:#00e676;">🏠<br>Начало</div>
-        <div class="nav-item" onclick="location.href='team.html'">👥<br>Отбор</div>
-        <div class="nav-item" onclick="location.href='profile.html'">👤<br>Профил</div>
+    <!-- ЕЖЕДНЕВЕН БОНУС ПАНЕЛ -->
+    <div class="bonus-box">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+            <span style="font-weight: bold;">📅 Ежедневен бонус</span>
+            <span style="font-size: 11px; color: #888;">Ден 1 от 7</span>
+        </div>
+        <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+            <div style="flex:1; height:25px; background:#d4a017; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#000; font-weight:bold;">Д1</div>
+            <div style="flex:1; height:25px; background:#222530; border-radius:4px;"></div>
+            <div style="flex:1; height:25px; background:#222530; border-radius:4px;"></div>
+            <div style="flex:1; height:25px; background:#222530; border-radius:4px;"></div>
+            <div style="flex:1; height:25px; background:#222530; border-radius:4px;"></div>
+            <div style="flex:1; height:25px; background:#222530; border-radius:4px;"></div>
+            <div style="flex:1; height:25px; background:#222530; border-radius:4px;"></div>
+        </div>
+        <div style="font-size: 12px; color: #ccc; margin-bottom: 8px;">Награда: 20 Енергия</div>
+        <button class="bonus-btn" id="bonusBtn" onclick="claimBonus()">Вземи бонуса</button>
     </div>
+
+    <!-- МЕНЮ НА ИГРАТА (ГРИД) -->
+    <div class="menu-grid">
+        <a href="match.html" class="menu-btn btn-full">
+            <span>⚽</span> ИГРАЙ МАЧ НА ЖИВО
+        </a>
+        <a href="training.html" class="menu-btn">
+            <span>🏋️</span> Тренировка
+        </a>
+        <a href="shop.html" class="menu-btn">
+            <span>🛒</span> Магазин
+        </a>
+        <a href="profile.html" class="menu-btn">
+            <span>👤</span> Профил
+        </a>
+        <a href="login.html" class="menu-btn" onclick="localStorage.removeItem('isAuthenticated')">
+            <span>🚪</span> Изход
+        </a>
+    </div>
+
 </div>
+
+<script>
+    // Проверка дали потребителят е логнат
+    if (localStorage.getItem('isAuthenticated') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    // Зареждане на отсъстващите данни в хедъра
+    document.getElementById('displayName').innerText = localStorage.getItem('playerName') || "Капитан";
+    document.getElementById('displayTeam').innerText = "Клуб: " + (localStorage.getItem('playerTeam') || "Без име");
+    document.getElementById('displayOvr').innerText = localStorage.getItem('playerOvr') || "42";
+
+    // Проверка за днешен бонус при зареждане
+    if(localStorage.getItem('bonusClaimed') === 'true') {
+        const btn = document.getElementById('bonusBtn');
+        btn.innerText = "ВЗЕТО ДНЕС";
+        btn.style.backgroundColor = "#333";
+        btn.style.color = "#888";
+        btn.disabled = true;
+    }
+
+    function claimBonus() {
+        if(localStorage.getItem('bonusClaimed') === 'true') {
+            alert("Бонусът вече е взет! Ела утре.");[cite: 1]
+            return;
+        }
+        
+        let energy = parseInt(localStorage.getItem('energy')) || 100;
+        localStorage.setItem('energy', energy + 20);[cite: 1]
+        localStorage.setItem('bonusClaimed', 'true');[cite: 1]
+        
+        const btn = document.getElementById('bonusBtn');
+        btn.innerText = "ВЗЕТО ДНЕС";
+        btn.style.backgroundColor = "#333";
+        btn.style.color = "#888";
+        btn.disabled = true;
+        alert("Успешно взе бонус 20 Енергия!");[cite: 1]
+    }
+</script>
 
 </body>
 </html>

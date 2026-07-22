@@ -2,44 +2,121 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Твоят Отбор</title>
+    <title>Твоят Отбор - Профили</title>
     <style>
-        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
-        .app-container { max-width: 400px; margin: auto; }
-        .player-card { background: #1e1e1e; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #333; display: flex; justify-content: space-between; }
-        .pos-badge { background: #007bff; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+        * { box-sizing: border-box; }
+        body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 500px; }
+        
+        h1 { font-size: 22px; color: #4CAF50; margin-bottom: 15px; }
+        
+        .player-card { background: #1a1c24; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #2a2e3d; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+        .player-card:hover { border-color: #4CAF50; background: #222530; }
+        
+        .pos-badge { background: #2196F3; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-right: 8px; }
+        
+        /* Модален прозорец / Детайлен профил */
+        .profile-modal { display: none; background: #1a1c24; border: 1px solid #4CAF50; border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+        .profile-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #32384a; padding-bottom: 10px; margin-bottom: 15px; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; color: #b0b5c1; }
+        .stat-value { color: #fff; font-weight: bold; }
+        
+        .btn { width: 100%; padding: 10px; background: #4CAF50; border: none; color: white; cursor: pointer; font-weight: bold; border-radius: 6px; margin-top: 15px; }
+        .btn:hover { background: #43a047; }
+        .btn-back { background: #32384a; margin-top: 10px; }
+        .btn-back:hover { background: #3a4156; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <h1>Твоят Отбор</h1>
+    <h1>👥 Състав на отбора</h1>
+    <p style="font-size: 13px; color: #8a8f9d; margin-bottom: 15px;">Кликни върху играч, за да отвориш неговия детайлен профил.</p>
+    
     <div id="teamList">
-        <!-- Тук ще се зареждат играчите -->
+        <!-- Списъкът се зарежда динамично през JS -->
     </div>
-    <button onclick="window.location.href='index.html'" style="width: 100%; padding: 10px; margin-top: 20px;">ОБРАТНО</button>
+
+    <!-- ДЕТАЙЛЕН ПРОФИЛ НА ИГРАЧ (СКРИТ ПО ПОДРАЗБИРАНЕ) -->
+    <div id="playerProfile" class="profile-modal">
+        <div class="profile-header">
+            <div>
+                <span id="profPos" class="pos-badge">ST</span>
+                <strong id="profName" style="font-size: 18px;">Име</strong>
+            </div>
+            <div id="profOvr" style="font-size: 20px; color: #4CAF50; font-weight: bold;">42 OVR</div>
+        </div>
+
+        <div class="stat-row"><span>Енергия / Форма:</span> <span class="stat-value">98% (Зона на игра)</span></div>
+        <div class="stat-row"><span>Вкарани голове:</span> <span class="stat-value" id="profGoals">12</span></div>
+        <div class="stat-row"><span>Спечелени MVP:</span> <span class="stat-value" id="profMvp">4</span></div>
+        <div class="stat-row"><span>Заплата / Поддръжка:</span> <span class="stat-value">150 Кеш</span></div>
+
+        <button class="btn" onclick="trainPlayer()">🏋️ Изпрати на тренировка (+1 OVR)</button>
+        <button class="btn btn-back" onclick="closeProfile()">Затвори профила</button>
+    </div>
+
+    <button class="btn btn-back" onclick="window.location.href='index.html'" style="margin-top: 20px;">← Обратно към терена</button>
 </div>
 
 <script>
-    // Примерни данни за отбора (това ще го правим динамично по-късно)
+    // База данни с играчите в отбора
     const myTeam = [
-        { name: "Kasim", pos: "ST", ovr: 42 },
-        { name: "Иван Иванов", pos: "GK", ovr: 38 },
-        { name: "Петър Петров", pos: "CM", ovr: 40 }
+        { id: 1, name: "Kasim", pos: "ST", ovr: 42, goals: 14, mvp: 5 },
+        { id: 2, name: "Иван Иванов", pos: "GK", ovr: 38, goals: 0, mvp: 2 },
+        { id: 3, name: "Петър Петров", pos: "CM", ovr: 40, goals: 3, mvp: 3 },
+        { id: 4, name: "Георги Георгиев", pos: "CB", ovr: 39, goals: 1, mvp: 1 }
     ];
 
+    let selectedPlayer = null;
     const list = document.getElementById('teamList');
-    myTeam.forEach(player => {
-        list.innerHTML += `
-            <div class="player-card">
-                <div>
-                    <span class="pos-badge">${player.pos}</span>
-                    <strong>${player.name}</strong>
+
+    // Рендиране на списъка
+    function renderTeam() {
+        list.innerHTML = "";
+        myTeam.forEach(player => {
+            list.innerHTML += `
+                <div class="player-card" onclick="openProfile(${player.id})">
+                    <div>
+                        <span class="pos-badge">${player.pos}</span>
+                        <strong>${player.name}</strong>
+                    </div>
+                    <div style="color: #4CAF50; font-weight: bold;">${player.ovr} OVR</div>
                 </div>
-                <div>${player.ovr} OVR</div>
-            </div>
-        `;
-    });
+            `;
+        });
+    }
+
+    // Отваряне на профила на конкретен играч
+    function openProfile(id) {
+        selectedPlayer = myTeam.find(p => p.id === id);
+        if(!selectedPlayer) return;
+
+        document.getElementById('profName').innerText = selectedPlayer.name;
+        document.getElementById('profPos').innerText = selectedPlayer.pos;
+        document.getElementById('profOvr').innerText = selectedPlayer.ovr + " OVR";
+        document.getElementById('profGoals').innerText = selectedPlayer.goals;
+        document.getElementById('profMvp').innerText = selectedPlayer.mvp;
+
+        document.getElementById('playerProfile').style.display = 'block';
+    }
+
+    function closeProfile() {
+        document.getElementById('playerProfile').style.display = 'none';
+    }
+
+    function trainPlayer() {
+        if(selectedPlayer) {
+            selectedPlayer.ovr += 1;
+            document.getElementById('profOvr').innerText = selectedPlayer.ovr + " OVR";
+            renderTeam();
+            alert(`Успешна тренировка! Рейтингът на ${selectedPlayer.name} се повиши.`);
+        }
+    }
+
+    // Стартово зареждане
+    renderTeam();
 </script>
+
 </body>
 </html>
