@@ -2,120 +2,126 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Твоят Отбор - Профили</title>
+    <title>Pitch Clash - Мултиплейър отбори</title>
     <style>
         * { box-sizing: border-box; }
-        body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 500px; }
+        body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
         
-        h1 { font-size: 22px; color: #4CAF50; margin-bottom: 15px; }
+        /* Топ хедър бар с ресурси */
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 13px; }
+        .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .shop-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .shop-btn:hover { background: #3e445b; }
+
+        /* Заглавие и бутон Създай */
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        h2 { font-size: 18px; margin: 0; }
+        .subtitle { font-size: 12px; color: #8a8f9d; margin-top: 2px; }
         
-        .player-card { background: #1a1c24; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #2a2e3d; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-        .player-card:hover { border-color: #4CAF50; background: #222530; }
+        .create-team-btn { background: #1b3a26; border: 1px solid #00e676; color: #00e676; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        .create-team-btn:hover { background: #00e676; color: #000; }
+
+        /* Статус блок - Не си в отбор */
+        .no-team-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 25px 15px; text-align: center; margin-bottom: 20px; color: #8a8f9d; font-size: 13px; }
+        .no-team-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+        .no-team-title { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 5px; }
+
+        /* Секция Отворени отбори */
+        .section-title { font-size: 11px; color: #8a8f9d; text-transform: uppercase; font-weight: bold; margin-bottom: 10px; letter-spacing: 0.5px; }
         
-        .pos-badge { background: #2196F3; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-right: 8px; }
+        .team-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .team-info { display: flex; align-items: center; gap: 12px; }
+        .team-shield { background: #121318; border: 1px solid #32384a; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .t-name { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
+        .t-details { font-size: 11px; color: #8a8f9d; }
         
-        /* Модален прозорец / Детайлен профил */
-        .profile-modal { display: none; background: #1a1c24; border: 1px solid #4CAF50; border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-        .profile-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #32384a; padding-bottom: 10px; margin-bottom: 15px; }
-        .stat-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; color: #b0b5c1; }
-        .stat-value { color: #fff; font-weight: bold; }
-        
-        .btn { width: 100%; padding: 10px; background: #4CAF50; border: none; color: white; cursor: pointer; font-weight: bold; border-radius: 6px; margin-top: 15px; }
-        .btn:hover { background: #43a047; }
-        .btn-back { background: #32384a; margin-top: 10px; }
-        .btn-back:hover { background: #3a4156; }
+        .join-btn { background: #1b3a26; border: 1px solid #00e676; color: #00e676; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        .join-btn:hover { background: #00e676; color: #000; }
+
+        /* Навигационен бар долу */
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
+        .nav-item { color: #8a8f9d; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .nav-item.active { color: #00e676; }
+        .nav-item span { font-size: 16px; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <h1>👥 Състав на отбора</h1>
-    <p style="font-size: 13px; color: #8a8f9d; margin-bottom: 15px;">Кликни върху играч, за да отвориш неговия детайлен профил.</p>
     
-    <div id="teamList">
-        <!-- Списъкът се зарежда динамично през JS -->
+    <!-- ТОП БАР С ЕНЕРГИЯ И КЕШ -->
+    <div class="top-bar">
+        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span>/100</div>
+        <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
+        <button class="shop-btn" onclick="location.href='shop.html'">Магазин</button>
     </div>
 
-    <!-- ДЕТАЙЛЕН ПРОФИЛ НА ИГРАЧ (СКРИТ ПО ПОДРАЗБИРАНЕ) -->
-    <div id="playerProfile" class="profile-modal">
-        <div class="profile-header">
-            <div>
-                <span id="profPos" class="pos-badge">ST</span>
-                <strong id="profName" style="font-size: 18px;">Име</strong>
-            </div>
-            <div id="profOvr" style="font-size: 20px; color: #4CAF50; font-weight: bold;">42 OVR</div>
+    <!-- ЗАГЛАВИЕ И БУТОН ЗА СЪЗДАВАНЕ -->
+    <div class="header-section">
+        <div>
+            <h2>Отбор</h2>
+            <div class="subtitle">Мултиплейър отбори</div>
         </div>
-
-        <div class="stat-row"><span>Енергия / Форма:</span> <span class="stat-value">98% (Зона на игра)</span></div>
-        <div class="stat-row"><span>Вкарани голове:</span> <span class="stat-value" id="profGoals">12</span></div>
-        <div class="stat-row"><span>Спечелени MVP:</span> <span class="stat-value" id="profMvp">4</span></div>
-        <div class="stat-row"><span>Заплата / Поддръжка:</span> <span class="stat-value">150 Кеш</span></div>
-
-        <button class="btn" onclick="trainPlayer()">🏋️ Изпрати на тренировка (+1 OVR)</button>
-        <button class="btn btn-back" onclick="closeProfile()">Затвори профила</button>
+        <button class="create-team-btn" onclick="createTeamModal()">+ Създай</button>
     </div>
 
-    <button class="btn btn-back" onclick="window.location.href='index.html'" style="margin-top: 20px;">← Обратно към терена</button>
+    <!-- СТАТУС - НЕ СИ В ОТБОР -->
+    <div class="no-team-card">
+        <span class="no-team-icon">👥</span>
+        <div class="no-team-title">Не си в отбор</div>
+        <div>Създай свой или се присъедини към съществуващ</div>
+    </div>
+
+    <!-- СПИСЪК С ОТВОРЕНИ ОТБОРИ -->
+    <div class="section-title">Отворени отбори</div>
+    
+    <div id="teamsList">
+        <div class="team-card">
+            <div class="team-info">
+                <div class="team-shield">🛡️</div>
+                <div>
+                    <div class="t-name">BulTeam1</div>
+                    <div class="t-details">Капитан: arch5235 • 5 играча</div>
+                </div>
+            </div>
+            <button class="join-btn" onclick="joinTeam('BulTeam1')">Влез</button>
+        </div>
+    </div>
+
+    <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
+    <div class="nav-bar">
+        <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
+        <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
+        <a href="index.html" class="nav-item"><span>🏠</span> Хъб</a>
+        <a href="shop.html" class="nav-item active"><span>🛒</span> Отбор</a>
+        <a href="profile.html" class="nav-item"><span>👤</span> Профил</a>
+    </div>
+
 </div>
 
 <script>
-    // База данни с играчите в отбора
-    const myTeam = [
-        { id: 1, name: "Kasim", pos: "ST", ovr: 42, goals: 14, mvp: 5 },
-        { id: 2, name: "Иван Иванов", pos: "GK", ovr: 38, goals: 0, mvp: 2 },
-        { id: 3, name: "Петър Петров", pos: "CM", ovr: 40, goals: 3, mvp: 3 },
-        { id: 4, name: "Георги Георгиев", pos: "CB", ovr: 39, goals: 1, mvp: 1 }
-    ];
+    // Зареждане на ресурси
+    let energy = parseInt(localStorage.getItem('energy')) || 100;
+    let cash = parseInt(localStorage.getItem('cash')) || 500;
 
-    let selectedPlayer = null;
-    const list = document.getElementById('teamList');
+    document.getElementById('topEnergy').innerText = energy;
+    document.getElementById('topCash').innerText = cash;
 
-    // Рендиране на списъка
-    function renderTeam() {
-        list.innerHTML = "";
-        myTeam.forEach(player => {
-            list.innerHTML += `
-                <div class="player-card" onclick="openProfile(${player.id})">
-                    <div>
-                        <span class="pos-badge">${player.pos}</span>
-                        <strong>${player.name}</strong>
-                    </div>
-                    <div style="color: #4CAF50; font-weight: bold;">${player.ovr} OVR</div>
-                </div>
-            `;
-        });
+    function joinTeam(teamName) {
+        localStorage.setItem('myTeam', teamName);
+        alert(`Успешно се присъедини към отбор ${teamName}!`);
+        location.reload();
     }
 
-    // Отваряне на профила на конкретен играч
-    function openProfile(id) {
-        selectedPlayer = myTeam.find(p => p.id === id);
-        if(!selectedPlayer) return;
-
-        document.getElementById('profName').innerText = selectedPlayer.name;
-        document.getElementById('profPos').innerText = selectedPlayer.pos;
-        document.getElementById('profOvr').innerText = selectedPlayer.ovr + " OVR";
-        document.getElementById('profGoals').innerText = selectedPlayer.goals;
-        document.getElementById('profMvp').innerText = selectedPlayer.mvp;
-
-        document.getElementById('playerProfile').style.display = 'block';
-    }
-
-    function closeProfile() {
-        document.getElementById('playerProfile').style.display = 'none';
-    }
-
-    function trainPlayer() {
-        if(selectedPlayer) {
-            selectedPlayer.ovr += 1;
-            document.getElementById('profOvr').innerText = selectedPlayer.ovr + " OVR";
-            renderTeam();
-            alert(`Успешна тренировка! Рейтингът на ${selectedPlayer.name} се повиши.`);
+    function createTeamModal() {
+        let name = prompt("Въведи име на новия отбор:");
+        if (name) {
+            localStorage.setItem('myTeam', name);
+            alert(`Отбор "${name" бе създаден успешно! Ти си капитан.`);
+            location.reload();
         }
     }
-
-    // Стартово зареждане
-    renderTeam();
 </script>
 
 </body>

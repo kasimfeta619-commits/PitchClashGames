@@ -2,105 +2,153 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team HTPL - Live Мач</title>
+    <title>Pitch Clash - Live Мач</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f1016; color: #ffffff; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 500px; }
+        * { box-sizing: border-box; }
+        body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; padding-bottom: 60px; }
+        
+        /* Топ хедър бар с ресурси */
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
+        .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+
         .card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
-        h2 { color: #FF5722; font-size: 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .match-scoreboard { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: bold; background: #121318; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; }
-        .team-box { width: 45%; }
-        .score { font-size: 28px; color: #4CAF50; }
-        .btn { width: 100%; padding: 12px; background-color: #FF5722; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn:hover { background-color: #f4511e; }
-        .btn-sub { background-color: #2196F3; }
-        .btn-sub:hover { background-color: #1e88e5; }
-        .chat-box { background: #121318; height: 120px; border-radius: 6px; padding: 10px; overflow-y: auto; font-size: 13px; color: #b0b5c1; margin-bottom: 10px; border: 1px solid #32384a; }
-        .chat-input-group { display: flex; gap: 8px; }
-        .chat-input { flex: 1; padding: 8px; background: #121318; border: 1px solid #32384a; border-radius: 4px; color: white; }
-        .back-link { display: block; text-align: center; margin-top: 15px; color: #8a8f9d; text-decoration: none; font-size: 14px; }
-        .back-link:hover { color: #fff; }
+        .scoreboard { display: flex; justify-content: space-between; align-items: center; background: #121318; padding: 15px; border-radius: 8px; font-size: 18px; font-weight: bold; border: 1px solid #32384a; text-align: center; }
+        .score { color: #00e676; font-size: 28px; }
+        .event-box { background: #222530; border: 1px solid #00e676; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; }
+        .btn { width: 100%; padding: 12px; background: #00e676; border: none; color: #000; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 14px; }
+        .btn:hover { background: #00c853; }
+        .btn-alt { background: #d4a017; color: #000; }
+        .log-box { background: #121318; height: 120px; border-radius: 8px; padding: 10px; overflow-y: auto; font-size: 12px; color: #b0b5c1; border: 1px solid #32384a; margin-top: 15px; text-align: left; }
+
+        /* Навигационен бар долу */
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
+        .nav-item { color: #8a8f9d; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .nav-item.active { color: #00e676; }
+        .nav-item span { font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="card">
-            <h2>🔴 LIVE МАЧ <span id="timer">21' / 33'</span></h2>
-            
-            <div class="match-scoreboard">
-                <div class="team-box">
-                    <div>Team HTPL (Ти)</div>
-                    <div class="score" id="home-score">1</div>
-                    <div style="font-size: 12px; color: #8a8f9d;">Голове запас: <span id="home-goals">0</span></div>
-                </div>
-                <div>VS</div>
-                <div class="team-box">
-                    <div>Опонент (+50 AI)</div>
-                    <div class="score" id="away-score">0</div>
-                    <div style="font-size: 12px; color: #8a8f9d;">Голове запас: <span id="away-goals">1</span></div>
-                </div>
-            </div>
-
-            <!-- Тактически действия -->
-            <button class="btn" id="shoot-btn" onclick="shootGoal()">ИЗСТРЭЛЯЙ ЕДИНСТВЕНИЯ ГОЛ</button>
-            <button class="btn btn-sub" onclick="makeSubstitution()">НАПРАВИ СМЯНА (<span id="subs-left">5</span>/5)</button>
-        </div>
-
-        <!-- Отборен чат в реално време -->
-        <div class="card">
-            <h3>💬 Отборен чат на живо</h3>
-            <div class="chat-box" id="chat-messages">
-                <div><strong>Капитана:</strong> Пазете енергията за 25-тата минута!</div>
-                <div><strong>user_99:</strong> Готов съм за тактическия изстрел.</div>
-            </div>
-            <div class="chat-input-group">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Напиши съобщение...">
-                <button class="btn" style="width: auto; margin-top: 0; padding: 8px 15px;" onclick="sendMessage()">Изпрати</button>
-            </div>
-        </div>
-
-        <a href="index.html" class="back-link">← Обратно към началния екран</a>
+<div class="app-container">
+    
+    <!-- ТОП БАР С ЕНЕРГИЯ, ДИАМАНТИ И КЕШ -->
+    <div class="top-bar">
+        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
+        <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
+        <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
     </div>
 
-    <script>
-        let subsLeft = 5;
-        let hasShot = false;
+    <div class="card">
+        <h2 style="font-size: 15px; margin-top: 0; color: #8a8f9d; display: flex; justify-content: space-between;">
+            <span>🔴 LIVE МАЧ</span>
+            <span id="matchTimer" style="color: #00e676;">01'</span>
+        </h2>
+        
+        <div class="scoreboard">
+            <div><span id="playerTeamName">Моят отбор</span><br><span class="score" id="homeScore">0</span></div>
+            <div style="color: #8a8f9d; font-size: 14px;">VS</div>
+            <div><span id="oppTeamName">bgarsenal</span><br><span class="score" id="oppScore">0</span></div>
+        </div>
 
-        function shootGoal() {
-            if(hasShot) {
-                alert("Вече изразходва своя единствен гол в този мач!");
-                return;
-            }
-            hasShot = true;
-            document.getElementById('home-score').innerText = "2";
-            document.getElementById('home-goals').innerText = "0";
-            document.getElementById('shoot-btn').style.backgroundColor = "#555";
-            document.getElementById('shoot-btn').innerText = "ГОЛЪТ Е ИЗПОЛЗВАН";
-            alert("Успешен удар! Отбеляза своя единствен гол!");
+        <!-- Динамичен тактически прозорец -->
+        <div class="event-box" id="eventBox">
+            <p id="eventTitle" style="font-weight: bold; margin-bottom: 5px;">Съдията даде начало на срещата!</p>
+            <p id="eventDesc" style="font-size: 13px; color: #ccc;">Отборите излизат на терена. Първите минути са ключови.</p>
+            <div id="actionButtons" style="margin-top: 10px;"></div>
+        </div>
+
+        <div class="log-box" id="matchLog">
+            <div>[01'] Мачът стартира успешно.</div>
+        </div>
+    </div>
+
+    <!-- ДОЛЕН МЕНЮ БАР -->
+    <div class="nav-bar">
+        <a href="matches.html" class="nav-item active"><span>⚽</span> Мачове</a>
+        <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
+        <a href="index.html" class="nav-item"><span>🏠</span> Хъб</a>
+        <a href="shop.html" class="nav-item"><span>🛒</span> Отбор</a>
+        <a href="profile.html" class="nav-item"><span>👤</span> Профил</a>
+    </div>
+
+</div>
+
+<script>
+    // Зареждане на ресурси от localStorage
+    let energy = parseInt(localStorage.getItem('energy')) || 100;
+    let diamonds = parseInt(localStorage.getItem('diamonds')) || 10;
+    let cash = parseInt(localStorage.getItem('cash')) || 500;
+
+    document.getElementById('topEnergy').innerText = energy;
+    document.getElementById('topDiamonds').innerText = diamonds;
+    document.getElementById('topCash').innerText = cash;
+
+    let minute = 1;
+    let homeScore = 0;
+    let oppScore = 0;
+    let playerOvr = parseInt(localStorage.getItem('playerOvr')) || 42;
+    
+    document.getElementById('playerTeamName').innerText = localStorage.getItem('playerTeam') || "Академия А";
+    let selectedOpponent = localStorage.getItem('selectedOpponent') || "bgarsenal";
+    document.getElementById('oppTeamName').innerText = selectedOpponent;
+
+    let matchInterval = setInterval(() => {
+        minute++;
+        if(minute <= 90) {
+            document.getElementById('matchTimer').innerText = minute + "'";
+            
+            if(minute === 15) triggerPhase("Атака по фланга", "Съперникът затваря центъра. Къде ще насочиш атаката?", "Атакувай отляво", "Атакувай отдясно");
+            if(minute === 45) triggerPhase("⚡ ШАНС ЗА ГОЛ ПРЕД КРАЯ!", "Изведен си на стрелкова позиция!", "Мощен удар", "Техничен удар");
+            if(minute === 75) triggerPhase("🛡️ НАТИСК НА ОПОНЕНТА!", "Опонентът упражнява тежък натиск в края.", "Плътна защита", "Рискована контра");
+            
+        } else {
+            clearInterval(matchInterval);
+            document.getElementById('eventTitle').innerText = "🏁 КРАЙ НА МАЧА!";
+            document.getElementById('eventDesc').innerText = `Краен резултат: ${homeScore} на ${oppScore}`;
+            document.getElementById('actionButtons').innerHTML = '';
+            log(`Краен резултат от срещата: ${homeScore} : ${oppScore}`);
+            
+            let matches = parseInt(localStorage.getItem('matchesPlayed')) || 0;
+            localStorage.setItem('matchesPlayed', matches + 1);
+        }
+    }, 600);
+
+    function triggerPhase(title, desc, btn1Text, btn2Text) {
+        document.getElementById('eventTitle').innerText = title;
+        document.getElementById('eventDesc').innerText = desc;
+        document.getElementById('actionButtons').innerHTML = `
+            <button class="btn" onclick="resolveAction('${btn1Text}')">${btn1Text}</button>
+            <button class="btn btn-alt" onclick="resolveAction('${btn2Text}')">${btn2Text}</button>
+        `;
+        log(`Ключов момент в ${minute}'-та минута.`);
+    }
+
+    function resolveAction(choice) {
+        let roll = Math.random() * 50;
+        let success = (playerOvr + roll) > 60;
+
+        if(success) {
+            homeScore++;
+            document.getElementById('homeScore').innerText = homeScore;
+            alert(`Успешен избор (${choice})! Отбелязахте гол!`);
+            log(`[${minute}'] Успешна атака! Гол за нашия отбор.`);
+        } else {
+            oppScore++;
+            document.getElementById('oppScore').innerText = oppScore;
+            alert(`Грешен ход (${choice}). Опонентът се възползва и вкара гол!`);
+            log(`[${minute}'] Грешка! Опонентът отбеляза гол.`);
         }
 
-        function makeSubstitution() {
-            if(subsLeft > 0) {
-                subsLeft--;
-                document.getElementById('subs-left').innerText = subsLeft;
-                alert("Успешна смяна! EGI индексът е освежен.");
-            } else {
-                alert("Изчерпа всичките си 5 смени за мача!");
-            }
-        }
+        document.getElementById('actionButtons').innerHTML = '<span style="color: #00e676; font-size: 13px;">Решението е отразено. Мачът продължава...</span>';
+    }
 
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            if(!input.value.trim()) return;
-            const chatBox = document.getElementById('chat-messages');
-            chatBox.innerHTML += `<div><strong>Ти:</strong> ${input.value}</div>`;
-            input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-    </script>
+    function log(text) {
+        const box = document.getElementById('matchLog');
+        box.innerHTML += `<div>[${minute}'] ${text}</div>`;
+        box.scrollTop = box.scrollHeight;
+    }
+</script>
 
 </body>
 </html>

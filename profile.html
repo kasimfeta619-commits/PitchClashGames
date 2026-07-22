@@ -2,95 +2,212 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team HTPL - Зала на славата</title>
+    <title>Pitch Clash - Профил</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f1016; color: #ffffff; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 500px; }
-        .card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
-        h2 { color: #4CAF50; font-size: 20px; margin-bottom: 15px; }
-        .profile-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .level-badge { background: #4CAF50; color: white; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 14px; }
-        .xp-bar-container { background: #121318; border-radius: 6px; height: 10px; width: 100%; overflow: hidden; margin-top: 5px; }
-        .xp-bar-fill { background: #4CAF50; height: 100%; width: 75%; }
-        .trophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .trophy-item { background: #121318; padding: 12px; border-radius: 8px; border: 1px solid #32384a; font-size: 14px; }
-        .trophy-count { font-size: 18px; font-weight: bold; color: #FFD700; margin-top: 4px; }
-        .back-link { display: block; text-align: center; margin-top: 15px; color: #8a8f9d; text-decoration: none; font-size: 14px; }
-        .back-link:hover { color: #fff; }
+        * { box-sizing: border-box; }
+        body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
+        
+        /* Топ хедър бар с ресурси */
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
+        .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .shop-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .shop-btn:hover { background: #3e445b; }
+
+        /* Профил главна карта */
+        .profile-main-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; }
+        .ovr-box { background: #121318; border: 1px solid #32384a; width: 60px; height: 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #00e676; flex-shrink: 0; }
+        .p-info { flex-grow: 1; }
+        .p-league { font-size: 10px; color: #d4a017; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; }
+        .p-username { font-size: 16px; font-weight: bold; margin-bottom: 3px; }
+        .p-details { font-size: 11px; color: #8a8f9d; margin-bottom: 8px; }
+        
+        /* XP Прогрес бар */
+        .xp-container { background: #121318; border: 1px solid #32384a; border-radius: 6px; height: 6px; width: 100%; overflow: hidden; margin-top: 5px; }
+        .xp-fill { background: #00e676; height: 100%; width: 0%; }
+        .xp-text { font-size: 9px; color: #8a8f9d; display: flex; justify-content: space-between; margin-top: 3px; }
+
+        /* Атрибути блок */
+        .card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .section-title { font-size: 13px; font-weight: bold; margin-bottom: 12px; color: #fff; }
+        
+        .attr-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 12px; }
+        .attr-name { display: flex; align-items: center; gap: 6px; width: 100px; color: #b0b5c1; }
+        .attr-bar-bg { flex-grow: 1; background: #121318; height: 6px; border-radius: 3px; margin: 0 10px; overflow: hidden; border: 1px solid #32384a; }
+        .attr-bar-fill { height: 100%; border-radius: 3px; }
+        .attr-val { font-weight: bold; width: 25px; text-align: right; }
+
+        /* Статистика мрежа (2х2) */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+        .stat-icon { font-size: 18px; }
+        .stat-val { font-size: 16px; font-weight: bold; }
+        .stat-label { font-size: 10px; color: #8a8f9d; }
+
+        /* Сезон блок */
+        .season-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+        .season-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; text-align: center; background: #121318; padding: 10px; border-radius: 8px; border: 1px solid #32384a; }
+        .s-val { font-size: 15px; font-weight: bold; color: #00e676; margin-bottom: 2px; }
+        .s-lbl { font-size: 10px; color: #8a8f9d; }
+
+        /* Долен навигационен бар */
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
+        .nav-item { color: #8a8f9d; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .nav-item.active { color: #00e676; }
+        .nav-item span { font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <!-- ПРОФИЛ И НИВО -->
-        <div class="card">
-            <div class="profile-header">
-                <div>
-                    <h2 style="margin: 0;">Captain_Ivan</h2>
-                    <span style="font-size: 13px; color: #8a8f9d;">Мениджър на Team HTPL</span>
-                </div>
-                <div class="level-badge">Ниво 24</div>
-            </div>
-            <div style="font-size: 13px; color: #b0b5c1; display: flex; justify-content: space-between;">
-                <span>XP Прогрес</span>
-                <span>84,500 / 90,000</span>
-            </div>
-            <div class="xp-bar-container">
-                <div class="xp-bar-fill"></div>
-            </div>
-        </div>
-
-        <!-- ЗАЛА НА СЛАВАТА (КУПИ И ТРОФЕИ) -->
-        <div class="card">
-            <h2>🏆 Витрина с Трофеи</h2>
-            <div class="trophy-grid">
-                <div class="trophy-item">
-                    🥇 Шампионски купи
-                    <div class="trophy-count">1</div>
-                </div>
-                <div class="trophy-item">
-                    🏆 Национални купи
-                    <div class="trophy-count">2</div>
-                </div>
-                <div class="trophy-item">
-                    ⚽ Златна топка
-                    <div class="trophy-count">1</div>
-                </div>
-                <div class="trophy-item">
-                    ⭐ Лига купи
-                    <div class="trophy-count">3</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ИНДИВИДУАЛНИ И КАПИТАНСКИ ТИТЛИ -->
-        <div class="card">
-            <h2>⭐ Индивидуални и Капитански Награди</h2>
-            <div class="trophy-grid">
-                <div class="trophy-item">
-                    MVP Титли (Играч)
-                    <div class="trophy-count" style="color: #4CAF50;">14</div>
-                </div>
-                <div class="trophy-item">
-                    SVP Титли (Играч)
-                    <div class="trophy-count" style="color: #2196F3;">5</div>
-                </div>
-                <div class="trophy-item">
-                    👑 Капитански MVP
-                    <div class="trophy-count" style="color: #FF5722;">4</div>
-                </div>
-                <div class="trophy-item">
-                    🥈 Капитански SVP
-                    <div class="trophy-count" style="color: #9c27b0;">2</div>
-                </div>
-            </div>
-        </div>
-
-        <a href="index.html" class="back-link">← Обратно към началния екран</a>
+<div class="app-container">
+    
+    <!-- ТОП БАР С РЕСУРСИ -->
+    <div class="top-bar">
+        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
+        <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
+        <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
+        <button class="shop-btn" onclick="location.href='shop.html'">Магазин</button>
     </div>
+
+    <!-- ОСНОВНА ПРОФИЛНА КАРТА -->
+    <div class="profile-main-card">
+        <div class="ovr-box" id="profileOvr">42</div>
+        <div class="p-info">
+            <div class="p-league">Академия 3</div>
+            <div class="p-username" id="profileUsername">kasim112233</div>
+            <div class="p-details" id="profileDetails">ST • Академия А<br>Ниво 1 • 0 XP</div>
+            
+            <div class="xp-container">
+                <div class="xp-fill" style="width: 0%;"></div>
+            </div>
+            <div class="xp-text">
+                <span>XP прогрес</span>
+                <span>0/80</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- АТРИБУТИ -->
+    <div class="card">
+        <div class="section-title">Атрибути</div>
+        
+        <div class="attr-row">
+            <div class="attr-name">⚽ Атака</div>
+            <div class="attr-bar-bg"><div class="attr-bar-fill" style="width: 42%; background: #e53935;"></div></div>
+            <div class="attr-val" id="attVal">42</div>
+        </div>
+        <div class="attr-row">
+            <div class="attr-name">🛡️ Защита</div>
+            <div class="attr-bar-bg"><div class="attr-bar-fill" style="width: 42%; background: #1e88e5;"></div></div>
+            <div class="attr-val" id="defVal">42</div>
+        </div>
+        <div class="attr-row">
+            <div class="attr-name">⚡ Скорост</div>
+            <div class="attr-bar-bg"><div class="attr-bar-fill" style="width: 42%; background: #ffb300;"></div></div>
+            <div class="attr-val" id="spdVal">42</div>
+        </div>
+        <div class="attr-row">
+            <div class="attr-name">💪 Издръжл.</div>
+            <div class="attr-bar-bg"><div class="attr-bar-fill" style="width: 42%; background: #43a047;"></div></div>
+            <div class="attr-val" id="staVal">42</div>
+        </div>
+        <div class="attr-row">
+            <div class="attr-name">🎯 Техника</div>
+            <div class="attr-bar-bg"><div class="attr-bar-fill" style="width: 42%; background: #ab47bc;"></div></div>
+            <div class="attr-val" id="tecVal">42</div>
+        </div>
+    </div>
+
+    <!-- СТАТИСТИКА (МРЕЖА) -->
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="stat-icon" style="color: #d4a017;">🏆</span>
+            <div>
+                <div class="stat-val" id="totalWins">0</div>
+                <div class="stat-label">Общо победи</div>
+            </div>
+        </div>
+        <div class="stat-box">
+            <span class="stat-icon" style="color: #00e676;">⚽</span>
+            <div>
+                <div class="stat-val" id="totalGoals">0</div>
+                <div class="stat-label">Общо голове</div>
+            </div>
+        </div>
+        <div class="stat-box">
+            <span class="stat-icon" style="color: #29b6f6;">📊</span>
+            <div>
+                <div class="stat-val">0%</div>
+                <div class="stat-label">% победи</div>
+            </div>
+        </div>
+        <div class="stat-box">
+            <span class="stat-icon" style="color: #ffa726;">⭐</span>
+            <div>
+                <div class="stat-val">0</div>
+                <div class="stat-label">Репутация</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- СЕЗОН 1 -->
+    <div class="card">
+        <div class="season-header">
+            <span>Сезон 1</span>
+            <span style="font-size: 10px; color: #8a8f9d;">0/5 победи</span>
+        </div>
+        <div class="season-stats">
+            <div>
+                <div class="s-val" id="matchesPlayed">0</div>
+                <div class="s-lbl">Мачове</div>
+            </div>
+            <div>
+                <div class="s-val" id="seasonGoals">0</div>
+                <div class="s-lbl">Голове</div>
+            </div>
+            <div>
+                <div class="s-val">0</div>
+                <div class="s-lbl">Асисти</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
+    <div class="nav-bar">
+        <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
+        <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
+        <a href="index.html" class="nav-item"><span>🏠</span> Хъб</a>
+        <a href="shop.html" class="nav-item"><span>🛒</span> Отбор</a>
+        <a href="profile.html" class="nav-item active"><span>👤</span> Профил</a>
+    </div>
+
+</div>
+
+<script>
+    // Зареждане на реалните данни от localStorage
+    let energy = parseInt(localStorage.getItem('energy')) || 100;
+    let diamonds = parseInt(localStorage.getItem('diamonds')) || 10;
+    let cash = parseInt(localStorage.getItem('cash')) || 500;
+    let ovr = parseInt(localStorage.getItem('playerOvr')) || 42;
+    let teamName = localStorage.getItem('playerTeam') || "Академия А";
+    let matchesPlayed = parseInt(localStorage.getItem('matchesPlayed')) || 0;
+
+    document.getElementById('topEnergy').innerText = energy;
+    document.getElementById('topDiamonds').innerText = diamonds;
+    document.getElementById('topCash').innerText = cash;
+    
+    document.getElementById('profileOvr').innerText = ovr;
+    document.getElementById('profileDetails').innerHTML = `ST • ${teamName}<br>Ниво 1 • 0 XP`;
+    
+    // Динамично обновяване на атрибутите спрямо OVR
+    document.getElementById('attVal').innerText = ovr;
+    document.getElementById('defVal').innerText = ovr;
+    document.getElementById('spdVal').innerText = ovr;
+    document.getElementById('staVal').innerText = ovr;
+    document.getElementById('tecVal').innerText = ovr;
+
+    document.getElementById('matchesPlayed').innerText = matchesPlayed;
+</script>
 
 </body>
 </html>
