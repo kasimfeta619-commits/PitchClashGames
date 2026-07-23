@@ -2,33 +2,40 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Team HTPL - Отбор и Хазна</title>
+    <title>Team HTPL - Управление на отбора</title>
     <style>
         * { box-sizing: border-box; }
         body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
         
-        /* Топ хедър бар с ресурси */
-        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
+        /* Топ бар с ресурси */
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; }
         .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .shop-link-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
+        .shop-link-btn:hover { background: #3e445b; }
 
-        /* Отборна хазна карта */
-        .team-treasury-box { background: linear-gradient(135deg, #1a1c24, #121318); border: 1px solid #d4a017; border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: center; }
-        .treasury-amount { font-size: 22px; font-weight: bold; color: #d4a017; margin: 5px 0; }
-        .vote-section { background: #121318; border: 1px solid #2a2e3d; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 11px; text-align: left; }
-        .vote-bar { background: #2a2e3d; border-radius: 4px; height: 8px; width: 100%; margin: 6px 0; overflow: hidden; }
-        .vote-progress { background: #00e676; height: 100%; width: 75%; }
+        /* Отборно табло */
+        .team-header-card { background: linear-gradient(135deg, #1a2421, #121318); border: 1px solid #00e676; border-radius: 12px; padding: 15px; margin-bottom: 12px; }
+        .th-title { font-size: 16px; font-weight: bold; color: #00e676; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .th-sub { font-size: 11px; color: #8a8f9d; margin-bottom: 10px; }
+        .th-stats { display: flex; justify-content: space-between; font-size: 11px; background: #121318; padding: 8px 12px; border-radius: 8px; border: 1px solid #2a2e3d; }
+
+        /* Секция за състава */
+        .section-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
         
-        /* Състав на отбора */
-        .section-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #00e676; display: flex; justify-content: space-between; align-items: center; }
-        .player-row { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-        .p-info b { display: block; font-size: 13px; margin-bottom: 2px; }
-        .p-status { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .player-row { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .p-info h4 { margin: 0 0 2px 0; font-size: 12px; color: #fff; display: flex; align-items: center; gap: 6px; }
+        .p-info p { margin: 0; font-size: 10px; color: #8a8f9d; }
+        
+        .status-badge { font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: bold; }
         .status-active { background: #12261e; color: #00e676; border: 1px solid #00e676; }
-        .status-ghost { background: #261a12; color: #ff9800; border: 1px solid #ff9800; }
-        
-        .kick-btn { background: #2a2e3d; color: #ff5252; border: 1px solid #ff5252; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
-        .kick-btn:hover { background: #ff5252; color: #000; }
+        .status-ghost { background: #262012; color: #ff9800; border: 1px solid #ff9800; }
+
+        .p-ovr-badge { background: #121318; border: 1px solid #32384a; padding: 6px 10px; border-radius: 6px; font-weight: bold; color: #00e676; font-size: 13px; text-align: center; }
+
+        /* Бутон за отборно действие */
+        .team-action-btn { width: 100%; background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; margin-top: 5px; text-align: center; }
+        .team-action-btn:hover { background: #3e445b; border-color: #00e676; color: #00e676; }
 
         /* Долен навигационен бар */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
@@ -46,63 +53,78 @@
         <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
         <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
         <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
+        <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
-    <!-- ОТБОРНА ХАЗНА И ДЕМОКРАТИЧЕН ВОТ -->
-    <div class="team-treasury-box">
-        <small style="color: #8a8f9d; font-size: 11px;">ОБЩА ОТБОРНА ХАЗНА</small>
-        <div class="treasury-amount">1,250 🪙</div>
-        
-        <div class="vote-section">
-            <div>🏛️ Текущ вот: <b>Ъпгрейд на Стадион (Ниво 2)</b></div>
-            <div class="vote-bar"><div class="vote-progress"></div></div>
-            <div style="display: flex; justify-content: space-between; color: #8a8f9d; font-size: 10px;">
-                <span>Одобрение: 78% (Нужни 75%)</span>
-                <span style="color: #00e676; cursor: pointer;" onclick="alert('Гласът ти беше отчетен!')">[ Гласувай ]</span>
-            </div>
+    <!-- ОТБОРНО ТАБЛО -->
+    <div class="team-header-card">
+        <div class="th-title">
+            <span id="teamTitle">BulTeam1</span>
+            <span style="font-size: 12px; color: #fff;">Лига HTPL</span>
+        </div>
+        <div class="th-sub">Справедливо отборно ядро • Синхронизирано с мачовете в 20:00 ч.</div>
+        <div class="th-stats">
+            <div>👥 Играчи: <b>5 / 5</b></div>
+            <div>🤝 Синергия: <b style="color: #00e676;">94%</b></div>
+            <div>🪙 Хазна: <b style="color: #d4a017;" id="teamCashText">1,250</b></div>
         </div>
     </div>
 
-    <!-- СЪСТАВ НА ОТБОРА (СПИСЪК И МЕРИТОКРАЦИЯ) -->
+    <!-- СПИСЪК СЪС СЪОТБОРНИЦИТЕ -->
     <div class="section-title">
-        <span>👥 Състав на отбора (<span id="teamNameLbl">BulTeam1</span>)</span>
-        <span style="font-size: 11px; color: #8a8f9d;">Капитански права</span>
+        <span>👥 Състав на отбора</span>
+        <span style="font-size: 10px; color: #8a8f9d;">Справедливо разпределение</span>
     </div>
 
-    <!-- ИГРАЧ 1 -->
+    <!-- Ти (Капитанът) -->
+    <div class="player-row" style="border-color: #00e676;">
+        <div class="p-info">
+            <h4><span id="myName">kasim112233</span> <span class="status-badge status-active">Ти (Капитан)</span></h4>
+            <p>Активен • Тренира редовно</p>
+        </div>
+        <div class="p-ovr-badge" id="myOvrBox">42</div>
+    </div>
+
+    <!-- Виртуални съотборници 1 -->
     <div class="player-row">
         <div class="p-info">
-            <b>kasim112233 (Ти)</b>
-            <span style="color: #8a8f9d; font-size: 10px;">OVR: 42 • Капитан</span>
+            <h4>Georgi_99 <span class="status-badge status-active">Активен</span></h4>
+            <p>Нападател • Покрива тренировките</p>
         </div>
-        <div>
-            <span class="p-status status-active">Активен</span>
-        </div>
+        <div class="p-ovr-badge">40</div>
     </div>
 
-    <!-- ИГРАЧ 2 -->
+    <!-- Виртуални съотборници 2 -->
     <div class="player-row">
         <div class="p-info">
-            <b>Stoyan_99</b>
-            <span style="color: #8a8f9d; font-size: 10px;">OVR: 39 • Халф</span>
+            <h4>Ivan_HTPL <span class="status-badge status-ghost">Ghost (AI)</span></h4>
+            <p>Халф • Автоматична поддръжка</p>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="p-status status-active">Активен</span>
-            <button class="kick-btn" onclick="kickPlayer('Stoyan_99')">Изключи</button>
-        </div>
+        <div class="p-ovr-badge">38</div>
     </div>
 
-    <!-- ИГРАЧ 3 (ПРИЗРАК / НЕАКТИВЕН) -->
-    <div class="player-row" style="border-color: #3e2714;">
+    <!-- Виртуални съотборници 3 -->
+    <div class="player-row">
         <div class="p-info">
-            <b>Ivan_Ghost</b>
-            <span style="color: #8a8f9d; font-size: 10px;">OVR: 35 • Нападател</span>
+            <h4>Stoyan_Pro <span class="status-badge status-active">Активен</span></h4>
+            <p>Защитник • Стабилен блок</p>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="p-status status-ghost">Ghost (Отсъстващ)</span>
-            <button class="kick-btn" onclick="kickPlayer('Ivan_Ghost')">Изключи</button>
-        </div>
+        <div class="p-ovr-badge">41</div>
     </div>
+
+    <!-- Виртуални съотборници 4 -->
+    <div class="player-row">
+        <div class="p-info">
+            <h4>Nikola_Striker <span class="status-badge status-ghost">Ghost (AI)</span></h4>
+            <p>Вратар • Балансиран режим</p>
+        </div>
+        <div class="p-ovr-badge">39</div>
+    </div>
+
+    <!-- ДЕЙСТВИЯ НА КАПИТАНА -->
+    <button class="team-action-btn" onclick="alert('Справедливо разпределение: Всички членове получават равни бонуси от хазната при победа в 20:00 ч.!')">
+        ⚖️ Правила за справедливост в отбора
+    </button>
 
     <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
     <div class="nav-bar">
@@ -116,20 +138,22 @@
 </div>
 
 <script>
-    // Зареждане на ресурси
+    // Зареждане на данни от реалния профил на играча
     let energy = parseInt(localStorage.getItem('energy')) || 100;
+    let diamonds = parseInt(localStorage.getItem('diamonds')) || 10;
     let cash = parseInt(localStorage.getItem('cash')) || 500;
+    let ovr = parseInt(localStorage.getItem('playerOvr')) || 42;
+    let userName = localStorage.getItem('playerName') || "kasim112233";
     let teamName = localStorage.getItem('playerTeam') || "BulTeam1";
 
     document.getElementById('topEnergy').innerText = energy;
+    document.getElementById('topDiamonds').innerText = diamonds;
     document.getElementById('topCash').innerText = cash;
-    document.getElementById('teamNameLbl').innerText = teamName;
-
-    function kickPlayer(playerName) {
-        if (confirm(`Сигурен ли си, че искаш да изключиш играча ${playerName} от отбора заради липса на активност?`)) {
-            alert(`Играчът ${playerName} беше успешно отстранен от отбора.`);
-        }
-    }
+    document.getElementById('teamCashText').innerText = (cash * 2) + 250; // Динамична отборна хазна
+    
+    document.getElementById('teamTitle').innerText = teamName;
+    document.getElementById('myName').innerText = userName;
+    document.getElementById('myOvrBox').innerText = ovr;
 </script>
 
 </body>

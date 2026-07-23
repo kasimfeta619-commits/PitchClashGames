@@ -2,36 +2,38 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Team HTPL - Профил</title>
+    <title>Team HTPL - Личен Профил</title>
     <style>
         * { box-sizing: border-box; }
         body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
         
-        /* Топ хедър бар с ресурси */
-        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
+        /* Топ бар с ресурси */
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; }
         .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .shop-link-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
+        .shop-link-btn:hover { background: #3e445b; }
 
         /* Профилна главна карта */
-        .profile-main-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 15px; }
-        .avatar-circle { width: 64px; height: 64px; background: #2a2e3d; border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px solid #00e676; }
-        .profile-name { font-size: 18px; font-weight: bold; margin-bottom: 4px; }
-        .profile-role { font-size: 12px; color: #00e676; font-weight: bold; margin-bottom: 15px; }
+        .profile-main-card { background: linear-gradient(135deg, #1a1c24, #121318); border: 1px solid #00e676; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 12px; }
+        .avatar-circle { width: 60px; height: 60px; background: #00e676; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; margin: 0 auto 10px auto; border: 2px solid #fff; }
+        .p-title-name { font-size: 18px; font-weight: bold; margin-bottom: 3px; color: #fff; }
+        .p-title-team { font-size: 12px; color: #00e676; margin-bottom: 12px; }
+        
+        /* Статистика на играча (Grid) */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .stat-box { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px; border-radius: 10px; text-align: center; }
+        .stat-val { font-size: 16px; font-weight: bold; color: #fff; margin-top: 3px; }
+        .stat-lbl { font-size: 9px; color: #8a8f9d; text-transform: uppercase; }
 
-        /* Статистика мрежа */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .stat-box { background: #121318; border: 1px solid #2a2e3d; padding: 12px; border-radius: 10px; text-align: center; }
-        .stat-val { font-size: 16px; font-weight: bold; color: #d4a017; margin-top: 4px; }
-        .stat-lbl { font-size: 11px; color: #8a8f9d; }
-
-        /* Стадион и Ниво */
-        .info-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 15px; font-size: 13px; }
-        .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #2a2e3d; }
-        .info-row:last-child { border-bottom: none; }
-
-        /* Бутон за изход / нулиране */
-        .danger-btn { width: 100%; background: #261212; color: #ff5252; border: 1px solid #ff5252; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
-        .danger-btn:hover { background: #ff5252; color: #000; }
+        /* Секция за настройки / редакция */
+        .section-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #fff; }
+        .settings-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 11px; color: #8a8f9d; margin-bottom: 4px; }
+        .form-input { width: 100%; background: #121318; border: 1px solid #32384a; color: #fff; padding: 8px 10px; border-radius: 6px; font-size: 12px; }
+        .save-btn { width: 100%; background: #00e676; color: #000; border: none; padding: 9px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; margin-top: 5px; }
+        .save-btn:hover { background: #00c853; }
 
         /* Долен навигационен бар */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
@@ -49,53 +51,46 @@
         <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
         <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
         <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
+        <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
     <!-- ПРОФИЛНА ГЛАВНА КАРТА -->
     <div class="profile-main-card">
-        <div class="avatar-circle">⚽</div>
-        <div class="profile-name" id="profName">kasim112233</div>
-        <div class="profile-role">Капитан • Отбор <span id="profTeam">BulTeam1</span></div>
+        <div class="avatar-circle" id="avatarLetter">K</div>
+        <div class="p-title-name" id="profileName">kasim112233</div>
+        <div class="p-title-team" id="profileTeam">Капитан на BulTeam1</div>
+        <div style="font-size: 11px; color: #8a8f9d;">Ранг в лигата: <b style="color: #00e676;">Елиттен Капитан</b></div>
     </div>
 
     <!-- СТАТИСТИКА -->
     <div class="stats-grid">
         <div class="stat-box">
-            <div class="stat-lbl">Общ OVR</div>
-            <div class="stat-val" id="profOvr">42</div>
+            <div class="stat-lbl">Рейтинг</div>
+            <div class="stat-val" id="statOvr" style="color: #00e676;">42</div>
         </div>
         <div class="stat-box">
             <div class="stat-lbl">Натрупан XP</div>
-            <div class="stat-val" id="profXp">120</div>
+            <div class="stat-val" id="statXp">120</div>
         </div>
         <div class="stat-box">
-            <div class="stat-lbl">MVP Награди</div>
-            <div class="stat-val">3</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-lbl">Ниво Прогресия</div>
-            <div class="stat-val" style="color: #00e676;">Ниво 1</div>
+            <div class="stat-lbl">Сезонен Ден</div>
+            <div class="stat-val" id="statDay">7/14</div>
         </div>
     </div>
 
-    <!-- ИНФО ЗА СТАДИОН И ПРОГРЕС -->
-    <div class="info-card">
-        <div class="info-row">
-            <span style="color: #8a8f9d;">Капацитет стадион:</span>
-            <b>150 фенове</b>
+    <!-- НАСТРОЙКИ И ПРОМЯНА НА ИМЕНА -->
+    <div class="section-title">⚙️ Настройки на профила</div>
+    <div class="settings-card">
+        <div class="form-group">
+            <label>Име на играч / Капитан</label>
+            <input type="text" id="inputName" class="form-input" value="kasim112233">
         </div>
-        <div class="info-row">
-            <span style="color: #8a8f9d;">Статус в мачовете:</span>
-            <b style="color: #00e676;">Активен играч</b>
+        <div class="form-group">
+            <label>Име на отбора</label>
+            <input type="text" id="inputTeam" class="form-input" value="BulTeam1">
         </div>
-        <div class="info-row">
-            <span style="color: #8a8f9d;">Спортна база:</span>
-            <b>Ниво 1</b>
-        </div>
+        <button class="save-btn" onclick="saveProfileChanges()">Запази промените</button>
     </div>
-
-    <!-- БУТОН ЗА ИЗХОД -->
-    <button class="danger-btn" onclick="resetData()">Изчисти паметта / Нов профил</button>
 
     <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
     <div class="nav-bar">
@@ -115,21 +110,41 @@
     let cash = parseInt(localStorage.getItem('cash')) || 500;
     let ovr = parseInt(localStorage.getItem('playerOvr')) || 42;
     let xp = parseInt(localStorage.getItem('playerXp')) || 120;
+    let trainingDay = parseInt(localStorage.getItem('trainingDay')) || 7;
+    
+    let userName = localStorage.getItem('playerName') || "kasim112233";
     let teamName = localStorage.getItem('playerTeam') || "BulTeam1";
 
+    // Попълване на UI
     document.getElementById('topEnergy').innerText = energy;
     document.getElementById('topDiamonds').innerText = diamonds;
     document.getElementById('topCash').innerText = cash;
-    document.getElementById('profOvr').innerText = ovr;
-    document.getElementById('profXp').innerText = xp;
-    document.getElementById('profTeam').innerText = teamName;
+    
+    document.getElementById('profileName').innerText = userName;
+    document.getElementById('profileTeam').innerText = "Капитан на " + teamName;
+    document.getElementById('avatarLetter').innerText = userName.charAt(0).toUpperCase();
 
-    function resetData() {
-        if (confirm("Сигурен ли си, че искаш да рестартираш данните на играча?")) {
-            localStorage.clear();
-            alert("Данните бяха изчистени. Страницата ще се презареди.");
-            location.reload();
+    document.getElementById('statOvr').innerText = ovr;
+    document.getElementById('statXp').innerText = xp;
+    document.getElementById('statDay').innerText = trainingDay + "/14";
+
+    document.getElementById('inputName').value = userName;
+    document.getElementById('inputTeam').value = teamName;
+
+    function saveProfileChanges() {
+        let newName = document.getElementById('inputName').value.trim();
+        let newTeam = document.getElementById('inputTeam').value.trim();
+
+        if (!newName || !newTeam) {
+            alert("Моля, попълни и двете полета!");
+            return;
         }
+
+        localStorage.setItem('playerName', newName);
+        localStorage.setItem('playerTeam', newTeam);
+
+        alert("Промените са запазени успешно!");
+        location.reload();
     }
 </script>
 
