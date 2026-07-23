@@ -2,33 +2,48 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Team HTPL - Тренировъчен център</title>
+    <title>Team HTPL - Тренировъчен Щаб</title>
     <style>
         * { box-sizing: border-box; }
         body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
+        .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
         
         /* Топ хедър бар с ресурси */
-        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
         .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .shop-link-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; transition: 0.2s; }
+        .shop-link-btn:hover { background: #3e445b; border-color: #00e676; }
+
+        /* Секционни заглавия */
+        .section-header { font-size: 11px; font-weight: bold; color: #00e676; margin: 15px 0 8px 0; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* МРЕЖА ОТ 4 АГЕНТНИ СЛОТА */
+        .agents-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         
-        /* Заглавие на секцията */
-        .section-title { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #00e676; display: flex; align-items: center; gap: 8px; }
+        .agent-slot { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.2s; }
+        .agent-slot.active { border-color: #00e676; background: linear-gradient(135deg, #13271e, #1a1c24); }
+        .agent-slot.locked { border-style: dashed; border-color: #3e445b; opacity: 0.8; }
+        
+        .ag-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+        .ag-icon { background: #222634; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .ag-info h5 { margin: 0; font-size: 11px; color: #fff; }
+        .ag-info span { font-size: 9px; color: #00e676; }
+        
+        .ag-desc { font-size: 9px; color: #8a8f9d; margin-bottom: 8px; line-height: 1.3; }
+        .ag-btn { width: 100%; background: #2a2e3d; color: #fff; border: 1px solid #3e445b; padding: 5px; border-radius: 8px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; }
+        .ag-btn:hover { background: #3e445b; }
 
-        /* Тренировъчни карти */
-        .training-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .t-info h4 { margin: 0 0 5px 0; font-size: 14px; }
-        .t-info p { margin: 0; font-size: 11px; color: #8a8f9d; }
-        .train-btn { background: #00e676; color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
-        .train-btn:hover { background: #00c853; }
-        .train-btn:disabled { background: #32384a; color: #8a8f9d; cursor: not-allowed; }
-
-        /* Спорни бази / Бонуси блок */
-        .facility-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-top: 20px; }
-        .facility-title { font-size: 13px; font-weight: bold; color: #d4a017; margin-bottom: 8px; display: flex; justify-content: space-between; }
-        .facility-desc { font-size: 11px; color: #8a8f9d; margin-bottom: 10px; }
-        .upgrade-facility-btn { width: 100%; background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
-        .upgrade-facility-btn:hover { background: #3e445b; }
+        /* Решетка за тренировъчни модули */
+        .upgrades-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .upgrade-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .u-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+        .u-icon { background: #222634; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .u-info h4 { margin: 0; font-size: 11px; color: #fff; }
+        .u-info span { font-size: 9px; color: #8a8f9d; }
+        
+        .upgrade-btn { width: 100%; background: #1e3a8a; color: #fff; border: 1px solid #3b82f6; padding: 6px; border-radius: 8px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: 0.2s; }
+        .upgrade-btn:hover { background: #2563eb; }
+        .upgrade-btn.disabled { background: #222634; color: #6b7280; border-color: #2a2e3d; cursor: not-allowed; }
 
         /* Долен навигационен бар */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
@@ -45,48 +60,135 @@
     <div class="top-bar">
         <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
         <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
-        <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
+        <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">250</span></div>
+        <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
-    <div class="section-title"><span>🏋️</span> Тренировъчни Програми</div>
-
-    <!-- ТРЕНИРОВКА 1 -->
-    <div class="training-card">
-        <div class="t-info">
-            <h4>Интензивен спринт</h4>
-            <p>Цена: ⚡ 15 енергия • Награда: +10 XP</p>
-        </div>
-        <button class="train-btn" onclick="doTraining(15, 10, 'Спринт')">Тренирай</button>
+    <!-- СЕКЦИЯ: 4 АГЕНТНИ СЛОТА -->
+    <div class="section-header">
+        <span>🏋️ Тренировъчен щаб (4 слота)</span>
+        <span style="color: #8a8f9d; font-size: 9px;">Активни бонуси</span>
     </div>
 
-    <!-- ТРЕНИРОВКА 2 -->
-    <div class="training-card">
-        <div class="t-info">
-            <h4>Тактически разбор</h4>
-            <p>Цена: ⚡ 25 енергия • Награда: +20 XP</p>
+    <div class="agents-grid">
+        <!-- Слот 1 -->
+        <div class="agent-slot active">
+            <div>
+                <div class="ag-top">
+                    <div class="ag-icon">🏃‍♂️</div>
+                    <div class="ag-info">
+                        <h5>Фитнес Гуру</h5>
+                        <span>🟢 Активен</span>
+                    </div>
+                </div>
+                <div class="ag-desc">Намалява разхода на енергия при тренировка с 5%.</div>
+            </div>
+            <button class="ag-btn" onclick="manageAgent(1)">Смени</button>
         </div>
-        <button class="train-btn" onclick="doTraining(25, 20, 'Тактика')">Тренирай</button>
+
+        <!-- Слот 2 -->
+        <div class="agent-slot active">
+            <div>
+                <div class="ag-top">
+                    <div class="ag-icon">🧠</div>
+                    <div class="ag-info">
+                        <h5>Тактик Про</h5>
+                        <span>🟢 Активен</span>
+                    </div>
+                </div>
+                <div class="ag-desc">Дава +20% бонус XP към тактическите тренировки.</div>
+            </div>
+            <button class="ag-btn" onclick="manageAgent(2)">Смени</button>
+        </div>
+
+        <!-- Слот 3 -->
+        <div class="agent-slot locked" id="slot3Box">
+            <div>
+                <div class="ag-top">
+                    <div class="ag-icon">🔒</div>
+                    <div class="ag-info">
+                        <h5>Слот 3</h5>
+                        <span style="color: #ff9800;">Заключен</span>
+                    </div>
+                </div>
+                <div class="ag-desc">Отключи за допълнителен скаут бонус.</div>
+            </div>
+            <button class="ag-btn" style="background: #ff9800; color: #000; border-color: #e68900;" onclick="unlockSlot(3, 500)">🪙 500</button>
+        </div>
+
+        <!-- Слот 4 -->
+        <div class="agent-slot locked" id="slot4Box">
+            <div>
+                <div class="ag-top">
+                    <div class="ag-icon">🔒</div>
+                    <div class="ag-info">
+                        <h5>Слот 4</h5>
+                        <span style="color: #ff9800;">Заключен</span>
+                    </div>
+                </div>
+                <div class="ag-desc">Елитен щаб за максимални приходи.</div>
+            </div>
+            <button class="ag-btn" style="background: #00bcd4; color: #000; border-color: #0097a7;" onclick="unlockSlot(4, 1000)">🪙 1000</button>
+        </div>
     </div>
 
-    <!-- ТРЕНИРОВКА 3 -->
-    <div class="training-card">
-        <div class="t-info">
-            <h4>Завършващ удар</h4>
-            <p>Цена: ⚡ 40 енергия • Награда: +35 XP</p>
-        </div>
-        <button class="train-btn" onclick="doTraining(40, 35, 'Удар')">Тренирай</button>
+    <!-- СЕКЦИЯ: ТРЕНИРОВЪЧНИ МОДУЛИ -->
+    <div class="section-header">
+        <span>⚡ Тренировъчни модули</span>
     </div>
+    
+    <div class="upgrades-grid">
+        <div class="upgrade-card">
+            <div>
+                <div class="u-top">
+                    <div class="u-icon">⚽</div>
+                    <div class="u-info">
+                        <h4>Атака</h4>
+                        <span id="attLvl">Lv. 1 (+1 стат)</span>
+                    </div>
+                </div>
+            </div>
+            <button class="upgrade-btn" id="btnAtt" onclick="upgradeStat('attack', 350)">🪙 350</button>
+        </div>
 
-    <!-- СПОРТНИ БАЗИ И ГЕНЕРАТОРИ -->
-    <div class="facility-card">
-        <div class="facility-title">
-            <span>🏟️ Спортна база & Генератори</span>
-            <span>Ниво 1</span>
+        <div class="upgrade-card">
+            <div>
+                <div class="u-top">
+                    <div class="u-icon">🛡️</div>
+                    <div class="u-info">
+                        <h4>Защита</h4>
+                        <span id="defLvl">Lv. 1 (+2 стат)</span>
+                    </div>
+                </div>
+            </div>
+            <button class="upgrade-btn" id="btnDef" onclick="upgradeStat('defense', 350)">🪙 350</button>
         </div>
-        <div class="facility-desc">
-            Базата намалява разхода на енергия при спринт/действие, а генераторите ускоряват възстановяването на енергията на час.
+
+        <div class="upgrade-card">
+            <div>
+                <div class="u-top">
+                    <div class="u-icon">⛔</div>
+                    <div class="u-info">
+                        <h4>Тактика</h4>
+                        <span id="tacLvl">Lv. 1 (+1 стат)</span>
+                    </div>
+                </div>
+            </div>
+            <button class="upgrade-btn" id="btnTac" onclick="upgradeStat('tactic', 400)">🪙 400</button>
         </div>
-        <button class="upgrade-facility-btn" onclick="upgradeFacility()">Ъпгрейд на базата (🪙 300)</button>
+
+        <div class="upgrade-card">
+            <div>
+                <div class="u-top">
+                    <div class="u-icon">⚡</div>
+                    <div class="u-info">
+                        <h4>Дрибъл</h4>
+                        <span id="driLvl">Lv. 1 (+3 стат)</span>
+                    </div>
+                </div>
+            </div>
+            <button class="upgrade-btn" id="btnDri" onclick="upgradeStat('dribble', 450)">🪙 450</button>
+        </div>
     </div>
 
     <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
@@ -101,40 +203,83 @@
 </div>
 
 <script>
-    // Зареждане на ресурси
-    let energy = parseInt(localStorage.getItem('energy')) || 100;
-    let cash = parseInt(localStorage.getItem('cash')) || 500;
-    let xp = parseInt(localStorage.getItem('playerXp')) || 0;
+    let cash = parseInt(localStorage.getItem('cash')) || 250;
+    let attackLevel = parseInt(localStorage.getItem('attLvl')) || 1;
+    let defenseLevel = parseInt(localStorage.getItem('defLvl')) || 1;
+    let slot3Unlocked = localStorage.getItem('slot3Unlocked') === 'true';
+    let slot4Unlocked = localStorage.getItem('slot4Unlocked') === 'true';
 
-    document.getElementById('topEnergy').innerText = energy;
     document.getElementById('topCash').innerText = cash;
+    document.getElementById('attLvl').innerText = `Lv. ${attackLevel} (+1 стат)`;
+    document.getElementById('defLvl').innerText = `Lv. ${defenseLevel} (+2 стат)`;
 
-    function doTraining(cost, rewardXp, type) {
-        if (energy < cost) {
-            alert("Нямаш достатъчно енергия! Изчакай зареждане или посети магазина.");
-            return;
+    // Автоматично маркиране на бутоните като сиви/неактивни, ако няма достатъчно пари
+    function checkButtonAffordability() {
+        if (cash < 350) {
+            document.getElementById('btnAtt').classList.add('disabled');
+            document.getElementById('btnDef').classList.add('disabled');
         }
+        if (cash < 400) document.getElementById('btnTac').classList.add('disabled');
+        if (cash < 450) document.getElementById('btnDri').classList.add('disabled');
+    }
+    checkButtonAffordability();
 
-        energy -= cost;
-        xp += rewardXp;
-
-        localStorage.setItem('energy', energy);
-        localStorage.setItem('playerXp', xp);
-
-        document.getElementById('topEnergy').innerText = energy;
-        alert(`Успешна тренировка (${type})! Получи +${rewardXp} XP.`);
+    // Зареждане на отключени слотове
+    if (slot3Unlocked) {
+        let s3 = document.getElementById('slot3Box');
+        s3.classList.remove('locked');
+        s3.classList.add('active');
+        s3.innerHTML = `<div><div class="ag-top"><div class="ag-icon">🌟</div><div class="ag-info"><h5>Скаутинг</h5><span>🟢 Активен</span></div></div><div class="ag-desc">Привлича млади таланти.</div></div><button class="ag-btn" onclick="manageAgent(3)">Смени</button>`;
     }
 
-    function upgradeFacility() {
-        if (cash < 300) {
-            alert("Нямаш достатъчно кеш в личната сметка за ъпгрейд на базата!");
+    if (slot4Unlocked) {
+        let s4 = document.getElementById('slot4Box');
+        s4.classList.remove('locked');
+        s4.classList.add('active');
+        s4.innerHTML = `<div><div class="ag-top"><div class="ag-icon">👑</div><div class="ag-info"><h5>Директор</h5><span>🟢 Активен</span></div></div><div class="ag-desc">Максимални отборни бонуси.</div></div><button class="ag-btn" onclick="manageAgent(4)">Смени</button>`;
+    }
+
+    function unlockSlot(slotNum, cost) {
+        if (cash < cost) {
+            alert("Нямаш достатъчно злато за отключване на този слот!");
             return;
         }
 
-        cash -= 300;
+        cash -= cost;
         localStorage.setItem('cash', cash);
         document.getElementById('topCash').innerText = cash;
-        alert("Спортната база е ъпгрейдната успешно! Енергийният разход е оптимизиран.");
+
+        if (slotNum === 3) localStorage.setItem('slot3Unlocked', 'true');
+        if (slotNum === 4) localStorage.setItem('slot4Unlocked', 'true');
+        
+        location.reload();
+    }
+
+    function manageAgent(slotId) {
+        alert(`Панел за управление на агент в Слот ${slotId}. Избери нов агент от Магазина!`);
+    }
+
+    function upgradeStat(type, cost) {
+        if (cash < cost) {
+            alert("Нямаш достатъчно злато! Спечели още от мачовете или пасивните приходи.");
+            return;
+        }
+
+        cash -= cost;
+        if (type === 'attack') {
+            attackLevel++;
+            localStorage.setItem('attLvl', attackLevel);
+            document.getElementById('attLvl').innerText = `Lv. ${attackLevel} (+1 стат)`;
+        } else if (type === 'defense') {
+            defenseLevel++;
+            localStorage.setItem('defLvl', defenseLevel);
+            document.getElementById('defLvl').innerText = `Lv. ${defenseLevel} (+2 стат)`;
+        }
+
+        localStorage.setItem('cash', cash);
+        document.getElementById('topCash').innerText = cash;
+        checkButtonAffordability();
+        alert("Успешна тренировка! Статът ти се повиши.");
     }
 </script>
 

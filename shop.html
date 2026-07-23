@@ -2,27 +2,38 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Clash - Магазин</title>
+    <title>Team HTPL - Магазин</title>
     <style>
         * { box-sizing: border-box; }
         body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
         
         /* Топ хедър бар с ресурси */
-        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 13px; }
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
         .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
 
-        h2 { font-size: 18px; margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px; }
+        /* Баланс карти */
+        .balance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .bal-card { background: #1a1c24; border: 1px solid #2a2e3d; padding: 12px; border-radius: 10px; font-size: 12px; display: flex; align-items: center; gap: 10px; }
+        .bal-card span { font-size: 18px; font-weight: bold; }
 
-        /* Артикули в магазина */
-        .shop-item { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .item-info strong { font-size: 14px; display: block; margin-bottom: 3px; }
-        .item-info small { font-size: 11px; color: #8a8f9d; }
+        /* Табове в магазина */
+        .shop-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
+        .shop-tab { background: #1a1c24; border: 1px solid #2a2e3d; color: #8a8f9d; padding: 8px 4px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; }
+        .shop-tab.active { background: #2a2e3d; color: #00e676; border-color: #00e676; }
 
-        .buy-btn { background: #d4a017; border: none; color: #000; font-weight: bold; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
-        .buy-btn:hover { background: #b8860b; }
+        /* Секции на магазина */
+        .shop-section { display: none; }
+        .shop-section.active { display: block; }
 
-        /* Навигационен бар долу */
+        /* Артикул карта */
+        .item-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 10px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .item-info h4 { margin: 0 0 3px 0; font-size: 13px; }
+        .item-info p { margin: 0; font-size: 11px; color: #8a8f9d; }
+        .buy-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
+        .buy-btn:hover { background: #00e676; color: #000; border-color: #00e676; }
+
+        /* Долен навигационен бар */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
         .nav-item { color: #8a8f9d; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
         .nav-item.active { color: #00e676; }
@@ -35,27 +46,135 @@
     
     <!-- ТОП БАР С РЕСУРСИ -->
     <div class="top-bar">
-        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span>/100</div>
+        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
         <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
         <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
     </div>
 
-    <h2>🛒 Магазин</h2>
-    
-    <div class="shop-item">
-        <div class="item-info">
-            <strong>Енергийна напитка</strong>
-            <small>+50 Енергия</small>
+    <!-- БАЛАНС КАРТИ -->
+    <div class="balance-grid">
+        <div class="bal-card">
+            <span>🪙</span>
+            <div>
+                <small style="color: #8a8f9d; font-size: 10px; display:block;">Злато</small>
+                <b id="cashBal">500</b>
+            </div>
         </div>
-        <button class="buy-btn" onclick="buyEnergy()">50 🪙</button>
+        <div class="bal-card">
+            <span>⚡</span>
+            <div>
+                <small style="color: #8a8f9d; font-size: 10px; display:block;">Енергия</small>
+                <b id="energyBal">100</b>
+            </div>
+        </div>
     </div>
 
-    <div class="shop-item">
-        <div class="item-info">
-            <strong>Треньорски пакет</strong>
-            <small>+2 OVR на играча</small>
+    <!-- ТАБОВЕ ЗА МАГАЗИНА -->
+    <div class="shop-tabs">
+        <button class="shop-tab active" onclick="switchShopTab('energy', this)">Енергия</button>
+        <button class="shop-tab" onclick="switchShopTab('agents', this)">Агенти</button>
+        <button class="shop-tab" onclick="switchShopTab('rewards', this)">Награди</button>
+        <button class="shop-tab" onclick="switchShopTab('offers', this)">Оферти</button>
+    </div>
+
+    <!-- СЕКЦИЯ 1: ЕНЕРГИЯ -->
+    <div id="energy" class="shop-section active">
+        <div class="item-card">
+            <div class="item-info">
+                <h4>+10 Енергия</h4>
+                <p>Малък пакет енергия</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(30, 'energy', 10)">🪙 30</button>
         </div>
-        <button class="buy-btn" onclick="buyOvrBoost()">200 🪙</button>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>+25 Енергия</h4>
+                <p>Средно зареждане</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(70, 'energy', 25)">🪙 70</button>
+        </div>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>+50 Енергия</h4>
+                <p>Голямо зареждане</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(130, 'energy', 50)">🪙 130</button>
+        </div>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>+100 Енергия</h4>
+                <p>Пълно зареждане</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(240, 'energy', 100)">🪙 240</button>
+        </div>
+    </div>
+
+    <!-- СЕКЦИЯ 2: АГЕНТИ -->
+    <div id="agents" class="shop-section">
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Треньор Базов</h4>
+                <p>+1 стат • 3.5 часа действие</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(300, 'agent', 1)">🪙 300</button>
+        </div>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Треньор Про</h4>
+                <p>+2 стат • 3.5 часа действие</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(800, 'agent', 2)">🪙 800</button>
+        </div>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Треньор Елит</h4>
+                <p>+3 стат • 3.5 часа действие</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(2000, 'agent', 3)">🪙 2000</button>
+        </div>
+    </div>
+
+    <!-- СЕКЦИЯ 3: НАГРАДИ -->
+    <div id="rewards" class="shop-section">
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Златна Обувка</h4>
+                <p>Награда за голмайстор — +5 Атака</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(3000, 'reward', 5)">🪙 3000</button>
+        </div>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Златна Топка</h4>
+                <p>Награда за най-добър играч — +5 Техника</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(5000, 'reward', 5)">🪙 5000</button>
+        </div>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Тренировъчен Медал</h4>
+                <p>Отличие за упорит труд — +5 Издръжливост</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(2000, 'reward', 5)">🪙 2000</button>
+        </div>
+    </div>
+
+    <!-- СЕКЦИЯ 4: ОФЕРТИ -->
+    <div id="offers" class="shop-section">
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Стартов Пакет</h4>
+                <p>200 енергия + Треньор Про (3.5ч)</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(900, 'offer', 200)">🪙 900</button>
+        </div>
+        <div class="item-card">
+            <div class="item-info">
+                <h4>Шампионски Пакет (Препоръчан)</h4>
+                <p>500 енергия + Треньор Елит + 500 злато</p>
+            </div>
+            <button class="buy-btn" onclick="buyItem(2500, 'offer', 500)">🪙 2500</button>
+        </div>
     </div>
 
     <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
@@ -70,48 +189,40 @@
 </div>
 
 <script>
-    // Зареждане на данни
     let energy = parseInt(localStorage.getItem('energy')) || 100;
-    let diamonds = parseInt(localStorage.getItem('diamonds')) || 10;
     let cash = parseInt(localStorage.getItem('cash')) || 500;
-    let ovr = parseInt(localStorage.getItem('playerOvr')) || 42;
-
-    updateUI();
 
     function updateUI() {
         document.getElementById('topEnergy').innerText = energy;
-        document.getElementById('topDiamonds').innerText = diamonds;
-        document.getElementById('topCash').innerText = cash;
+        document.getElementById('cashBal').innerText = cash;
+        document.getElementById('energyBal').innerText = energy;
+    }
+    updateUI();
+
+    function switchShopTab(tabId, btn) {
+        document.querySelectorAll('.shop-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.shop-tab').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
     }
 
-    function buyEnergy() {
-        if (cash < 50) {
-            alert("Нямаш достатъчно кеш (монети)!");
+    function buyItem(price, type, value) {
+        if (cash < price) {
+            alert("Нямаш достатъчно злато (кеш) за тази покупка!");
             return;
         }
-        cash -= 50;
-        energy = Math.min(100, energy + 50); // Максимум 100 енергия
 
+        cash -= price;
+        if (type === 'energy' || type === 'offer') {
+            energy += value;
+        }
+        
         localStorage.setItem('cash', cash);
         localStorage.setItem('energy', energy);
         updateUI();
-        
-        alert("Успешно купена Енергийна напитка (+50 Енергия)!");
-    }
 
-    function buyOvrBoost() {
-        if (cash < 200) {
-            alert("Нямаш достатъчно кеш (монети)!");
-            return;
-        }
-        cash -= 200;
-        ovr += 2;
-
-        localStorage.setItem('cash', cash);
-        localStorage.setItem('playerOvr', ovr);
-        updateUI();
-        
-        alert("Успешно купен Треньорски пакет (+2 OVR)!");
+        alert("Успешна покупка в магазина!");
     }
 </script>
 

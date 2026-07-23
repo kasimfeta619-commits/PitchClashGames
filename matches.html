@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Tactical Clash - Отборни Дуели и Арена</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #0c0e14; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
+        
+        /* Топ бар */
+        .top-hud { background: #151821; border: 1px solid #232733; padding: 8px 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 11px; }
+        .hud-item { display: flex; align-items: center; gap: 4px; font-weight: bold; }
+
+        /* Хедър на мача */
+        .match-teams-header { background: #151821; border: 1px solid #232733; border-radius: 12px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; text-align: center; }
+        .team-badge-name { font-size: 11px; font-weight: bold; }
+        .score-box { font-size: 18px; font-weight: bold; letter-spacing: 2px; color: #fff; background: #1c202d; padding: 4px 12px; border-radius: 8px; border: 1px solid #282e3e; }
+
+        /* СПИСЪК С ДУЕЛИ */
+        #listView { display: flex; flex-direction: column; gap: 8px; }
+        .duel-row { background: #151821; border: 1px solid #232733; border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; }
+        .duel-players-info { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; }
+        .player-side { display: flex; align-items: center; gap: 6px; }
+        .player-side.left { color: #ef4444; }
+        .player-side.right { color: #3b82f6; }
+        .mini-emblem { background: #1c202d; border: 1px solid #282e3e; padding: 2px 6px; border-radius: 6px; font-size: 10px; text-align: center; }
+
+        .tug-of-war-bar { background: #1c202d; height: 8px; border-radius: 4px; position: relative; overflow: hidden; display: flex; border: 1px solid #282e3e; }
+        .tug-red { background: #ef4444; height: 100%; }
+        .tug-blue { background: #3b82f6; height: 100%; }
+
+        .duel-action-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; }
+        .power-num { padding: 0 4px; }
+        
+        .action-duel-btn { background: linear-gradient(180deg, #2563eb, #1d4ed8); color: #fff; border: 1px solid #60a5fa; border-radius: 8px; padding: 6px 16px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; box-shadow: 0 2px 6px rgba(37,99,235,0.4); }
+        .action-duel-btn.help { background: linear-gradient(180deg, #475569, #334155); border-color: #64748b; box-shadow: none; }
+        .action-duel-btn:active { transform: scale(0.97); }
+
+        /* АКТИВЕН ДУЕЛ / АРЕНА (Тактически изглед) */
+        #duelArenaView { display: none; flex-direction: column; gap: 8px; }
+        
+        .arena-top-hud { background: #151821; border: 1px solid #232733; border-radius: 10px; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; }
+        .arena-timer { background: #1c202d; border: 1px solid #282e3e; padding: 2px 8px; border-radius: 6px; color: #ff9800; font-size: 12px; }
+        
+        /* Уникално авторско игрище (Тъмно-зелен тактически стил) */
+        .duel-pitch { background: #12281d; border: 2px solid #1e3f2f; border-radius: 12px; height: 210px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 16px 16px; }
+        .tactical-zone { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 14px; height: 50px; border: 2px solid rgba(255,255,255,0.4); border-left: none; }
+        .core-marker { position: absolute; right: 120px; top: 41%; width: 10px; height: 10px; background: #00e676; border-radius: 50%; box-shadow: 0 0 6px #00e676; }
+
+        /* Тактически карти / единици на арената */
+        .arena-card { position: absolute; background: #1e3a8a; border: 2px solid #60a5fa; border-radius: 8px; padding: 4px; text-align: center; width: 52px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .arena-card.opponent { background: #7f1d1d; border-color: #f87171; }
+        .ac-power { background: rgba(0,0,0,0.6); font-size: 9px; font-weight: bold; color: #fff; border-radius: 4px; padding: 1px; margin-bottom: 2px; }
+        .ac-avatar { font-size: 16px; line-height: 1; }
+        .ac-name { font-size: 8px; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Слотове за карти долу */
+        .cards-row { display: flex; gap: 6px; }
+        .card-slot { flex: 1; background: linear-gradient(135deg, #1e3a8a, #1d4ed8); border: 1px solid #60a5fa; border-radius: 10px; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #93c5fd; text-align: center; }
+
+        /* Контролен панел */
+        .arena-control-box { display: flex; gap: 8px; }
+        .emoji-btn { background: #151821; border: 1px solid #232733; border-radius: 12px; width: 48px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        .arena-attack-btn { flex: 1; background: linear-gradient(180deg, #334155, #1e293b); color: #fff; border: 1px solid #64748b; border-radius: 12px; padding: 10px; font-weight: bold; font-size: 14px; cursor: pointer; text-align: center; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .arena-attack-btn.help-mode { background: linear-gradient(180deg, #1d4ed8, #1e40af); border-color: #60a5fa; box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
+        .arena-attack-btn:active { transform: scale(0.98); }
+        .attack-sub { font-size: 8px; color: #94a3b8; font-weight: normal; margin-top: 1px; }
+
+        .energy-badge { background: #151821; border: 1px solid #232733; border-radius: 12px; padding: 0 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #00e676; font-weight: bold; font-size: 13px; }
+        .energy-badge span { font-size: 8px; color: #8b93a7; }
+
+        .back-to-list-btn { background: #232733; border: 1px solid #3b82f6; color: #3b82f6; padding: 6px 10px; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; margin-bottom: 6px; display: inline-block; }
+
+        /* Навигация долу */
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #151821; border-top: 1px solid #232733; padding: 8px; z-index: 100; }
+        .nav-btn { color: #8b93a7; text-decoration: none; font-size: 10px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+        .nav-btn.active { color: #00e676; }
+        .nav-btn span { font-size: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- ТОП БАР С РЕСУРСИ -->
+    <div class="top-hud">
+        <div class="hud-item" style="color: #fbbf24;">⭐ <span id="topStars">260</span></div>
+        <div class="hud-item" style="color: #38bdf8;">🛡️ <span id="topRatio">5.57M</span></div>
+        <div class="hud-item" style="color: #00e676;">⚡ <span id="topEnergy">1000</span>/50</div>
+        <div class="hud-item" style="color: #facc15;">🪙 <span id="topGold">990</span></div>
+    </div>
+
+    <!-- ХЕДЪР НА СБЛЪСЪКА -->
+    <div class="match-teams-header">
+        <div class="team-badge-name" style="color: #ef4444;">🛡️ Red Legion</div>
+        <div class="score-box">0 - 0</div>
+        <div class="team-badge-name" style="color: #3b82f6;">Blue Alliance 👑</div>
+    </div>
+
+    <!-- СПИСЪК С ДУЕЛИ -->
+    <div id="listView">
+        
+        <!-- Дуел 1 (Наша зона - Натиск) -->
+        <div class="duel-row" style="border-color: #3b82f6; background: #131b2e;">
+            <div class="duel-players-info">
+                <div class="player-side left"><span class="mini-emblem">⚡ 24</span> Apex_Red</div>
+                <div class="player-side right">Stellar_Blue <span class="mini-emblem">⚡ 2</span></div>
+            </div>
+            <div class="tug-of-war-bar">
+                <div class="tug-red" id="red1" style="width: 75%;"></div>
+                <div class="tug-blue" id="blue1" style="width: 25%;"></div>
+            </div>
+            <div class="duel-action-row">
+                <span class="power-num" style="color: #ef4444;" id="p1Red">1,034</span>
+                <button class="action-duel-btn" onclick="openArena(false)">АТАКА</button>
+                <span class="power-num" style="color: #3b82f6;" id="p1Blue">354</span>
+            </div>
+        </div>
+
+        <!-- Дуел 2 (Чужда зона - Подкрепа) -->
+        <div class="duel-row">
+            <div class="duel-players-info">
+                <div class="player-side left"><span class="mini-emblem">⚡ 22</span> Titan_Red</div>
+                <div class="player-side right">Nova_Blue <span class="mini-emblem">⚡ 99</span></div>
+            </div>
+            <div class="tug-of-war-bar">
+                <div class="tug-red" id="red2" style="width: 66%;"></div>
+                <div class="tug-blue" id="blue2" style="width: 34%;"></div>
+            </div>
+            <div class="duel-action-row">
+                <span class="power-num" style="color: #ef4444;" id="p2Red">998</span>
+                <button class="action-duel-btn help" onclick="openArena(true)">ПОМОГНИ</button>
+                <span class="power-num" style="color: #3b82f6;" id="p2Blue">502</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- АКТИВЕН ДУЕЛ / ТАКТИЧЕСКА АРЕНА -->
+    <div id="duelArenaView">
+        <button class="back-to-list-btn" onclick="backToList()">⬅ Към всички дуели</button>
+
+        <div class="arena-top-hud">
+            <span style="color: #ef4444;" id="arenaRedPower">⚡ 998</span>
+            <div class="arena-timer" id="matchTimer">02:35</div>
+            <span style="color: #3b82f6;" id="arenaBluePower">⚡ 502</span>
+        </div>
+
+        <!-- Тактическо поле -->
+        <div class="duel-pitch">
+            <div class="tactical-zone"></div>
+            <div class="core-marker"></div>
+
+            <div class="arena-card opponent" style="top: 25%; left: 35%;">
+                <div class="ac-power">⚡ 503</div>
+                <div class="ac-avatar">🛡️</div>
+                <div class="ac-name">Titan_Red</div>
+            </div>
+            <div class="arena-card opponent" style="top: 55%; left: 35%;">
+                <div class="ac-power">⚡ 495</div>
+                <div class="ac-avatar">⚔️</div>
+                <div class="ac-name">Vanguard</div>
+            </div>
+
+            <div class="arena-card" style="top: 38%; right: 35%;">
+                <div class="ac-power">⚡ 502</div>
+                <div class="ac-avatar">🛡️</div>
+                <div class="ac-name">Nova_Blue</div>
+            </div>
+        </div>
+
+        <!-- Слотове долу -->
+        <div class="cards-row">
+            <div class="card-slot"><span>⭐</span>TACTICAL<br>CARD I</div>
+            <div class="card-slot"><span>⭐</span>TACTICAL<br>CARD II</div>
+            <div class="card-slot"><span>⭐</span>TACTICAL<br>CARD III</div>
+        </div>
+
+        <!-- Контролен панел -->
+        <div class="arena-control-box">
+            <button class="emoji-btn" onclick="alert('💬 Сигнал изпратен към отбора!')">💬</button>
+            
+            <button class="arena-attack-btn help-mode" id="arenaMainBtn" onclick="performArenaAction()">
+                ПОМОГНИ
+                <div class="attack-sub" id="arenaSubText">Задръж за Автопомощ</div>
+            </button>
+
+            <div class="energy-badge">
+                x5 ⚡
+                <span>Енергия</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- НАВИГАЦИЯ -->
+    <div class="bottom-nav">
+        <a href="profile.html" class="nav-btn"><span>👤</span> ПРОФИЛ</a>
+        <a href="team.html" class="nav-btn active"><span>👥</span> СБЛЪСЪК</a>
+        <a href="friends.html" class="nav-btn"><span>🤝</span> СЪЮЗ</a>
+        <a href="news.html" class="nav-btn"><span>🔔</span> НОВИНИ</a>
+        <a href="chat.html" class="nav-btn"><span>💬</span> ЧАТ</a>
+    </div>
+
+</div>
+
+<script>
+    let energy = parseInt(localStorage.getItem('energy')) || 1000;
+    document.getElementById('topEnergy').innerText = energy;
+
+    let isHelpMode = false;
+    let currentBluePwr = 502;
+    let currentRedPwr = 998;
+
+    function openArena(isHelp) {
+        isHelpMode = isHelp;
+        document.getElementById('listView').style.display = 'none';
+        document.getElementById('duelArenaView').style.display = 'flex';
+
+        let btn = document.getElementById('arenaMainBtn');
+
+        if (isHelpMode) {
+            btn.innerHTML = `ПОМОГНИ<div class="attack-sub">Задръж за Автопомощ</div>`;
+            btn.className = "arena-attack-btn help-mode";
+        } else {
+            btn.innerHTML = `АТАКА<div class="attack-sub">Задръж за Автоматичен натиск</div>`;
+            btn.className = "arena-attack-btn";
+        }
+    }
+
+    function backToList() {
+        document.getElementById('duelArenaView').style.display = 'none';
+        document.getElementById('listView').style.display = 'flex';
+    }
+
+    function performArenaAction() {
+        if (energy < 5) {
+            alert("Нямаш достатъчно енергия в резервоара!");
+            return;
+        }
+
+        energy -= 5;
+        localStorage.setItem('energy', energy);
+        document.getElementById('topEnergy').innerText = energy;
+
+        currentBluePwr += 40;
+        document.getElementById('arenaBluePower').innerText = '⚡ ' + currentBluePwr;
+        document.getElementById('p2Blue').innerText = currentBluePwr;
+
+        let actionType = isHelpMode ? "подкрепа" : "атака";
+        alert(`⚡ Успешна ${actionType} на арената! Енергията е инвестирана успешно.`);
+    }
+
+    let seconds = 2 * 60 + 35;
+    setInterval(() => {
+        if (seconds > 0) seconds--;
+        let m = Math.floor(seconds / 60);
+        let s = seconds % 60;
+        document.getElementById('matchTimer').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }, 1000);
+</script>
+
+</body>
+</html>

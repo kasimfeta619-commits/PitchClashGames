@@ -9,32 +9,34 @@
         .app-container { width: 100%; max-width: 420px; padding-bottom: 70px; }
         
         /* Топ хедър бар с ресурси */
-        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
+        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; }
         .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
-        .shop-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
-        .shop-btn:hover { background: #3e445b; }
+        .shop-link-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
+        .shop-link-btn:hover { background: #3e445b; }
+
+        /* Нова идея: Дневен бонус лента */
+        .daily-bonus-bar { background: linear-gradient(135deg, #221c12, #1a1c24); border: 1px solid #ff9800; border-radius: 10px; padding: 10px 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .claim-bonus-btn { background: #ff9800; color: #000; border: none; padding: 5px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
+        .claim-bonus-btn:hover { background: #e68900; }
 
         /* Профил и Отбор карта */
-        .profile-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .profile-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .p-name { font-weight: bold; font-size: 15px; margin-bottom: 3px; }
         .p-sub { font-size: 12px; color: #8a8f9d; }
         .p-ovr-box { background: #121318; border: 1px solid #32384a; padding: 8px 14px; border-radius: 8px; text-align: center; }
         .p-ovr-val { font-size: 20px; font-weight: bold; color: #00e676; }
 
-        /* Отборна хазна и Глас */
-        .treasury-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 12px 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-        .treasury-info b { color: #d4a017; }
-        .vote-badge { background: #221c12; border: 1px solid #ff9800; color: #ff9800; padding: 5px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
-        .vote-badge:hover { background: #ff9800; color: #000; }
+        /* Нова идея: Форма на отбора и статус */
+        .team-status-pill { background: #12261e; border: 1px solid #00e676; color: #00e676; padding: 8px 12px; border-radius: 8px; font-size: 11px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
 
-        /* Бързи бутони */
-        .quick-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .quick-btn { background: #1a1c24; border: 1px solid #2a2e3d; padding: 12px 8px; border-radius: 10px; text-align: center; color: #fff; text-decoration: none; font-size: 11px; font-weight: bold; display: flex; flex-direction: column; gap: 5px; align-items: center; }
-        .quick-btn:hover { border-color: #3e445b; }
-        .quick-btn span { font-size: 18px; }
+        /* Бързи бутони (Grid) */
+        .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+        .quick-btn { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 5px; border-radius: 10px; text-align: center; color: #fff; text-decoration: none; font-size: 10px; font-weight: bold; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+        .quick-btn:hover { border-color: #00e676; background: #20232d; }
+        .quick-btn span { font-size: 16px; }
 
         /* Live мач в 20:00 ч. блок */
-        .live-match-card { background: linear-gradient(135deg, #1a1c24, #121318); border: 1px solid #00e676; border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: center; }
+        .live-match-card { background: linear-gradient(135deg, #1a1c24, #121318); border: 1px solid #00e676; border-radius: 12px; padding: 15px; margin-bottom: 12px; text-align: center; }
         .live-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #00e676; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
         .match-teams-box { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; margin-bottom: 12px; }
         .team-pill { background: #121318; padding: 6px 12px; border-radius: 6px; border: 1px solid #32384a; font-size: 12px; }
@@ -58,7 +60,16 @@
         <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
         <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
         <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">500</span></div>
-        <button class="shop-btn" onclick="location.href='shop.html'">Тактически център</button>
+        <a href="shop.html" class="shop-link-btn">Магазин</a>
+    </div>
+
+    <!-- НОВА ИДЕЯ: ДНЕВЕН БОНУС -->
+    <div class="daily-bonus-bar">
+        <div>
+            🎁 <b>Дневен бонус</b><br>
+            <small style="color: #8a8f9d;">Вземи своето дневно злато</small>
+        </div>
+        <button id="bonusBtn" class="claim-bonus-btn" onclick="claimDailyBonus()">Вземи (🪙 100)</button>
     </div>
 
     <!-- ПРОФИЛНА КАРТА -->
@@ -73,35 +84,33 @@
         </div>
     </div>
 
-    <!-- ОТБОРНА ХАЗНА И ВОТ -->
-    <div class="treasury-card">
-        <div class="treasury-info">
-            🏛️ Обща хазна: <b><span id="teamTreasury">1,250</span> 🪙</b><br>
-            <small style="color: #8a8f9d;">Активен вот: Упгрейд стадион (78%)</small>
-        </div>
-        <button class="vote-badge" onclick="alert('Отворена е системата за демократичен вот на отбора!')">Гласувай</button>
+    <!-- НОВА ИДЕЯ: СТАТУС НА ФОРМАТА НА ОТБОРА -->
+    <div class="team-status-pill">
+        <span>🔥 Отборна форма: ПЕБЕДНА СЕРИЯ</span>
+        <span style="font-size: 10px; color: #fff;">Хазна: 1,250 🪙</span>
     </div>
 
-    <!-- БЪРЗИ БУТОНИ -->
+    <!-- БЪРЗИ БУТОНИ ЗА НАВИГАЦИЯ -->
     <div class="quick-grid">
-        <a href="matches.html" class="quick-btn"><span>🏆</span> Лига</a>
-        <a href="shop.html" class="quick-btn"><span>🛒</span> Магазин</a>
+        <a href="matches.html" class="quick-btn"><span>⚽</span> Лига</a>
+        <a href="training.html" class="quick-btn"><span>🏋️</span> Трен.</a>
         <a href="team.html" class="quick-btn"><span>👥</span> Отбор</a>
+        <a href="shop.html" class="quick-btn"><span>🛒</span> Шоп</a>
     </div>
 
-    <!-- LIVE МАЧ В 20:00 Ч. -->
+    <!-- LIVE МАЧ В 20:00 Ч. БЛОК -->
     <div class="live-match-card">
         <div class="live-header">
             <span>🔴 Live Мач в 20:00 ч.</span>
             <span>Сезон 1 • Ден 1</span>
         </div>
         <div class="match-teams-box">
-            <span class="team-pill">BulTeam1</span>
+            <span class="team-pill" id="myTeamLabel">BulTeam1</span>
             <span style="color: #00e676; font-size: 14px;">VS</span>
             <span class="team-pill">Ювентус Изток</span>
         </div>
         <a href="matches.html" class="enter-match-btn">ВЛЕЗ В МАЧА (Присъстващ)</a>
-        <div class="ai-note">⚠️ Ако отсъствате, AI поема отбора с +50 Енергия бонус (без лични награди).</div>
+        <div class="ai-note">⚠️ При отсъствие, AI поема отбора с +50 Енергия бонус (без лични награди).</div>
     </div>
 
     <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
@@ -116,7 +125,6 @@
 </div>
 
 <script>
-    // Зареждане на данни от localStorage
     let energy = parseInt(localStorage.getItem('energy')) || 100;
     let diamonds = parseInt(localStorage.getItem('diamonds')) || 10;
     let cash = parseInt(localStorage.getItem('cash')) || 500;
@@ -128,6 +136,29 @@
     document.getElementById('topCash').innerText = cash;
     document.getElementById('userOvr').innerText = ovr;
     document.getElementById('userTeam').innerText = teamName + " • Капитан";
+    document.getElementById('myTeamLabel').innerText = teamName;
+
+    // Проверка дали днешният бонус е взет
+    let lastBonusDate = localStorage.getItem('lastBonusDate');
+    let today = new Date().toDateString();
+    if (lastBonusDate === today) {
+        let btn = document.getElementById('bonusBtn');
+        btn.innerText = "Взето";
+        btn.disabled = true;
+    }
+
+    function claimDailyBonus() {
+        cash += 100;
+        localStorage.setItem('cash', cash);
+        localStorage.setItem('lastBonusDate', today);
+        
+        document.getElementById('topCash').innerText = cash;
+        let btn = document.getElementById('bonusBtn');
+        btn.innerText = "Взето";
+        btn.disabled = true;
+
+        alert("Успешно взе своя дневен бонус от +100 злато!");
+    }
 </script>
 
 </body>
