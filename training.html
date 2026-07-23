@@ -2,53 +2,46 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Team HTPL - Тренировъчен Щаб</title>
+    <title>Team HTPL - Тренировъчен Център</title>
     <style>
-        * { box-sizing: border-box; }
-        body { background: #0f1016; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        * { box-sizing: border-box; transition: all 0.3s ease-in-out; }
+        body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; user-select: none; }
         .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
         
-        /* Топ хедър бар с ресурси */
-        .top-bar { background: #1a1c24; border: 1px solid #2a2e3d; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 13px; }
+        .top-bar { background: #1f2833; border: 1px solid #2c3542; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
-        .shop-link-btn { background: #2a2e3d; border: 1px solid #3e445b; color: #fff; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; transition: 0.2s; }
-        .shop-link-btn:hover { background: #3e445b; border-color: #00e676; }
+        .shop-link-btn { background: #66fcf1; border: none; color: #0b0c10; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
 
-        /* Секционни заглавия */
-        .section-header { font-size: 11px; font-weight: bold; color: #00e676; margin: 15px 0 8px 0; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* НАЙ-ГОРЕН ПРОГРЕС БАР (НИВО И ЗВЕЗДА) */
+        .top-progress-box { background: linear-gradient(135deg, #1f2833, #151b22); border: 1px solid #ffb703; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(255,183,3,0.15); }
+        .top-progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; }
+        .top-progress-bar-container { background: #0b0c10; height: 10px; border-radius: 5px; overflow: hidden; border: 1px solid #2c3542; position: relative; }
+        .top-progress-bar { background: linear-gradient(90deg, #ffb703, #2ecc71); width: 0%; height: 100%; transition: width 0.3s; }
 
-        /* МРЕЖА ОТ 4 АГЕНТНИ СЛОТА */
-        .agents-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        
-        .agent-slot { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.2s; }
-        .agent-slot.active { border-color: #00e676; background: linear-gradient(135deg, #13271e, #1a1c24); }
-        .agent-slot.locked { border-style: dashed; border-color: #3e445b; opacity: 0.8; }
-        
-        .ag-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-        .ag-icon { background: #222634; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .ag-info h5 { margin: 0; font-size: 11px; color: #fff; }
-        .ag-info span { font-size: 9px; color: #00e676; }
-        
-        .ag-desc { font-size: 9px; color: #8a8f9d; margin-bottom: 8px; line-height: 1.3; }
-        .ag-btn { width: 100%; background: #2a2e3d; color: #fff; border: 1px solid #3e445b; padding: 5px; border-radius: 8px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; }
-        .ag-btn:hover { background: #3e445b; }
+        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; margin-bottom: 12px; font-size: 11px; }
+        .section-title { font-weight: bold; color: #66fcf1; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
 
-        /* Решетка за тренировъчни модули */
-        .upgrades-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .upgrade-card { background: #1a1c24; border: 1px solid #2a2e3d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
-        .u-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-        .u-icon { background: #222634; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .u-info h4 { margin: 0; font-size: 11px; color: #fff; }
-        .u-info span { font-size: 9px; color: #8a8f9d; }
-        
-        .upgrade-btn { width: 100%; background: #1e3a8a; color: #fff; border: 1px solid #3b82f6; padding: 6px; border-radius: 8px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: 0.2s; }
-        .upgrade-btn:hover { background: #2563eb; }
-        .upgrade-btn.disabled { background: #222634; color: #6b7280; border-color: #2a2e3d; cursor: not-allowed; }
+        .level-up-btn { background: #2ecc71; color: #0b0c10; border: none; width: 100%; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; margin-top: 8px; display: none; }
+        .level-up-btn:active { transform: scale(0.98); }
 
-        /* Долен навигационен бар */
-        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1a1c24; border-top: 1px solid #2a2e3d; padding: 10px; z-index: 100; }
-        .nav-item { color: #8a8f9d; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
-        .nav-item.active { color: #00e676; }
+        .training-boost-box { background: #0b0c10; border: 1px solid #2c3542; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+        .slot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #2c3542; padding-bottom: 6px; }
+        .slot-trainer-info { font-size: 10px; color: #a5b1c2; }
+        .slot-trainer-info b { color: #ffb703; }
+
+        .slot-actions { display: flex; gap: 4px; }
+        .hire-slot-btn { background: #66fcf1; color: #0b0c10; border: none; padding: 4px 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 9px; }
+        .fire-slot-btn { background: #e74c3c; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 9px; }
+
+        .action-btn-group { display: flex; gap: 6px; }
+        .action-btn-cash { background: #2ecc71; color: #0b0c10; border: none; flex: 1; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 10px; }
+        .action-btn-diamond { background: #d16ba5; color: #fff; border: none; flex: 1; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 10px; }
+        .action-btn-cash:active, .action-btn-diamond:active { transform: scale(0.98); }
+        .action-btn-cash:disabled, .action-btn-diamond:disabled { background: #3a4454; color: #6c7a89; cursor: not-allowed; }
+
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+        .nav-item { color: #a5b1c2; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .nav-item.active { color: #66fcf1; }
         .nav-item span { font-size: 16px; }
     </style>
 </head>
@@ -56,142 +49,126 @@
 
 <div class="app-container">
     
-    <!-- ТОП БАР С РЕСУРСИ -->
+    <!-- ИГРОВИ РЕСУРСИ -->
     <div class="top-bar">
-        <div class="res-item" style="color: #ff9800;">⚡ <span id="topEnergy">100</span></div>
-        <div class="res-item" style="color: #00bcd4;">💎 <span id="topDiamonds">10</span></div>
-        <div class="res-item" style="color: #d4a017;">🪙 <span id="topCash">250</span></div>
+        <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">50/50</span></div>
+        <div class="res-item" style="color: #d16ba5;">🟣 <span id="topDiamonds">10</span></div>
+        <div class="res-item" style="color: #2ecc71;">🟢 <span id="topCash">0</span></div>
         <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
-    <!-- СЕКЦИЯ: 4 АГЕНТНИ СЛОТА -->
-    <div class="section-header">
-        <span>🏋️ Тренировъчен щаб (4 слота)</span>
-        <span style="color: #8a8f9d; font-size: 9px;">Активни бонуси</span>
+    <!-- 🌟 НАЙ-ГОРЕН ПРОГРЕС БАР (НИВО И XP) -->
+    <div class="top-progress-box">
+        <div class="top-progress-header">
+            <span>⭐ Ниво <b style="color: #66fcf1;" id="playerLevelDisplay">1</b> (<span id="difficultyDisplay" style="color: #ffb703;">Лесно</span>)</span>
+            <span style="color: #a5b1c2;">Остават: <b style="color: #ff4757;" id="remainingXpDisplay">100</b> XP</span>
+        </div>
+        <div class="top-progress-header" style="font-size: 10px; color: #a5b1c2; margin-bottom: 4px;">
+            <span>Опит: <b style="color: #fff;" id="currentXpDisplay">0</b> / <span id="requiredXpDisplay">100</span> XP</span>
+            <span id="xpPercentDisplay" style="color: #66fcf1; font-weight: bold;">0%</span>
+        </div>
+        <div class="top-progress-bar-container">
+            <div class="top-progress-bar" id="xpProgressBar"></div>
+        </div>
+        <button class="level-up-btn" id="levelUpBtn" onclick="levelUpPlayer()">⬆️ Качи до Ниво <span id="nextLevelNum">2</span>! (Готово)</button>
     </div>
 
-    <div class="agents-grid">
-        <!-- Слот 1 -->
-        <div class="agent-slot active">
-            <div>
-                <div class="ag-top">
-                    <div class="ag-icon">🏃‍♂️</div>
-                    <div class="ag-info">
-                        <h5>Фитнес Гуру</h5>
-                        <span>🟢 Активен</span>
-                    </div>
-                </div>
-                <div class="ag-desc">Намалява разхода на енергия при тренировка с 5%.</div>
-            </div>
-            <button class="ag-btn" onclick="manageAgent(1)">Смени</button>
-        </div>
-
-        <!-- Слот 2 -->
-        <div class="agent-slot active">
-            <div>
-                <div class="ag-top">
-                    <div class="ag-icon">🧠</div>
-                    <div class="ag-info">
-                        <h5>Тактик Про</h5>
-                        <span>🟢 Активен</span>
-                    </div>
-                </div>
-                <div class="ag-desc">Дава +20% бонус XP към тактическите тренировки.</div>
-            </div>
-            <button class="ag-btn" onclick="manageAgent(2)">Смени</button>
-        </div>
-
-        <!-- Слот 3 -->
-        <div class="agent-slot locked" id="slot3Box">
-            <div>
-                <div class="ag-top">
-                    <div class="ag-icon">🔒</div>
-                    <div class="ag-info">
-                        <h5>Слот 3</h5>
-                        <span style="color: #ff9800;">Заключен</span>
-                    </div>
-                </div>
-                <div class="ag-desc">Отключи за допълнителен скаут бонус.</div>
-            </div>
-            <button class="ag-btn" style="background: #ff9800; color: #000; border-color: #e68900;" onclick="unlockSlot(3, 500)">🪙 500</button>
-        </div>
-
-        <!-- Слот 4 -->
-        <div class="agent-slot locked" id="slot4Box">
-            <div>
-                <div class="ag-top">
-                    <div class="ag-icon">🔒</div>
-                    <div class="ag-info">
-                        <h5>Слот 4</h5>
-                        <span style="color: #ff9800;">Заключен</span>
-                    </div>
-                </div>
-                <div class="ag-desc">Елитен щаб за максимални приходи.</div>
-            </div>
-            <button class="ag-btn" style="background: #00bcd4; color: #000; border-color: #0097a7;" onclick="unlockSlot(4, 1000)">🪙 1000</button>
-        </div>
+    <!-- ОБЩА СИЛА НА ИГРАЧА -->
+    <div class="section-box" style="padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 11px; color: #a5b1c2;">Обща Сила от Треньори:</span>
+        <b style="color: #ffb703; font-size: 13px;" id="totalPowerDisplay">0</b>
     </div>
 
-    <!-- СЕКЦИЯ: ТРЕНИРОВЪЧНИ МОДУЛИ -->
-    <div class="section-header">
-        <span>⚡ Тренировъчни модули</span>
+    <!-- STREAK DAYS ПАНЕЛ -->
+    <div class="section-box" style="border-color: #ffb703; background: linear-gradient(135deg, #1f2833, #151b22);">
+        <div class="section-title"><span style="color: #ffb703;">🔥 Streak Days (Етап до: <span id="maxStreakDisplay">3</span>)</span></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+            <span>Поредни тренировки: <b style="color: #ffb703;" id="streakCount">0</b> / <span id="maxStreakText">3</span></span>
+            <span id="streakStatusText" style="color: #a5b1c2; font-size: 10px;">Активна серия</span>
+        </div>
+        <div style="background: #0b0c10; height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden;">
+            <div id="streakBar" style="background: #ffb703; width: 0%; height: 100%; transition: width 0.3s;"></div>
+        </div>
+        <div style="font-size: 9px; color: #a5b1c2; margin-top: 5px;">* Завърши етапа за бонус награди (+1,000 XP 🌟, 100 🟣, 10,000 🟢)!</div>
     </div>
-    
-    <div class="upgrades-grid">
-        <div class="upgrade-card">
-            <div>
-                <div class="u-top">
-                    <div class="u-icon">⚽</div>
-                    <div class="u-info">
-                        <h4>Атака</h4>
-                        <span id="attLvl">Lv. 1 (+1 стат)</span>
-                    </div>
+
+    <!-- 4 СЛОТА С ТРЕНЬОРИ -->
+    <div class="section-box">
+        <div class="section-title"><span>👔 Треньорски Слотове</span></div>
+        
+        <!-- СЛОТ 1: АТАКА -->
+        <div class="training-boost-box">
+            <div class="slot-header">
+                <div>
+                    <span style="font-weight: bold; color: #ff4757;">⚽ Слот 1: Треньор по Атака</span>
+                    <div class="slot-trainer-info" id="slotInfo-attack">Статус: <b>Няма треньор</b></div>
+                </div>
+                <div class="slot-actions">
+                    <button class="hire-slot-btn" id="hireBtn-attack" onclick="openBuyTrainer('attack')">Наеми</button>
+                    <button class="fire-slot-btn" id="fireBtn-attack" onclick="fireTrainer('attack')" style="display:none;">Уволни ❌</button>
                 </div>
             </div>
-            <button class="upgrade-btn" id="btnAtt" onclick="upgradeStat('attack', 350)">🪙 350</button>
+            <div class="action-btn-group">
+                <button class="action-btn-cash" id="trainCashBtn-attack" onclick="executeTraining('attack', 'cash')" disabled>🟢 С Кеш (5,000)</button>
+                <button class="action-btn-diamond" id="trainDiamondBtn-attack" onclick="executeTraining('attack', 'diamond')" disabled>🟣 С Диаманти (10)</button>
+            </div>
         </div>
 
-        <div class="upgrade-card">
-            <div>
-                <div class="u-top">
-                    <div class="u-icon">🛡️</div>
-                    <div class="u-info">
-                        <h4>Защита</h4>
-                        <span id="defLvl">Lv. 1 (+2 стат)</span>
-                    </div>
+        <!-- СЛОТ 2: ЗАЩИТА -->
+        <div class="training-boost-box">
+            <div class="slot-header">
+                <div>
+                    <span style="font-weight: bold; color: #2e86de;">🛡️ Слот 2: Треньор по Защита</span>
+                    <div class="slot-trainer-info" id="slotInfo-defense">Статус: <b>Няма треньор</b></div>
+                </div>
+                <div class="slot-actions">
+                    <button class="hire-slot-btn" id="hireBtn-defense" onclick="openBuyTrainer('defense')">Наеми</button>
+                    <button class="fire-slot-btn" id="fireBtn-defense" onclick="fireTrainer('defense')" style="display:none;">Уволни ❌</button>
                 </div>
             </div>
-            <button class="upgrade-btn" id="btnDef" onclick="upgradeStat('defense', 350)">🪙 350</button>
+            <div class="action-btn-group">
+                <button class="action-btn-cash" id="trainCashBtn-defense" onclick="executeTraining('defense', 'cash')" disabled>🟢 С Кеш (5,000)</button>
+                <button class="action-btn-diamond" id="trainDiamondBtn-defense" onclick="executeTraining('defense', 'diamond')" disabled>🟣 С Диаманти (10)</button>
+            </div>
         </div>
 
-        <div class="upgrade-card">
-            <div>
-                <div class="u-top">
-                    <div class="u-icon">⛔</div>
-                    <div class="u-info">
-                        <h4>Тактика</h4>
-                        <span id="tacLvl">Lv. 1 (+1 стат)</span>
-                    </div>
+        <!-- СЛОТ 3: ТАКТИКА -->
+        <div class="training-boost-box">
+            <div class="slot-header">
+                <div>
+                    <span style="font-weight: bold; color: #f39c12;">🧠 Слот 3: Треньор по Тактика</span>
+                    <div class="slot-trainer-info" id="slotInfo-tactic">Статус: <b>Няма треньор</b></div>
+                </div>
+                <div class="slot-actions">
+                    <button class="hire-slot-btn" id="hireBtn-tactic" onclick="openBuyTrainer('tactic')">Наеми</button>
+                    <button class="fire-slot-btn" id="fireBtn-tactic" onclick="fireTrainer('tactic')" style="display:none;">Уволни ❌</button>
                 </div>
             </div>
-            <button class="upgrade-btn" id="btnTac" onclick="upgradeStat('tactic', 400)">🪙 400</button>
+            <div class="action-btn-group">
+                <button class="action-btn-cash" id="trainCashBtn-tactic" onclick="executeTraining('tactic', 'cash')" disabled>🟢 С Кеш (5,000)</button>
+                <button class="action-btn-diamond" id="trainDiamondBtn-tactic" onclick="executeTraining('tactic', 'diamond')" disabled>🟣 С Диаманти (10)</button>
+            </div>
         </div>
 
-        <div class="upgrade-card">
-            <div>
-                <div class="u-top">
-                    <div class="u-icon">⚡</div>
-                    <div class="u-info">
-                        <h4>Дрибъл</h4>
-                        <span id="driLvl">Lv. 1 (+3 стат)</span>
-                    </div>
+        <!-- СЛОТ 4: СПРИНТ -->
+        <div class="training-boost-box">
+            <div class="slot-header">
+                <div>
+                    <span style="font-weight: bold; color: #1abc9c;">⚡ Слот 4: Треньор по Спринт</span>
+                    <div class="slot-trainer-info" id="slotInfo-sprint">Статус: <b>Няма треньор</b></div>
+                </div>
+                <div class="slot-actions">
+                    <button class="hire-slot-btn" id="hireBtn-sprint" onclick="openBuyTrainer('sprint')">Наеми</button>
+                    <button class="fire-slot-btn" id="fireBtn-sprint" onclick="fireTrainer('sprint')" style="display:none;">Уволни ❌</button>
                 </div>
             </div>
-            <button class="upgrade-btn" id="btnDri" onclick="upgradeStat('dribble', 450)">🪙 450</button>
+            <div class="action-btn-group">
+                <button class="action-btn-cash" id="trainCashBtn-sprint" onclick="executeTraining('sprint', 'cash')" disabled>🟢 С Кеш (5,000)</button>
+                <button class="action-btn-diamond" id="trainDiamondBtn-sprint" onclick="executeTraining('sprint', 'diamond')" disabled>🟣 С Диаманти (10)</button>
+            </div>
         </div>
     </div>
 
-    <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
     <div class="nav-bar">
         <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
         <a href="training.html" class="nav-item active"><span>🏋️</span> Трен.</a>
@@ -203,84 +180,257 @@
 </div>
 
 <script>
-    let cash = parseInt(localStorage.getItem('cash')) || 250;
-    let attackLevel = parseInt(localStorage.getItem('attLvl')) || 1;
-    let defenseLevel = parseInt(localStorage.getItem('defLvl')) || 1;
-    let slot3Unlocked = localStorage.getItem('slot3Unlocked') === 'true';
-    let slot4Unlocked = localStorage.getItem('slot4Unlocked') === 'true';
+    let cash = parseInt(localStorage.getItem('cash')) || 0; 
+    let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
+    let energyReserve = parseInt(localStorage.getItem('energyReserve')) || 50; 
+    let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
+    let playerXp = parseInt(localStorage.getItem('playerXp')) || 0;
+    
+    let trainerSlots = JSON.parse(localStorage.getItem('trainerSlots')) || {
+        attack: { stars: 0, skill: 10 },
+        defense: { stars: 0, skill: 10 },
+        tactic: { stars: 0, skill: 10 },
+        sprint: { stars: 0, skill: 10 }
+    };
 
-    document.getElementById('topCash').innerText = cash;
-    document.getElementById('attLvl').innerText = `Lv. ${attackLevel} (+1 стат)`;
-    document.getElementById('defLvl').innerText = `Lv. ${defenseLevel} (+2 стат)`;
+    let trainingStreak = parseInt(localStorage.getItem('trainingStreak')) || 0;
+    let maxStreak = parseInt(localStorage.getItem('maxStreak')) || 3; 
 
-    // Автоматично маркиране на бутоните като сиви/неактивни, ако няма достатъчно пари
-    function checkButtonAffordability() {
-        if (cash < 350) {
-            document.getElementById('btnAtt').classList.add('disabled');
-            document.getElementById('btnDef').classList.add('disabled');
+    // Прогресивна формула според нивата
+    function getRequiredXp(level) {
+        if (level <= 100) return level * 100;
+        else if (level <= 200) return 10000 + (level - 100) * 250;
+        else if (level <= 500) return 35000 + (level - 200) * 600;
+        else if (level <= 1000) return 215000 + (level - 500) * 1500;
+        else return 965000 + (level - 1000) * 4000;
+    }
+
+    function getDifficultyInfo(level) {
+        if (level <= 100) return { text: "Лесно", color: "#2ecc71" };
+        else if (level <= 200) return { text: "Нормално", color: "#66fcf1" };
+        else if (level <= 500) return { text: "Средно", color: "#f39c12" };
+        else if (level <= 1000) return { text: "Трудно", color: "#e74c3c" };
+        else return { text: "Много трудно", color: "#9b59b6" };
+    }
+
+    function getTrainerCost(stars) {
+        let cost = 0;
+        for (let i = 1; i <= stars; i++) {
+            if (i === 1) cost += 500;
+            else if (i === 2) cost += 1500;
+            else if (i === 3) cost += 3500;
+            else cost += (i * 2500);
         }
-        if (cash < 400) document.getElementById('btnTac').classList.add('disabled');
-        if (cash < 450) document.getElementById('btnDri').classList.add('disabled');
-    }
-    checkButtonAffordability();
-
-    // Зареждане на отключени слотове
-    if (slot3Unlocked) {
-        let s3 = document.getElementById('slot3Box');
-        s3.classList.remove('locked');
-        s3.classList.add('active');
-        s3.innerHTML = `<div><div class="ag-top"><div class="ag-icon">🌟</div><div class="ag-info"><h5>Скаутинг</h5><span>🟢 Активен</span></div></div><div class="ag-desc">Привлича млади таланти.</div></div><button class="ag-btn" onclick="manageAgent(3)">Смени</button>`;
+        return cost;
     }
 
-    if (slot4Unlocked) {
-        let s4 = document.getElementById('slot4Box');
-        s4.classList.remove('locked');
-        s4.classList.add('active');
-        s4.innerHTML = `<div><div class="ag-top"><div class="ag-icon">👑</div><div class="ag-info"><h5>Директор</h5><span>🟢 Активен</span></div></div><div class="ag-desc">Максимални отборни бонуси.</div></div><button class="ag-btn" onclick="manageAgent(4)">Смени</button>`;
-    }
-
-    function unlockSlot(slotNum, cost) {
-        if (cash < cost) {
-            alert("Нямаш достатъчно злато за отключване на този слот!");
-            return;
-        }
-
-        cash -= cost;
-        localStorage.setItem('cash', cash);
+    function updateUI() {
+        document.getElementById('topEnergy').innerText = energyReserve + "/50";
+        document.getElementById('topDiamonds').innerText = diamonds;
         document.getElementById('topCash').innerText = cash;
+        document.getElementById('playerLevelDisplay').innerText = playerLevel;
+        document.getElementById('nextLevelNum').innerText = playerLevel + 1;
 
-        if (slotNum === 3) localStorage.setItem('slot3Unlocked', 'true');
-        if (slotNum === 4) localStorage.setItem('slot4Unlocked', 'true');
+        let reqXp = getRequiredXp(playerLevel);
+        let diff = getDifficultyInfo(playerLevel);
+
+        let diffElem = document.getElementById('difficultyDisplay');
+        diffElem.innerText = diff.text;
+        diffElem.style.color = diff.color;
+
+        let remainingXp = reqXp - playerXp;
+        if (remainingXp < 0) remainingXp = 0;
+
+        document.getElementById('currentXpDisplay').innerText = playerXp.toLocaleString();
+        document.getElementById('requiredXpDisplay').innerText = reqXp.toLocaleString();
+        document.getElementById('remainingXpDisplay').innerText = remainingXp.toLocaleString();
+
+        let xpPercent = (playerXp / reqXp) * 100;
+        if (xpPercent > 100) xpPercent = 100;
         
-        location.reload();
+        document.getElementById('xpPercentDisplay').innerText = xpPercent.toFixed(1) + '%';
+        document.getElementById('xpProgressBar').style.width = xpPercent + '%';
+
+        let levelUpBtn = document.getElementById('levelUpBtn');
+        if (playerXp >= reqXp) {
+            levelUpBtn.style.display = "block";
+        } else {
+            levelUpBtn.style.display = "none";
+        }
+
+        let totalPower = trainerSlots.attack.skill + trainerSlots.defense.skill + trainerSlots.tactic.skill + trainerSlots.sprint.skill;
+        document.getElementById('totalPowerDisplay').innerText = totalPower;
+
+        document.getElementById('maxStreakDisplay').innerText = maxStreak;
+        document.getElementById('maxStreakText').innerText = maxStreak;
+
+        updateSlotsUI();
+        updateStreakUI();
+
+        localStorage.setItem('cash', cash);
+        localStorage.setItem('diamonds', diamonds);
+        localStorage.setItem('energyReserve', energyReserve);
+        localStorage.setItem('playerLevel', playerLevel);
+        localStorage.setItem('playerXp', playerXp);
+        localStorage.setItem('trainerSlots', JSON.stringify(trainerSlots));
+        localStorage.setItem('trainingStreak', trainingStreak);
+        localStorage.setItem('maxStreak', maxStreak);
     }
 
-    function manageAgent(slotId) {
-        alert(`Панел за управление на агент в Слот ${slotId}. Избери нов агент от Магазина!`);
+    function levelUpPlayer() {
+        let reqXp = getRequiredXp(playerLevel);
+        if (playerXp >= reqXp) {
+            playerXp -= reqXp;
+            playerLevel++;
+            alert(`🎉 Поздравления! Вие достигнахте ниво ${playerLevel}! 🚀`);
+            updateUI();
+        }
     }
 
-    function upgradeStat(type, cost) {
+    function updateSlotsUI() {
+        ['attack', 'defense', 'tactic', 'sprint'].forEach(slot => {
+            let data = trainerSlots[slot];
+            let infoElem = document.getElementById(`slotInfo-${slot}`);
+            let hireBtn = document.getElementById(`hireBtn-${slot}`);
+            let fireBtn = document.getElementById(`fireBtn-${slot}`);
+            let trainCashBtn = document.getElementById(`trainCashBtn-${slot}`);
+            let trainDiamondBtn = document.getElementById(`trainDiamondBtn-${slot}`);
+
+            if (data.stars === 0) {
+                infoElem.innerHTML = `Статус: <b style="color:#a5b1c2">Няма треньор</b>`;
+                hireBtn.innerText = "Наеми";
+                hireBtn.style.display = "inline-block";
+                fireBtn.style.display = "none";
+                trainCashBtn.disabled = true;
+                trainDiamondBtn.disabled = true;
+            } else {
+                infoElem.innerHTML = `Треньор: <b style="color:#ffb703">${data.stars}⭐</b> | Умение: <b style="color:#66fcf1">${data.skill}</b>`;
+                hireBtn.innerText = "Смени";
+                hireBtn.style.display = "inline-block";
+                fireBtn.style.display = "inline-block";
+                trainCashBtn.disabled = false;
+                trainDiamondBtn.disabled = false;
+            }
+        });
+    }
+
+    function openBuyTrainer(slot) {
+        let maxAllowedStars = (playerLevel > 300) ? 11 : 10;
+        
+        let priceListMsg = "ЦЕНИ ЗА НАЕМАВАНЕ (Зелен Кеш 🟢):\n";
+        for (let s = 1; s <= 11; s++) {
+            if (s === 11 && playerLevel <= 300) {
+                priceListMsg += `- ${s} ⭐: 50,000 🟢 (🔒 Изисква над 300 ниво)\n`;
+            } else {
+                priceListMsg += `- ${s} ⭐: ${getTrainerCost(s).toLocaleString()} 🟢\n`;
+            }
+        }
+
+        let input = prompt(`Наемане на треньор за слот [${slot.toUpperCase()}]:\nТекущо ниво: ${playerLevel}\n\n${priceListMsg}\nВъведете желаните звезди (от 1 до ${maxAllowedStars}):`);
+        
+        if (input === null) return;
+        let targetStars = parseInt(input);
+
+        if (isNaN(targetStars) || targetStars < 1 || targetStars > maxAllowedStars) {
+            if (targetStars === 11 && playerLevel <= 300) {
+                alert("❌ 11-звездният треньор изисква навършено над 300 ниво!");
+            } else {
+                alert(`❌ Моля, въведете валидно число между 1 и ${maxAllowedStars}!`);
+            }
+            return;
+        }
+
+        let cost = (targetStars === 11) ? 50000 : getTrainerCost(targetStars);
+
         if (cash < cost) {
-            alert("Нямаш достатъчно злато! Спечели още от мачовете или пасивните приходи.");
+            alert(`❌ Нямате достатъчно зелен кеш 🟢! Нужни са ${cost.toLocaleString()} 🟢 за треньор с ранг ${targetStars} (имате ${cash.toLocaleString()} 🟢).`);
             return;
         }
 
         cash -= cost;
-        if (type === 'attack') {
-            attackLevel++;
-            localStorage.setItem('attLvl', attackLevel);
-            document.getElementById('attLvl').innerText = `Lv. ${attackLevel} (+1 стат)`;
-        } else if (type === 'defense') {
-            defenseLevel++;
-            localStorage.setItem('defLvl', defenseLevel);
-            document.getElementById('defLvl').innerText = `Lv. ${defenseLevel} (+2 стат)`;
+        trainerSlots[slot].stars = targetStars;
+        trainerSlots[slot].skill = targetStars * 15;
+
+        alert(`🎉 Успешно наехте треньор с ранг ${targetStars} звезди за слот [${slot.toUpperCase()}] срещу ${cost.toLocaleString()} 🟢!`);
+        updateUI();
+    }
+
+    function fireTrainer(slot) {
+        if (confirm(`⚠️ Сигурни ли сте, че искате да уволнивте треньора от този слот? Напредъкът му ще бъде нулиран.`)) {
+            trainerSlots[slot].stars = 0;
+            trainerSlots[slot].skill = 10;
+            alert("👋 Треньорът беше уволнен.");
+            updateUI();
+        }
+    }
+
+    function updateStreakUI() {
+        document.getElementById('streakCount').innerText = trainingStreak;
+        let percent = (trainingStreak / maxStreak) * 100;
+        if (percent > 100) percent = 100;
+        document.getElementById('streakBar').style.width = percent + '%';
+
+        let statusText = document.getElementById('streakStatusText');
+        if (trainingStreak === 0) statusText.innerText = "Готов за нова серия";
+        else statusText.innerText = `Серия в ход (${trainingStreak}/${maxStreak})`;
+    }
+
+    function executeTraining(slot, type) {
+        let data = trainerSlots[slot];
+        if (data.stars === 0) {
+            alert("❌ Първо трябва да наемете треньор за този слот!");
+            return;
         }
 
-        localStorage.setItem('cash', cash);
-        document.getElementById('topCash').innerText = cash;
-        checkButtonAffordability();
-        alert("Успешна тренировка! Статът ти се повиши.");
+        let cashCost = 5000;
+        let diamondCost = 10;
+
+        if (type === 'cash') {
+            if (cash < cashCost) {
+                alert(`❌ Нямате достатъчно зелен кеш 🟢! Нужни са ${cashCost.toLocaleString()} 🟢.`);
+                return;
+            }
+            cash -= cashCost;
+        } else if (type === 'diamond') {
+            if (diamonds < diamondCost) {
+                alert(`❌ Нямате достатъчно лилави диаманти 🟣! Нужни са ${diamondCost} 🟣.`);
+                return;
+            }
+            diamonds -= diamondCost;
+        }
+        
+        let multiplier = (type === 'diamond') ? 2 : 1;
+        
+        let skillGain = (2 * data.stars) * multiplier;
+        data.skill += skillGain;
+
+        let xpGain = (50 * data.stars) * multiplier;
+        playerXp += xpGain;
+
+        trainingStreak++;
+        let rewardText = `💪 Успешна тренировка (${type === 'diamond' ? 'с Диаманти 🟣' : 'със Зелен Кеш 🟢'}) в слот [${slot.toUpperCase()}]!\n📈 Умението на треньора се вдигна с +${skillGain} (Общо: ${data.skill})!\n🌟 Спечелихте +${xpGain.toLocaleString()} точки опит (XP).`;
+
+        if (trainingStreak >= maxStreak) {
+            playerXp += 1000;     
+            diamonds += 100;     
+            cash += 10000;        
+
+            rewardText += `\n\n🔥 STREAK ЗАВЪРШЕН (${maxStreak}/${maxStreak})!\n🎉 БОНУС НАГРАДИ: +1,000 XP 🌟, +100 🟣 и +10,000 🟢 Кеш!`;
+
+            if (maxStreak === 3) maxStreak = 5;
+            else if (maxStreak === 5) maxStreak = 10;
+            else if (maxStreak === 10) maxStreak = 25;
+            else if (maxStreak === 25) maxStreak = 50;
+            else if (maxStreak === 50) maxStreak = 100;
+
+            trainingStreak = 0;
+        }
+
+        updateUI();
+        alert(rewardText);
     }
+
+    updateUI();
 </script>
 
 </body>

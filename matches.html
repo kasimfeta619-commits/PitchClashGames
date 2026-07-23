@@ -2,82 +2,77 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Tactical Clash - Отборни Дуели и Арена</title>
+    <title>Team HTPL - Драг и Пусни Смени</title>
     <style>
-        * { box-sizing: border-box; }
-        body { background: #0c0e14; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        * { box-sizing: border-box; transition: all 0.2s ease-in-out; }
+        body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; user-select: none; }
         .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
         
-        /* Топ бар */
-        .top-hud { background: #151821; border: 1px solid #232733; padding: 8px 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 11px; }
-        .hud-item { display: flex; align-items: center; gap: 4px; font-weight: bold; }
+        /* Топ бар с ресурси */
+        .top-bar { background: #1f2833; border: 1px solid #2c3542; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .shop-link-btn { background: #66fcf1; border: none; color: #0b0c10; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
 
-        /* Хедър на мача */
-        .match-teams-header { background: #151821; border: 1px solid #232733; border-radius: 12px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; text-align: center; }
-        .team-badge-name { font-size: 11px; font-weight: bold; }
-        .score-box { font-size: 18px; font-weight: bold; letter-spacing: 2px; color: #fff; background: #1c202d; padding: 4px 12px; border-radius: 8px; border: 1px solid #282e3e; }
+        /* НАЙ-ГОРЕН ПРОГРЕС БАР (НИВО И XP) */
+        .top-progress-box { background: linear-gradient(135deg, #1f2833, #151b22); border: 1px solid #ffb703; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(255,183,3,0.15); }
+        .top-progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; }
+        .top-progress-bar-container { background: #0b0c10; height: 10px; border-radius: 5px; overflow: hidden; border: 1px solid #2c3542; position: relative; }
+        .top-progress-bar { background: linear-gradient(90deg, #ffb703, #2ecc71); width: 0%; height: 100%; transition: width 0.3s; }
+        .level-up-btn { background: #2ecc71; color: #0b0c10; border: none; width: 100%; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; margin-top: 8px; display: none; }
+        .level-up-btn:active { transform: scale(0.98); }
 
-        /* СПИСЪК С ДУЕЛИ */
-        #listView { display: flex; flex-direction: column; gap: 8px; }
-        .duel-row { background: #151821; border: 1px solid #232733; border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; }
-        .duel-players-info { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; }
-        .player-side { display: flex; align-items: center; gap: 6px; }
-        .player-side.left { color: #ef4444; }
-        .player-side.right { color: #3b82f6; }
-        .mini-emblem { background: #1c202d; border: 1px solid #282e3e; padding: 2px 6px; border-radius: 6px; font-size: 10px; text-align: center; }
+        /* Таймер блок */
+        .match-timer-box { background: linear-gradient(135deg, #1f2833, #0b0c10); border: 2px solid #ffb703; border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 12px; }
+        .timer-title { font-size: 11px; color: #ffb703; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
+        .timer-countdown { font-size: 22px; font-weight: bold; color: #fff; }
 
-        .tug-of-war-bar { background: #1c202d; height: 8px; border-radius: 4px; position: relative; overflow: hidden; display: flex; border: 1px solid #282e3e; }
-        .tug-red { background: #ef4444; height: 100%; }
-        .tug-blue { background: #3b82f6; height: 100%; }
+        /* Формация селектор */
+        .formation-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 8px 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+        .formation-select { background: #0b0c10; color: #66fcf1; border: 1px solid #66fcf1; padding: 4px 8px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-        .duel-action-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; }
-        .power-num { padding: 0 4px; }
+        /* 2D Стадион Визуализация (Зона за пускане - Drop Zone) */
+        .stadium-container { position: relative; background: #1b4332; border: 2px solid #66fcf1; border-radius: 14px; height: 320px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(102,252,241,0.2); }
+        .pitch-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #2d6a4f 0%, #1b4332 100%); pointer-events: none; }
+        .center-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; }
+        .center-line { position: absolute; top: 0; left: 50%; width: 2px; height: 100%; background: rgba(255,255,255,0.3); }
         
-        .action-duel-btn { background: linear-gradient(180deg, #2563eb, #1d4ed8); color: #fff; border: 1px solid #60a5fa; border-radius: 8px; padding: 6px 16px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; box-shadow: 0 2px 6px rgba(37,99,235,0.4); }
-        .action-duel-btn.help { background: linear-gradient(180deg, #475569, #334155); border-color: #64748b; box-shadow: none; }
-        .action-duel-btn:active { transform: scale(0.97); }
-
-        /* АКТИВЕН ДУЕЛ / АРЕНА (Тактически изглед) */
-        #duelArenaView { display: none; flex-direction: column; gap: 8px; }
+        /* Стил за играч на терена */
+        .pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 10px; }
+        .pitch-player:hover .player-dot { transform: scale(1.4); border-color: #ffb703; }
+        .player-dot { width: 14px; height: 14px; background: #66fcf1; border-radius: 50%; border: 2px solid #0b0c10; box-shadow: 0 0 6px #66fcf1; }
+        .player-dot.captain { background: #ffb703; width: 16px; height: 16px; box-shadow: 0 0 8px #ffb703; }
+        .player-dot.injured { background: #ff4757; box-shadow: 0 0 8px #ff4757; animation: pulse 1s infinite; }
         
-        .arena-top-hud { background: #151821; border: 1px solid #232733; border-radius: 10px; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; }
-        .arena-timer { background: #1c202d; border: 1px solid #282e3e; padding: 2px 8px; border-radius: 6px; color: #ff9800; font-size: 12px; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+        .player-tag { background: rgba(11, 12, 16, 0.85); border: 1px solid #2c3542; color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 4px; margin-top: 2px; white-space: nowrap; font-weight: bold; pointer-events: none; }
+        .player-tag span { color: #66fcf1; }
+
+        /* Секция резерви */
+        .bench-section { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .bench-title { font-weight: bold; color: #ffb703; font-size: 11px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .bench-list { display: flex; flex-direction: column; gap: 6px; }
         
-        /* Уникално авторско игрище (Тъмно-зелен тактически стил) */
-        .duel-pitch { background: #12281d; border: 2px solid #1e3f2f; border-radius: 12px; height: 210px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 16px 16px; }
-        .tactical-zone { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 14px; height: 50px; border: 2px solid rgba(255,255,255,0.4); border-left: none; }
-        .core-marker { position: absolute; right: 120px; top: 41%; width: 10px; height: 10px; background: #00e676; border-radius: 50%; box-shadow: 0 0 6px #00e676; }
-
-        /* Тактически карти / единици на арената */
-        .arena-card { position: absolute; background: #1e3a8a; border: 2px solid #60a5fa; border-radius: 8px; padding: 4px; text-align: center; width: 52px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .arena-card.opponent { background: #7f1d1d; border-color: #f87171; }
-        .ac-power { background: rgba(0,0,0,0.6); font-size: 9px; font-weight: bold; color: #fff; border-radius: 4px; padding: 1px; margin-bottom: 2px; }
-        .ac-avatar { font-size: 16px; line-height: 1; }
-        .ac-name { font-size: 8px; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        /* Слотове за карти долу */
-        .cards-row { display: flex; gap: 6px; }
-        .card-slot { flex: 1; background: linear-gradient(135deg, #1e3a8a, #1d4ed8); border: 1px solid #60a5fa; border-radius: 10px; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #93c5fd; text-align: center; }
-
-        /* Контролен панел */
-        .arena-control-box { display: flex; gap: 8px; }
-        .emoji-btn { background: #151821; border: 1px solid #232733; border-radius: 12px; width: 48px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .bench-item { display: flex; justify-content: space-between; align-items: center; background: #0b0c10; padding: 6px 10px; border-radius: 8px; border: 1px solid #2c3542; font-size: 11px; cursor: grab; }
+        .bench-item:active { cursor: grabbing; background: #12222b; border-color: #66fcf1; }
         
-        .arena-attack-btn { flex: 1; background: linear-gradient(180deg, #334155, #1e293b); color: #fff; border: 1px solid #64748b; border-radius: 12px; padding: 10px; font-weight: bold; font-size: 14px; cursor: pointer; text-align: center; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-        .arena-attack-btn.help-mode { background: linear-gradient(180deg, #1d4ed8, #1e40af); border-color: #60a5fa; box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
-        .arena-attack-btn:active { transform: scale(0.98); }
-        .attack-sub { font-size: 8px; color: #94a3b8; font-weight: normal; margin-top: 1px; }
+        .sub-btn { background: #ff4757; color: #fff; border: none; padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: bold; cursor: pointer; }
+        .sub-btn:hover { background: #ff6b81; }
+        .sub-btn.active-sub { background: #ffb703; color: #0b0c10; }
 
-        .energy-badge { background: #151821; border: 1px solid #232733; border-radius: 12px; padding: 0 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #00e676; font-weight: bold; font-size: 13px; }
-        .energy-badge span { font-size: 8px; color: #8b93a7; }
+        /* Капитански специален панел */
+        .captain-box { background: #1f2833; border: 1px solid #ffb703; border-radius: 12px; padding: 12px; margin-bottom: 12px; font-size: 11px; }
+        .tactics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+        .tactic-btn { background: #0b0c10; border: 1px solid #2c3542; color: #fff; padding: 8px 4px; border-radius: 8px; font-size: 10px; cursor: pointer; text-align: center; font-weight: bold; }
+        .tactic-btn.active { border-color: #66fcf1; color: #66fcf1; background: #12222b; }
+        
+        .boost-btn { width: 100%; margin-top: 8px; background: linear-gradient(135deg, #ffb703, #fb8500); border: none; color: #0b0c10; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 11px; }
 
-        .back-to-list-btn { background: #232733; border: 1px solid #3b82f6; color: #3b82f6; padding: 6px 10px; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; margin-bottom: 6px; display: inline-block; }
-
-        /* Навигация долу */
-        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #151821; border-top: 1px solid #232733; padding: 8px; z-index: 100; }
-        .nav-btn { color: #8b93a7; text-decoration: none; font-size: 10px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
-        .nav-btn.active { color: #00e676; }
-        .nav-btn span { font-size: 15px; }
+        /* Долен навигационен бар */
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+        .nav-item { color: #a5b1c2; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .nav-item.active { color: #66fcf1; }
+        .nav-item span { font-size: 16px; }
     </style>
 </head>
 <body>
@@ -85,179 +80,425 @@
 <div class="app-container">
     
     <!-- ТОП БАР С РЕСУРСИ -->
-    <div class="top-hud">
-        <div class="hud-item" style="color: #fbbf24;">⭐ <span id="topStars">260</span></div>
-        <div class="hud-item" style="color: #38bdf8;">🛡️ <span id="topRatio">5.57M</span></div>
-        <div class="hud-item" style="color: #00e676;">⚡ <span id="topEnergy">1000</span>/50</div>
-        <div class="hud-item" style="color: #facc15;">🪙 <span id="topGold">990</span></div>
+    <div class="top-bar">
+        <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">50</span>/50</div>
+        <div class="res-item" style="color: #d16ba5;">🟣 <span id="topDiamonds">10</span></div>
+        <div class="res-item" style="color: #2ecc71;">🟢 <span id="topCash">0</span></div>
+        <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
-    <!-- ХЕДЪР НА СБЛЪСЪКА -->
-    <div class="match-teams-header">
-        <div class="team-badge-name" style="color: #ef4444;">🛡️ Red Legion</div>
-        <div class="score-box">0 - 0</div>
-        <div class="team-badge-name" style="color: #3b82f6;">Blue Alliance 👑</div>
+    <!-- НАЙ-ГОРЕН ПРОГРЕС БАР (НИВО И XP) -->
+    <div class="top-progress-box">
+        <div class="top-progress-header">
+            <span>⭐ Ниво <b style="color: #66fcf1;" id="playerLevelDisplay">1</b> (<span id="difficultyDisplay" style="color: #ffb703;">Лесно</span>)</span>
+            <span style="color: #a5b1c2;">Остават: <b style="color: #ff4757;" id="remainingXpDisplay">100</b> XP</span>
+        </div>
+        <div class="top-progress-header" style="font-size: 10px; color: #a5b1c2; margin-bottom: 4px;">
+            <span>Опит: <b style="color: #fff;" id="currentXpDisplay">0</b> / <span id="requiredXpDisplay">100</span> XP</span>
+            <span id="xpPercentDisplay" style="color: #66fcf1; font-weight: bold;">0%</span>
+        </div>
+        <div class="top-progress-bar-container">
+            <div class="top-progress-bar" id="xpProgressBar"></div>
+        </div>
+        <button class="level-up-btn" id="levelUpBtn" onclick="levelUpPlayer()">⬆️ Качи до Ниво <span id="nextLevelNum">2</span>! (Готово)</button>
     </div>
 
-    <!-- СПИСЪК С ДУЕЛИ -->
-    <div id="listView">
-        
-        <!-- Дуел 1 (Наша зона - Натиск) -->
-        <div class="duel-row" style="border-color: #3b82f6; background: #131b2e;">
-            <div class="duel-players-info">
-                <div class="player-side left"><span class="mini-emblem">⚡ 24</span> Apex_Red</div>
-                <div class="player-side right">Stellar_Blue <span class="mini-emblem">⚡ 2</span></div>
-            </div>
-            <div class="tug-of-war-bar">
-                <div class="tug-red" id="red1" style="width: 75%;"></div>
-                <div class="tug-blue" id="blue1" style="width: 25%;"></div>
-            </div>
-            <div class="duel-action-row">
-                <span class="power-num" style="color: #ef4444;" id="p1Red">1,034</span>
-                <button class="action-duel-btn" onclick="openArena(false)">АТАКА</button>
-                <span class="power-num" style="color: #3b82f6;" id="p1Blue">354</span>
-            </div>
-        </div>
-
-        <!-- Дуел 2 (Чужда зона - Подкрепа) -->
-        <div class="duel-row">
-            <div class="duel-players-info">
-                <div class="player-side left"><span class="mini-emblem">⚡ 22</span> Titan_Red</div>
-                <div class="player-side right">Nova_Blue <span class="mini-emblem">⚡ 99</span></div>
-            </div>
-            <div class="tug-of-war-bar">
-                <div class="tug-red" id="red2" style="width: 66%;"></div>
-                <div class="tug-blue" id="blue2" style="width: 34%;"></div>
-            </div>
-            <div class="duel-action-row">
-                <span class="power-num" style="color: #ef4444;" id="p2Red">998</span>
-                <button class="action-duel-btn help" onclick="openArena(true)">ПОМОГНИ</button>
-                <span class="power-num" style="color: #3b82f6;" id="p2Blue">502</span>
-            </div>
-        </div>
-
+    <!-- ТАЙМЕР ДО 20:00 Ч. -->
+    <div class="match-timer-box">
+        <div class="timer-title">⏰ Следващ отборен мач в 20:00 ч.</div>
+        <div class="timer-countdown" id="countdownTimer">03:45:12</div>
+        <div style="font-size: 10px; color: #a5b1c2; margin-top: 4px;">Съперник: Ювентус Изток • Стадион „Пълен Блок“</div>
     </div>
 
-    <!-- АКТИВЕН ДУЕЛ / ТАКТИЧЕСКА АРЕНА -->
-    <div id="duelArenaView">
-        <button class="back-to-list-btn" onclick="backToList()">⬅ Към всички дуели</button>
+    <!-- ФОРМАЦИЯ ИЗБОР -->
+    <div class="formation-box">
+        <span style="font-weight: bold; color: #ffb703;">🛡️ Отборна формация:</span>
+        <select class="formation-select" id="formationSelect" onchange="changeFormation()">
+            <option value="4-4-2">4-4-2 (Класическа)</option>
+            <option value="4-3-3">4-3-3 (Атакуваща)</option>
+            <option value="3-5-2">3-5-2 (Халфова линия)</option>
+        </select>
+    </div>
 
-        <div class="arena-top-hud">
-            <span style="color: #ef4444;" id="arenaRedPower">⚡ 998</span>
-            <div class="arena-timer" id="matchTimer">02:35</div>
-            <span style="color: #3b82f6;" id="arenaBluePower">⚡ 502</span>
+    <!-- 2D СТАДИОН (ДРАГ И ПУСНИ ЗОНИ) -->
+    <div class="stadium-container">
+        <div class="pitch-lines">
+            <div class="center-line"></div>
+            <div class="center-circle"></div>
         </div>
 
-        <!-- Тактическо поле -->
-        <div class="duel-pitch">
-            <div class="tactical-zone"></div>
-            <div class="core-marker"></div>
-
-            <div class="arena-card opponent" style="top: 25%; left: 35%;">
-                <div class="ac-power">⚡ 503</div>
-                <div class="ac-avatar">🛡️</div>
-                <div class="ac-name">Titan_Red</div>
-            </div>
-            <div class="arena-card opponent" style="top: 55%; left: 35%;">
-                <div class="ac-power">⚡ 495</div>
-                <div class="ac-avatar">⚔️</div>
-                <div class="ac-name">Vanguard</div>
-            </div>
-
-            <div class="arena-card" style="top: 38%; right: 35%;">
-                <div class="ac-power">⚡ 502</div>
-                <div class="ac-avatar">🛡️</div>
-                <div class="ac-name">Nova_Blue</div>
-            </div>
+        <!-- 1. Вратар -->
+        <div class="pitch-player" style="top: 50%; left: 10%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Вратар')" onclick="clickTargetPlayer('Вратар')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-gk">Врат. (<span id="ovr-gk">58</span>)</div>
         </div>
 
-        <!-- Слотове долу -->
-        <div class="cards-row">
-            <div class="card-slot"><span>⭐</span>TACTICAL<br>CARD I</div>
-            <div class="card-slot"><span>⭐</span>TACTICAL<br>CARD II</div>
-            <div class="card-slot"><span>⭐</span>TACTICAL<br>CARD III</div>
+        <!-- Защитници (4) -->
+        <div class="pitch-player" id="def1-box" style="top: 20%; left: 28%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Иванов')" onclick="clickTargetPlayer('Иванов')">
+            <div class="player-dot injured" id="p-ivanov"></div>
+            <div class="player-tag" style="color:#ff4757;" id="tag-def1">Иванов (<span id="ovr-def1">54</span>) ⚠️</div>
+        </div>
+        <div class="pitch-player" id="def2-box" style="top: 40%; left: 24%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Петров')" onclick="clickTargetPlayer('Петров')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-def2">Петров (<span id="ovr-def2">55</span>)</div>
+        </div>
+        <div class="pitch-player" id="def3-box" style="top: 60%; left: 24%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Димитров')" onclick="clickTargetPlayer('Димитров')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-def3">Димитров (<span id="ovr-def3">53</span>)</div>
+        </div>
+        <div class="pitch-player" id="def4-box" style="top: 80%; left: 28%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Георгиев')" onclick="clickTargetPlayer('Георгиев')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-def4">Георгиев (<span id="ovr-def4">56</span>)</div>
         </div>
 
-        <!-- Контролен панел -->
-        <div class="arena-control-box">
-            <button class="emoji-btn" onclick="alert('💬 Сигнал изпратен към отбора!')">💬</button>
-            
-            <button class="arena-attack-btn help-mode" id="arenaMainBtn" onclick="performArenaAction()">
-                ПОМОГНИ
-                <div class="attack-sub" id="arenaSubText">Задръж за Автопомощ</div>
-            </button>
+        <!-- Халфове (4) -->
+        <div class="pitch-player" id="mid1-box" style="top: 20%; left: 52%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Стоянов')" onclick="clickTargetPlayer('Стоянов')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-mid1">Стоянов (<span id="ovr-mid1">57</span>)</div>
+        </div>
+        <div class="pitch-player" id="mid2-box" style="top: 42%; left: 48%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Капитан')" onclick="clickTargetPlayer('Капитан')">
+            <div class="player-dot captain"></div>
+            <div class="player-tag" style="color: #ffb703;" id="tag-mid2">Кап. (<span id="ovr-mid2">62</span>)</div>
+        </div>
+        <div class="pitch-player" id="mid3-box" style="top: 58%; left: 48%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Николов')" onclick="clickTargetPlayer('Николов')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-mid3">Николов (<span id="ovr-mid3">55</span>)</div>
+        </div>
+        <div class="pitch-player" id="mid4-box" style="top: 80%; left: 52%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Христов')" onclick="clickTargetPlayer('Христов')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-mid4">Христов (<span id="ovr-mid4">54</span>)</div>
+        </div>
 
-            <div class="energy-badge">
-                x5 ⚡
-                <span>Енергия</span>
-            </div>
+        <!-- Нападатели (2) -->
+        <div class="pitch-player" id="att1-box" style="top: 35%; left: 76%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Ти')" onclick="clickTargetPlayer('Ти')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="userPlayerTag">Ти (<span id="ovr-user">54</span>)</div>
+        </div>
+        <div class="pitch-player" id="att2-box" style="top: 65%; left: 76%;" 
+             ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'Василев')" onclick="clickTargetPlayer('Василев')">
+            <div class="player-dot"></div>
+            <div class="player-tag" id="tag-att2">Василев (<span id="ovr-att2">59</span>)</div>
         </div>
     </div>
 
-    <!-- НАВИГАЦИЯ -->
-    <div class="bottom-nav">
-        <a href="profile.html" class="nav-btn"><span>👤</span> ПРОФИЛ</a>
-        <a href="team.html" class="nav-btn active"><span>👥</span> СБЛЪСЪК</a>
-        <a href="friends.html" class="nav-btn"><span>🤝</span> СЪЮЗ</a>
-        <a href="news.html" class="nav-btn"><span>🔔</span> НОВИНИ</a>
-        <a href="chat.html" class="nav-btn"><span>💬</span> ЧАТ</a>
+    <!-- СЕКЦИЯ РЕЗЕРВИ (DRAGGABLE) -->
+    <div class="bench-section">
+        <div class="bench-title">
+            <span>🔄 Скамейка (Оставащи смени: <span id="subsLeft" style="color:#66fcf1;">3</span>/3)</span>
+            <span style="font-size: 9px; color: #ffb703;" id="subInstruction">Влачи резерва върху терена!</span>
+        </div>
+        <div class="bench-list">
+            <div class="bench-item" draggable="true" ondragstart="drag(event, 'Б. Стоянов')" id="bench-1">
+                <span id="b-text-1">Б. Стоянов (Защ • <span id="ovr-bench1">51</span>)</span>
+                <button class="sub-btn" id="b-btn-1" onclick="prepareSub('Б. Стоянов', 1)">Избери</button>
+            </div>
+            <div class="bench-item" draggable="true" ondragstart="drag(event, 'М. Кирилов')" id="bench-2">
+                <span id="b-text-2">М. Кирилов (Халф • <span id="ovr-bench2">53</span>)</span>
+                <button class="sub-btn" id="b-btn-2" onclick="prepareSub('М. Кирилов', 2)">Избери</button>
+            </div>
+            <div class="bench-item" draggable="true" ondragstart="drag(event, 'П. Славков')" id="bench-3">
+                <span id="b-text-3">П. Славков (Напад • <span id="ovr-bench3">50</span>)</span>
+                <button class="sub-btn" id="b-btn-3" onclick="prepareSub('П. Славков', 3)">Избери</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- КАПИТАНСКИ КОНТРОЛ И ТАКТИКИ -->
+    <div class="captain-box">
+        <div style="font-weight: bold; color: #ffb703; margin-bottom: 4px;">👑 Капитански контрол на мача</div>
+        <div style="color: #a5b1c2; margin-bottom: 6px;">Задай тактика или активирай импулс на живо:</div>
+        <div class="tactics-grid">
+            <button class="tactic-btn active" id="t1" onclick="setTactic('Атака')">🔥 Атака</button>
+            <button class="tactic-btn" id="t2" onclick="setTactic('Баланс')">⚖️ Баланс</button>
+            <button class="tactic-btn" id="t3" onclick="setTactic('Защита')">🛡️ Защита</button>
+        </div>
+        <button class="boost-btn" onclick="triggerCaptainBoost()">⚡ Активирай Капитански Шут (Буст +5 OVR)</button>
+    </div>
+
+    <!-- ДОЛЕН НАВИГАЦИОНЕН БАР -->
+    <div class="nav-bar">
+        <a href="matches.html" class="nav-item active"><span>⚽</span> Мачове</a>
+        <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
+        <a href="index.html" class="nav-item"><span>🏠</span> Хъб</a>
+        <a href="team.html" class="nav-item"><span>👥</span> Отбор</a>
+        <a href="profile.html" class="nav-item"><span>👤</span> Профил</a>
     </div>
 
 </div>
 
 <script>
-    let energy = parseInt(localStorage.getItem('energy')) || 1000;
-    document.getElementById('topEnergy').innerText = energy;
+    let cash = parseInt(localStorage.getItem('cash')) || 0;
+    let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
+    let energyReserve = parseInt(localStorage.getItem('energyReserve')) || 50;
+    let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 711; // Базирано на твоя скриншот (Ниво 711)
+    let playerXp = parseInt(localStorage.getItem('playerXp')) || 18891;
+    let currentTactic = localStorage.getItem('playerTactic') || 'Атака';
+    let teamName = localStorage.getItem('playerTeam') || "Ти";
+    let subsLeft = 3;
 
-    let isHelpMode = false;
-    let currentBluePwr = 502;
-    let currentRedPwr = 998;
+    let draggedPlayer = null; 
+    let selectedBenchPlayer = null; 
 
-    function openArena(isHelp) {
-        isHelpMode = isHelp;
-        document.getElementById('listView').style.display = 'none';
-        document.getElementById('duelArenaView').style.display = 'flex';
+    function getRequiredXp(level) {
+        if (level <= 100) return level * 100;
+        else if (level <= 200) return 10000 + (level - 100) * 250;
+        else if (level <= 500) return 35000 + (level - 200) * 600;
+        else if (level <= 1000) return 215000 + (level - 500) * 1500;
+        else return 965000 + (level - 1000) * 4000;
+    }
 
-        let btn = document.getElementById('arenaMainBtn');
+    function getDifficultyInfo(level) {
+        if (level <= 100) return { text: "Лесно", color: "#2ecc71" };
+        else if (level <= 200) return { text: "Нормално", color: "#66fcf1" };
+        else if (level <= 500) return { text: "Средно", color: "#f39c12" };
+        else if (level <= 1000) return { text: "Трудно", color: "#e74c3c" };
+        else return { text: "Много трудно", color: "#9b59b6" };
+    }
 
-        if (isHelpMode) {
-            btn.innerHTML = `ПОМОГНИ<div class="attack-sub">Задръж за Автопомощ</div>`;
-            btn.className = "arena-attack-btn help-mode";
+    // Динамично изчисляване на OVR спрямо нивото на играча (База + бонус от ниво)
+    function updatePlayerRatings() {
+        // Всеки играч получава базово OVR + добавка от текущото ниво (например 1 точка OVR на всеки 10 нива)
+        let levelBonus = Math.floor(playerLevel / 10);
+
+        let ratings = {
+            'ovr-gk': 58 + levelBonus,
+            'ovr-def1': 54 + levelBonus,
+            'ovr-def2': 55 + levelBonus,
+            'ovr-def3': 53 + levelBonus,
+            'ovr-def4': 56 + levelBonus,
+            'ovr-mid1': 57 + levelBonus,
+            'ovr-mid2': 62 + levelBonus, // Капитанът е малко по-силен
+            'ovr-mid3': 55 + levelBonus,
+            'ovr-mid4': 54 + levelBonus,
+            'ovr-user': 54 + levelBonus,
+            'ovr-att2': 59 + levelBonus,
+            'ovr-bench1': 51 + levelBonus,
+            'ovr-bench2': 53 + levelBonus,
+            'ovr-bench3': 50 + levelBonus
+        };
+
+        for (let id in ratings) {
+            let el = document.getElementById(id);
+            if (el) el.innerText = ratings[id];
+        }
+
+        // Записваме основния OVR на потребителя в localStorage, ако трябва за други страници
+        localStorage.setItem('playerOvr', ratings['ovr-user']);
+    }
+
+    function updateUI() {
+        document.getElementById('topEnergy').innerText = energyReserve + "/50";
+        document.getElementById('topDiamonds').innerText = diamonds;
+        document.getElementById('topCash').innerText = cash;
+        document.getElementById('playerLevelDisplay').innerText = playerLevel;
+        document.getElementById('nextLevelNum').innerText = playerLevel + 1;
+
+        let reqXp = getRequiredXp(playerLevel);
+        let diff = getDifficultyInfo(playerLevel);
+
+        let diffElem = document.getElementById('difficultyDisplay');
+        diffElem.innerText = diff.text;
+        diffElem.style.color = diff.color;
+
+        let remainingXp = reqXp - playerXp;
+        if (remainingXp < 0) remainingXp = 0;
+
+        document.getElementById('currentXpDisplay').innerText = playerXp.toLocaleString();
+        document.getElementById('requiredXpDisplay').innerText = reqXp.toLocaleString();
+        document.getElementById('remainingXpDisplay').innerText = remainingXp.toLocaleString();
+
+        let xpPercent = (playerXp / reqXp) * 100;
+        if (xpPercent > 100) xpPercent = 100;
+        
+        document.getElementById('xpPercentDisplay').innerText = xpPercent.toFixed(1) + '%';
+        document.getElementById('xpProgressBar').style.width = xpPercent + '%';
+
+        let levelUpBtn = document.getElementById('levelUpBtn');
+        if (playerXp >= reqXp) {
+            levelUpBtn.style.display = "block";
         } else {
-            btn.innerHTML = `АТАКА<div class="attack-sub">Задръж за Автоматичен натиск</div>`;
-            btn.className = "arena-attack-btn";
+            levelUpBtn.style.display = "none";
+        }
+
+        document.getElementById('userPlayerTag').innerHTML = `${teamName.substring(0,6)} (<span id="ovr-user">${54 + Math.floor(playerLevel / 10)}</span>)`;
+
+        updatePlayerRatings();
+
+        localStorage.setItem('cash', cash);
+        localStorage.setItem('diamonds', diamonds);
+        localStorage.setItem('energyReserve', energyReserve);
+        localStorage.setItem('playerLevel', playerLevel);
+        localStorage.setItem('playerXp', playerXp);
+    }
+
+    function levelUpPlayer() {
+        let reqXp = getRequiredXp(playerLevel);
+        if (playerXp >= reqXp) {
+            playerXp -= reqXp;
+            playerLevel++;
+            alert(`🎉 Поздравления! Вие достигнахте ниво ${playerLevel}! Играчите на терена повишиха своите сили! 🚀`);
+            updateUI();
         }
     }
 
-    function backToList() {
-        document.getElementById('duelArenaView').style.display = 'none';
-        document.getElementById('listView').style.display = 'flex';
+    highlightTactic();
+    updateUI();
+
+    function setTactic(tactic) {
+        currentTactic = tactic;
+        localStorage.setItem('playerTactic', tactic);
+        highlightTactic();
+        alert("📌 Тактика сменена на живо: " + tactic);
     }
 
-    function performArenaAction() {
-        if (energy < 5) {
-            alert("Нямаш достатъчно енергия в резервоара!");
+    function highlightTactic() {
+        ['Атака', 'Баланс', 'Защита'].forEach((t, index) => {
+            let el = document.getElementById('t' + (index + 1));
+            if(t === currentTactic) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
+        });
+    }
+
+    // --- ЛОГИКА ЗА DRAG & DROP ---
+    function drag(event, playerName) {
+        draggedPlayer = playerName;
+        event.dataTransfer.setData("text", playerName);
+    }
+
+    function allowDrop(event) {
+        event.preventDefault(); 
+    }
+
+    function dropPlayer(event, targetPitchPlayer) {
+        event.preventDefault();
+        let playerIn = draggedPlayer || selectedBenchPlayer;
+
+        if (!playerIn) {
+            alert("⚠️ Първо хванете или изберете резерва от скамейката!");
             return;
         }
 
-        energy -= 5;
-        localStorage.setItem('energy', energy);
-        document.getElementById('topEnergy').innerText = energy;
-
-        currentBluePwr += 40;
-        document.getElementById('arenaBluePower').innerText = '⚡ ' + currentBluePwr;
-        document.getElementById('p2Blue').innerText = currentBluePwr;
-
-        let actionType = isHelpMode ? "подкрепа" : "атака";
-        alert(`⚡ Успешна ${actionType} на арената! Енергията е инвестирана успешно.`);
+        executeSubstitution(playerIn, targetPitchPlayer);
     }
 
-    let seconds = 2 * 60 + 35;
+    // --- ЛОГИКА ЗА АЛТЕРНАТИВЕН КЛИК ---
+    function prepareSub(playername, index) {
+        for(let i=1; i<=3; i++) {
+            document.getElementById(`b-btn-${i}`).classList.remove('active-sub');
+            document.getElementById(`b-btn-${i}`).innerText = "Избери";
+        }
+
+        selectedBenchPlayer = playername;
+        draggedPlayer = null;
+        
+        let btn = document.getElementById(`b-btn-${index}`);
+        btn.classList.add('active-sub');
+        btn.innerText = "Готов!";
+        
+        document.getElementById('subInstruction').innerText = `👉 Сега цъкни играча на терена!`;
+    }
+
+    function clickTargetPlayer(targetPitchPlayer) {
+        let playerIn = draggedPlayer || selectedBenchPlayer;
+
+        if (!playerIn) {
+            alert("⚠️ Първо изберете или плъзнете резерва от скамейката!");
+            return;
+        }
+
+        executeSubstitution(playerIn, targetPitchPlayer);
+    }
+
+    // --- ОБЩА ФУНКЦИЯ ЗА ИЗПЪЛНЕНИЕ НА СМЯНАТА ---
+    function executeSubstitution(playerIn, playerOut) {
+        if (subsLeft <= 0) {
+            alert("❌ Нямате повече останали смени в този мач!");
+            resetSelection();
+            return;
+        }
+
+        subsLeft--;
+        document.getElementById('subsLeft').innerText = subsLeft;
+
+        if(playerOut.toLowerCase().includes('иванов')) {
+            let dot = document.getElementById('p-ivanov');
+            if(dot) dot.classList.remove('injured');
+        }
+
+        alert(`🔄 Успешна смяна!\nИзлезе: ${playerOut}\nВлезе: ${playerIn}`);
+        resetSelection();
+    }
+
+    function resetSelection() {
+        draggedPlayer = null;
+        selectedBenchPlayer = null;
+        for(let i=1; i<=3; i++) {
+            document.getElementById(`b-btn-${i}`).classList.remove('active-sub');
+            document.getElementById(`b-btn-${i}`).innerText = "Избери";
+        }
+        document.getElementById('subInstruction').innerText = `Влачи резерва върху терена!`;
+    }
+
+    // Промяна на формация
+    function changeFormation() {
+        let form = document.getElementById('formationSelect').value;
+        let def3 = document.getElementById('def3-box');
+        let mid3 = document.getElementById('mid3-box');
+        let att1 = document.getElementById('att1-box');
+
+        if(form === '4-4-2') {
+            if(def3) def3.style.display = 'flex';
+            if(mid3) { mid3.style.display = 'flex'; mid3.style.top = '58%'; mid3.style.left = '48%'; }
+            if(att1) att1.style.top = '35%';
+            alert("📌 Формация: 4-4-2");
+        } 
+        else if(form === '4-3-3') {
+            if(def3) def3.style.display = 'flex';
+            if(mid3) { mid3.style.display = 'none'; }
+            if(att1) att1.style.top = '25%';
+            alert("📌 Формация: 4-3-3 (Атака)");
+        } 
+        else if(form === '3-5-2') {
+            if(def3) def3.style.display = 'none';
+            if(mid3) { mid3.style.display = 'flex'; mid3.style.top = '50%'; mid3.style.left = '45%'; }
+            if(att1) att1.style.top = '35%';
+            alert("📌 Формация: 3-5-2 (Халфове)");
+        }
+    }
+
+    function triggerCaptainBoost() {
+        alert("🚀 КАПИТАНСКИ БУСТ АКТИВИРАН! Целият отбор получи +5 OVR!");
+    }
+
+    // Таймер до 20:00 ч.
     setInterval(() => {
-        if (seconds > 0) seconds--;
-        let m = Math.floor(seconds / 60);
-        let s = seconds % 60;
-        document.getElementById('matchTimer').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        let now = new Date();
+        let target = new Date();
+        target.setHours(20, 0, 0, 0);
+        if (now > target) target.setDate(target.getDate() + 1);
+
+        let diff = target - now;
+        let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('countdownTimer').innerText = 
+            String(hours).padStart(2, '0') + ":" + 
+            String(minutes).padStart(2, '0') + ":" + 
+            String(seconds).padStart(2, '0');
     }, 1000);
 </script>
 

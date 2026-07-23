@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Team HTPL - Трансферен Пазар</title>
+    <style>
+        * { box-sizing: border-box; transition: all 0.3s ease-in-out; }
+        body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; user-select: none; }
+        .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
+        
+        .top-bar { background: #1f2833; border: 1px solid #2c3542; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+
+        .board-header { background: linear-gradient(135deg, #1f2833, #0b0c10); border: 2px solid #66fcf1; border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(102,252,241,0.2); }
+        .board-title { font-size: 13px; color: #66fcf1; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
+
+        .market-status { background: #141b22; border: 2px solid #ffb703; border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 12px; }
+        .timer-text { font-size: 18px; font-weight: bold; color: #ffb703; margin-top: 5px; }
+
+        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; margin-bottom: 12px; font-size: 11px; }
+        .section-title { font-weight: bold; color: #ffb703; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+        .player-card { background: #0b0c10; border: 1px solid #2c3542; padding: 8px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .player-info b { color: #66fcf1; display: block; font-size: 12px; }
+        .player-info span { font-size: 10px; color: #a5b1c2; }
+
+        .action-btn { background: #66fcf1; color: #0b0c10; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 10px; }
+        .action-btn:disabled { background: #2c3542; color: #555; cursor: not-allowed; }
+
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+        .nav-item { color: #a5b1c2; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .nav-item.active { color: #66fcf1; }
+        .nav-item span { font-size: 16px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <div class="top-bar">
+        <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">100</span>/50</div>
+        <div class="res-item" style="color: #66fcf1;">💎 <span id="topDiamonds">15</span></div>
+        <div class="res-item" style="color: #ffd700;">🪙 <span id="topCash">1450</span></div>
+    </div>
+
+    <div class="board-header">
+        <div class="board-title">🔄 Трансферен Пазар (HTPL)</div>
+        <div style="font-size: 10px; color: #a5b1c2;">Търговия с реални играчи и свободни агенти</div>
+    </div>
+
+    <!-- ТРАНСФЕРЕН ПРОЗОРЕЦ 14 ДНИ -->
+    <div class="market-status">
+        <div style="font-size: 11px; font-weight: bold; color: #fff;">⏰ Следващ Транферен Прозорец след:</div>
+        <div class="timer-text" id="transferTimer">13 дни 23 часа</div>
+        <div style="font-size: 9px; color: #a5b1c2; margin-top: 4px;">Прозорецът отваря автоматично на всеки 14 дни.</div>
+    </div>
+
+    <!-- СВОБОДНИ АГЕНТИ / ИЗВЪН ОТБОР -->
+    <div class="section-box">
+        <div class="section-title">
+            <span>👤 Свободни Агенти (Без отбор)</span>
+            <span style="font-size: 9px; color: #66fcf1;" id="myTeamStatus">Статус: В отбор</span>
+        </div>
+        <div style="font-size: 10px; color: #a5b1c2; margin-bottom: 8px;">
+            Играчи без клуб, които търсят отбор или могат да бъдат привлечени.
+        </div>
+        
+        <div id="freeAgentsList">
+            <!-- Динамично зареждане -->
+        </div>
+    </div>
+
+    <!-- КЛУБЕН ФОНД ЗА ТРАНСФЕРИ -->
+    <div class="section-box">
+        <div class="section-title"><span>💰 Общ Фонд за Нови Попълнения</span></div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 12px; color: #ffd700;" id="clubFundDisplay">3,500 🪙</span>
+            <button class="action-btn" onclick="contributeToFund()">Внеси 100 🪙</button>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
+        <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
+        <a href="index.html" class="nav-item"><span>🏠</span> Хъб</a>
+        <a href="team.html" class="nav-item"><span>👥</span> Отбор</a>
+        <a href="profile.html" class="nav-item"><span>👤</span> Профил</a>
+    </div>
+
+</div>
+
+<script>
+    let cash = parseInt(localStorage.getItem('cash')) || 1450;
+    let diamonds = parseInt(localStorage.getItem('diamonds')) || 15;
+    let energy = parseInt(localStorage.getItem('energy')) || 100;
+    let clubFund = parseInt(localStorage.getItem('clubFund')) || 3500;
+    
+    // Проверка дали играчът е без отбор
+    let hasTeam = JSON.parse(localStorage.getItem('hasTeam')) !== false; 
+
+    let freeAgents = [
+        { id: 101, name: "К. Иванов", pos: "ХАЛФ", ovr: 52, price: 1200 },
+        { id: 102, name: "М. Петров", pos: "НАП", ovr: 55, price: 2000 },
+        { id: 103, name: "С. Георгиев", pos: "ЗАЩ", ovr: 49, price: 900 }
+    ];
+
+    function updateUI() {
+        document.getElementById('topCash').innerText = cash;
+        document.getElementById('topDiamonds').innerText = diamonds;
+        document.getElementById('topEnergy').innerText = energy;
+        document.getElementById('clubFundDisplay').innerText = clubFund.toLocaleString() + " 🪙";
+        
+        let statusEl = document.getElementById('myTeamStatus');
+        if (hasTeam) {
+            statusEl.innerText = "Статус: В отбор (ФК Пълен Блок)";
+            statusEl.style.color = "#66fcf1";
+        } else {
+            statusEl.innerText = "Статус: Свободен агент (Няма отбор)";
+            statusEl.style.color = "#ffb703";
+        }
+        
+        renderFreeAgents();
+    }
+
+    function renderFreeAgents() {
+        let listContainer = document.getElementById('freeAgentsList');
+        listContainer.innerHTML = '';
+
+        freeAgents.forEach((agent, index) => {
+            listContainer.innerHTML += `
+                <div class="player-card">
+                    <div class="player-info">
+                        <b>${agent.name} (${agent.pos})</b>
+                        <span>Сила: OVR ${agent.ovr} | Цена: ${agent.price} 🪙</span>
+                    </div>
+                    <button class="action-btn" onclick="signPlayer(${index})">Купи / Привлечи</button>
+                </div>
+            `;
+        });
+    }
+
+    function signPlayer(index) {
+        let player = freeAgents[index];
+        if (clubFund < player.price) {
+            alert("❌ Общият клубен фонд няма достатъчно средства за този трансфер!");
+            return;
+        }
+        clubFund -= player.price;
+        localStorage.setItem('clubFund', clubFund);
+        
+        alert(`✅ Успешно привлекохте ${player.name} в отбора!`);
+        freeAgents.splice(index, 1);
+        updateUI();
+    }
+
+    function contributeToFund() {
+        if (cash < 100) {
+            alert("❌ Нямате достатъчно лични средства!");
+            return;
+        }
+        cash -= 100;
+        clubFund += 100;
+        localStorage.setItem('cash', cash);
+        localStorage.setItem('clubFund', clubFund);
+        updateUI();
+        alert("✅ Успешно дарихте 100 🪙 за трансферния фонд!");
+    }
+
+    // Логика за автоматично влизане в произволен отбор при липса на такъв
+    function checkTeamAssignment() {
+        if (!hasTeam) {
+            // Симулираме разпределение в произволен клуб
+            hasTeam = true;
+            localStorage.setItem('hasTeam', true);
+            alert("⚠️ Тъй като бяхте извън отбор, системата ви разпредели автоматично в произволен активен клуб!");
+        }
+    }
+
+    checkTeamAssignment();
+    updateUI();
+</script>
+
+</body>
+</html>
