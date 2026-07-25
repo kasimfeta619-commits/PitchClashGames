@@ -19,9 +19,9 @@
         .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; font-size: 11px; }
         .section-title { font-weight: bold; color: #66fcf1; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
 
-        /* КАЛЕНДАР НА МАЧОВЕТЕ */
+        /* КАЛЕНДАР НА МАЧОВЕТЕ ПО ЧАСОВЕ */
         .match-calendar-box { background: linear-gradient(135deg, #1f2833, #151b22); border: 1px solid #2c3542; border-radius: 12px; padding: 12px; }
-        .match-item { background: #121820; border: 1px solid #2c3542; border-radius: 8px; padding: 8px; margin-bottom: 6px; display: flex; flex-direction: column; gap: 4px; }
+        .match-item { background: #121820; border: 1px solid #2c3542; border-radius: 8px; padding: 8px; margin-bottom: 6px; display: flex; flex-direction: column; gap: 6px; }
         .match-item.today { border-color: #66fcf1; }
         .match-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; }
         .match-details { display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #a5b1c2; }
@@ -30,9 +30,11 @@
         .badge-hard { color: #e74c3c; font-weight: bold; }
         .badge-normal { color: #f39c12; font-weight: bold; }
 
-        .play-match-btn { background: #2ecc71; color: #0b0c10; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 9px; }
-        .rest-btn { background: #3a4454; color: #66fcf1; border: 1px solid #66fcf1; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 9px; }
-        .rest-btn:active { transform: scale(0.98); }
+        .match-actions { display: flex; gap: 5px; }
+        .play-match-btn { background: #2ecc71; color: #0b0c10; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 9px; display: inline-block; text-align: center; }
+        .rest-choice-btn { background: #3a4454; color: #66fcf1; border: 1px solid #66fcf1; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 9px; }
+        .rest-choice-btn.resting { background: #e74c3c; color: #fff; border-color: #c0392b; }
+        .rest-choice-btn:active { transform: scale(0.98); }
 
         /* КЛУБЕН ФОНД И ДАРЕНИЯ */
         .fund-box { display: flex; justify-content: space-between; align-items: center; }
@@ -61,43 +63,50 @@
 
     <div class="content-wrap">
         
-        <!-- КАЛЕНДАР НА МАЧОВЕТЕ -->
+        <!-- КАЛЕНДАР НА МАЧОВЕТЕ ПО ЧАСОВЕ -->
         <div class="match-calendar-box">
-            <div class="section-title"><span>📅 Програма / Календар мачове</span></div>
+            <div class="section-title"><span>📅 Програма и Часове на Мачовете</span></div>
             
-            <!-- ДНЕС -->
+            <!-- МАЧ 1 (ДНЕС В 20:00) -->
             <div class="match-item today">
                 <div class="match-header">
-                    <span style="color: #66fcf1;">🟢 ДНЕС - PvP Среща</span>
-                    <span class="badge-easy">Лесен съперник</span>
+                    <span style="color: #66fcf1;">🟢 ДНЕС в 20:00 ч. - PvP Среща</span>
+                    <span class="badge-easy">Лесен</span>
                 </div>
                 <div class="match-details">
                     <span>ФК Пълен Блок vs <b>Динамо София</b></span>
-                    <a href="matches.html" class="play-match-btn">Влез в мача</a>
+                    <div class="match-actions">
+                        <button class="rest-choice-btn" id="btnMatch1" onclick="toggleMatchDecision(1)">Играем</button>
+                        <a href="matches.html" class="play-match-btn" id="linkMatch1">Влез</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- УТРЕ -->
+            <!-- МАЧ 2 (УТРЕ В 18:30 - ТЕЖЪК) -->
             <div class="match-item">
                 <div class="match-header">
-                    <span style="color: #ffb703;">⚠️ УТРЕ - Дерби мач</span>
-                    <span class="badge-hard">Труден противник!</span>
+                    <span style="color: #ffb703;">⚠️ УТРЕ в 18:30 ч. - Дерби</span>
+                    <span class="badge-hard">Труден</span>
                 </div>
                 <div class="match-details">
-                    <span>ФК Пълен Блок vs <b style="color: #e74c3c;">Левски (Гост)</b></span>
-                    <button class="rest-btn" onclick="declareRest()">🛌 Кажи на отбора да почива</button>
+                    <span>ФК Пълен Блок vs <b style="color: #e74c3c;">Левски</b></span>
+                    <div class="match-actions">
+                        <button class="rest-choice-btn" id="btnMatch2" onclick="toggleMatchDecision(2)">Играем</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- В ДРУГИДЕН -->
+            <!-- МАЧ 3 (В ДРУГИДЕН В 21:00) -->
             <div class="match-item">
                 <div class="match-header">
-                    <span style="color: #a5b1c2;">📅 В ДРУГИДЕН</span>
+                    <span style="color: #a5b1c2;">📅 В ДРУГИДЕН в 21:00 ч.</span>
                     <span class="badge-normal">Нормален</span>
                 </div>
                 <div class="match-details">
                     <span>ФК Пълен Блок vs <b>Локомотив Пд</b></span>
-                    <span style="font-size: 9px; color: #a5b1c2;" id="restStatusText">Нормален режим</span>
+                    <div class="match-actions">
+                        <button class="rest-choice-btn" id="btnMatch3" onclick="toggleMatchDecision(3)">Играем</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,7 +144,7 @@
         <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
         <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
         <a href="index.html" class="nav-item active"><span>🏠</span> Хъб</a>
-        <a href="team.html" class="nav-item"><span>👥</span> Отбор</a>
+        <a href="team.html" class="nav-item"><span>👥</span> Отборът</a>
         <a href="profile.html" class="nav-item"><span>👤</span> Профил</a>
     </div>
 
@@ -168,7 +177,13 @@
     let stars = parseInt(localStorage.getItem('stars')) || 1;
     let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
     let clubFund = parseInt(localStorage.getItem('clubFund')) || 3600;
-    let teamResting = localStorage.getItem('teamResting') === 'true';
+
+    // Запазване на решенията на отбора за всеки мач (true = играят, false = почиват)
+    let matchDecisions = JSON.parse(localStorage.getItem('matchDecisions')) || {
+        1: true,
+        2: true,
+        3: true
+    };
 
     function getDifficultyInfo(level) {
         if (level <= 100) return { text: "Лесно", color: "#2ecc71" };
@@ -192,10 +207,21 @@
 
         document.getElementById('clubFundDisplay').innerText = clubFund.toLocaleString() + ' $';
 
-        if (teamResting) {
-            document.getElementById('restStatusText').innerHTML = '<b style="color: #2ecc71;">🛌 Отборът почива за утрешния мач!</b>';
-        } else {
-            document.getElementById('restStatusText').innerText = 'Нормален режим';
+        // Обновяване състоянието на бутоните за всеки мач
+        for (let id in matchDecisions) {
+            let btn = document.getElementById('btnMatch' + id);
+            let linkBtn = document.getElementById('linkMatch' + id);
+            if (btn) {
+                if (matchDecisions[id]) {
+                    btn.innerText = "Играем ✅";
+                    btn.classList.remove('resting');
+                    if (linkBtn) linkBtn.style.display = "inline-block";
+                } else {
+                    btn.innerText = "Почивка 🛌";
+                    btn.classList.add('resting');
+                    if (linkBtn) linkBtn.style.display = "none";
+                }
+            }
         }
 
         localStorage.setItem('energy', energy);
@@ -204,12 +230,16 @@
         localStorage.setItem('diamonds', diamonds);
         localStorage.setItem('stars', stars);
         localStorage.setItem('clubFund', clubFund);
-        localStorage.setItem('teamResting', teamResting);
+        localStorage.setItem('matchDecisions', JSON.stringify(matchDecisions));
     }
 
-    function declareRest() {
-        teamResting = true;
-        alert("🛌 Успешно разпоредихте почивка на отбора за утрешния тежък мач срещу Левски! Енергията и кондицията им ще бъдат запазени.");
+    function toggleMatchDecision(matchId) {
+        matchDecisions[matchId] = !matchDecisions[matchId];
+        if (matchDecisions[matchId]) {
+            alert(`⚽ Отборът реши да изиграе този мач в определения час!`);
+        } else {
+            alert(`🛌 Отборът реши да почива и да пропусне този мач за съхранение на сили!`);
+        }
         updateUI();
     }
 
