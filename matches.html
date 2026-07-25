@@ -99,7 +99,7 @@
     <div class="top-bar">
         <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">180/180</span></div>
         <div class="res-item" style="color: #2ecc71;">🟢 <span id="topCash">2.85M</span></div>
-        <div class="res-item" style="color: #66fcf1;">⭐ <span id="topStars">981</span></div>
+        <div class="res-item" style="color: #66fcf1;">⭐ <span id="topStars">0</span></div>
         <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
@@ -209,7 +209,7 @@
 <script>
     let energy = parseInt(localStorage.getItem('energy')) || 180;
     let cash = localStorage.getItem('cash') || "2.85M";
-    let stars = parseInt(localStorage.getItem('stars')) || 981;
+    let stars = parseInt(localStorage.getItem('stars')) || 0; // Започват от 0
     let currentTier = parseInt(localStorage.getItem('currentTier')) || 1;
     let influencePower = parseInt(localStorage.getItem('influencePower')) || 265000;
 
@@ -277,7 +277,6 @@
         document.getElementById('currentZoneBadge').innerText = `Зона ${currentTier}`;
         document.getElementById('influenceValue').innerText = "+" + (influencePower / 1000).toFixed(0) + "K";
         
-        // Показваме налятото количество за текущата зона
         let currentInvested = tierInvestedPower[currentTier] || 0;
         let formattedInvested = "0";
         if (currentInvested >= 1000000) {
