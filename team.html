@@ -5,82 +5,81 @@
     <title>Team HTPL - Истински 3D Спортен Град</title>
     <style>
         * { box-sizing: border-box; transition: all 0.3s ease-in-out; }
-        body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; user-select: none; }
-        .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
+        body { background: #07080a; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; user-select: none; }
+        .app-container { width: 100%; max-width: 420px; padding-bottom: 85px; }
         
-        .top-bar { background: #1f2833; border: 1px solid #2c3542; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
-        .shop-link-btn { background: #66fcf1; border: none; color: #0b0c10; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
+        /* ПОДОБРЕНА ГОРНА ЛЕНТА */
+        .top-bar { background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%); border: 1px solid #66fcf133; padding: 12px 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 13px; box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); }
+        .res-item { display: flex; align-items: center; gap: 6px; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .shop-link-btn { background: linear-gradient(135deg, #66fcf1 0%, #45a29e 100%); border: none; color: #0b0c10; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 12px rgba(102,252,241,0.3); }
+        .shop-link-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(102,252,241,0.5); }
 
-        .team-tabs { display: flex; gap: 4px; margin-bottom: 12px; overflow-x: auto; }
-        .tab-btn { flex: 1; background: #1f2833; border: 1px solid #2c3542; color: #a5b1c2; padding: 8px 4px; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-align: center; white-space: nowrap; }
-        .tab-btn.active { background: #66fcf1; color: #0b0c10; border-color: #66fcf1; }
+        .team-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; }
+        .tab-btn { flex: 1; background: #1f2833; border: 1px solid #2c3542; color: #a5b1c2; padding: 10px 6px; border-radius: 10px; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; white-space: nowrap; }
+        .tab-btn.active { background: #66fcf1; color: #0b0c10; border-color: #66fcf1; box-shadow: 0 4px 15px rgba(102,252,241,0.3); }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .board-header { background: linear-gradient(135deg, #1f2833, #0b0c10); border: 2px solid #66fcf1; border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(102,252,241,0.2); }
-        .board-title { font-size: 13px; color: #66fcf1; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
+        .board-header { background: linear-gradient(135deg, #1f2833, #0b0c10); border: 2px solid #66fcf1; border-radius: 16px; padding: 14px; text-align: center; margin-bottom: 14px; box-shadow: 0 6px 20px rgba(102,252,241,0.15); }
+        .board-title { font-size: 14px; color: #66fcf1; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
 
         /* ТАКТИЧЕСКИ ТЕРЕН */
-        .stadium-3d-wrapper { perspective: 800px; margin-bottom: 15px; padding: 10px; background: #141b22; border-radius: 16px; border: 2px solid #2c3542; }
-        .soccer-pitch-3d { width: 100%; height: 380px; background: linear-gradient(180deg, #27ae60 0%, #2ecc71 100%); border: 4px solid #fff; border-radius: 10px; position: relative; overflow: hidden; transform: rotateX(15deg); box-shadow: 0 20px 30px rgba(0,0,0,0.7); }
-        .pitch-center-line { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,255,255,0.6); }
-        .pitch-center-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; }
-        .pitch-box-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 130px; height: 45px; border: 2px solid rgba(255,255,255,0.6); border-top: none; }
-        .pitch-box-bottom { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 130px; height: 45px; border: 2px solid rgba(255,255,255,0.6); border-bottom: none; }
+        .stadium-3d-wrapper { perspective: 800px; margin-bottom: 15px; padding: 12px; background: #111822; border-radius: 18px; border: 2px solid #2c3542; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .soccer-pitch-3d { width: 100%; height: 380px; background: linear-gradient(180deg, #27ae60 0%, #1e8449 100%); border: 4px solid #fff; border-radius: 12px; position: relative; overflow: hidden; transform: rotateX(12deg); box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+        .pitch-center-line { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,255,255,0.7); }
+        .pitch-center-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.7); border-radius: 50%; }
+        .pitch-box-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 130px; height: 45px; border: 2px solid rgba(255,255,255,0.7); border-top: none; }
+        .pitch-box-bottom { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 130px; height: 45px; border: 2px solid rgba(255,255,255,0.7); border-bottom: none; }
 
         .player-token-container { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; z-index: 10; width: 60px; text-align: center; }
-        .player-circle { width: 34px; height: 34px; background: #1f2833; border: 2px solid #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #fff; box-shadow: 0 6px 12px rgba(0,0,0,0.5); }
-        .player-token-container.selected .player-circle { border-color: #66fcf1; background: #2c3542; box-shadow: 0 0 12px #66fcf1; transform: scale(1.1); }
+        .player-circle { width: 36px; height: 36px; background: #1f2833; border: 2px solid #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #fff; box-shadow: 0 6px 15px rgba(0,0,0,0.6); }
+        .player-token-container.selected .player-circle { border-color: #66fcf1; background: #2c3542; box-shadow: 0 0 15px #66fcf1; transform: scale(1.15); }
         
-        .player-name-lbl { font-size: 8px; font-weight: bold; color: #fff; margin-top: 2px; background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 4px; white-space: nowrap; }
-        .player-sub-lbl { font-size: 7px; color: #66fcf1; font-weight: bold; background: rgba(0,0,0,0.7); padding: 1px 4px; border-radius: 3px; margin-top: 1px; }
+        .player-name-lbl { font-size: 8.5px; font-weight: bold; color: #fff; margin-top: 3px; background: rgba(0,0,0,0.75); padding: 1px 6px; border-radius: 4px; white-space: nowrap; border: 1px solid rgba(255,255,255,0.1); }
+        .player-sub-lbl { font-size: 7.5px; color: #66fcf1; font-weight: bold; background: rgba(0,0,0,0.8); padding: 1px 5px; border-radius: 3px; margin-top: 1px; }
 
         /* ИСТИНСКА 3D СЦЕНА НА СПОРТНИЯ ГРАД */
-        .stadium-3d-scene { width: 100%; height: 310px; perspective: 1800px; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle, #1a2634 0%, #06080c 100%); border-radius: 14px; border: 2px solid #2c3542; overflow: hidden; position: relative; }
+        .stadium-3d-scene { width: 100%; height: 320px; perspective: 1800px; margin-bottom: 14px; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle, #16222f 0%, #05070a 100%); border-radius: 16px; border: 2px solid #2c3542; overflow: hidden; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
         .complex-world { width: 330px; height: 260px; position: relative; transform-style: preserve-3d; transform: rotateX(52deg) rotateZ(0deg); transition: transform 0.1s; }
-        .complex-world.rotating { animation: spinComplex 45s infinite linear; }
+        .complex-world.rotating { animation: spinComplex 50s infinite linear; }
         @keyframes spinComplex { 0% { transform: rotateX(52deg) rotateZ(0deg); } 100% { transform: rotateX(52deg) rotateZ(360deg); } }
 
-        .ground-base { position: absolute; width: 100%; height: 100%; background: #111923; border-radius: 14px; border: 2px solid #2a3b4c; box-shadow: inset 0 0 40px rgba(0,0,0,0.9); }
+        .ground-base { position: absolute; width: 100%; height: 100%; background: #0e151d; border-radius: 16px; border: 2px solid #243447; box-shadow: inset 0 0 50px rgba(0,0,0,0.9); }
         
         /* Паркови зони с озеленяване */
-        .city-park-zone { position: absolute; background: #134f2c; border: 1px dashed #2ecc71; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 6px; font-weight: bold; color: #a3e4d7; transform: translateZ(1px); }
+        .city-park-zone { position: absolute; background: #0f3d22; border: 1px dashed #2ecc71; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 6.5px; font-weight: bold; color: #a3e4d7; transform: translateZ(1px); box-shadow: inset 0 0 10px rgba(46,204,113,0.2); }
         .park-n1 { top: 10px; left: 10px; width: 55px; height: 32px; }
         .park-n2 { top: 10px; right: 10px; width: 55px; height: 32px; }
 
         /* ОБЕМНИ 3D СГРАДИ СЪС СТЕНИ (BOX MODEL) */
         .building-3d { position: absolute; transform-style: preserve-3d; transition: all 0.5s; }
         
-        /* Разположение на сградите */
         .bldg-hotel-pos { bottom: 15px; left: 10px; width: 55px; height: 30px; transform: translateZ(0px); }
         .bldg-med-pos { bottom: 15px; right: 10px; width: 48px; height: 26px; transform: translateZ(0px); }
         .bldg-acad-pos { top: 95px; right: 10px; width: 55px; height: 26px; transform: translateZ(0px); }
 
-        /* Общи стилове за стените на 3D сградите */
-        .b-roof { position: absolute; width: 100%; height: 100%; background: #212c38; border: 1px solid #415a77; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 5.5px; font-weight: bold; color: #66fcf1; text-align: center; transform: translateZ(22px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        .b-wall-n { position: absolute; width: 100%; height: 22px; background: #18222c; bottom: 0; left: 0; transform-origin: bottom; transform: rotateX(90deg); border-top: 1px solid #415a77; }
-        .b-wall-s { position: absolute; width: 100%; height: 22px; background: #141c24; top: 0; left: 0; transform-origin: top; transform: rotateX(-90deg); }
-        .b-wall-e { position: absolute; width: 22px; height: 100%; background: #161f28; top: 0; right: 0; transform-origin: right; transform: rotateY(-90deg); }
-        .b-wall-w { position: absolute; width: 22px; height: 100%; background: #1b2631; top: 0; left: 0; transform-origin: left; transform: rotateY(90deg); }
+        .b-roof { position: absolute; width: 100%; height: 100%; background: #1c2630; border: 1px solid #3a506b; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 6px; font-weight: bold; color: #66fcf1; text-align: center; transform: translateZ(24px); box-shadow: 0 0 12px rgba(0,0,0,0.6); }
+        .b-wall-n { position: absolute; width: 100%; height: 24px; background: #131b22; bottom: 0; left: 0; transform-origin: bottom; transform: rotateX(90deg); border-top: 1px solid #3a506b; }
+        .b-wall-s { position: absolute; width: 100%; height: 24px; background: #0f161c; top: 0; left: 0; transform-origin: top; transform: rotateX(-90deg); }
+        .b-wall-e { position: absolute; width: 24px; height: 100%; background: #111920; top: 0; right: 0; transform-origin: right; transform: rotateY(-90deg); }
+        .b-wall-w { position: absolute; width: 24px; height: 100%; background: #162029; top: 0; left: 0; transform-origin: left; transform: rotateY(90deg); }
 
         /* Активни състояния на сградите */
-        .complex-world.level-hotel .bldg-hotel-pos .b-roof { background: #1f4068; border-color: #66fcf1; color: #66fcf1; box-shadow: 0 0 15px rgba(102,252,241,0.7); }
+        .complex-world.level-hotel .bldg-hotel-pos .b-roof { background: #1f4068; border-color: #66fcf1; color: #66fcf1; box-shadow: 0 0 18px rgba(102,252,241,0.8); }
         .complex-world.level-hotel .bldg-hotel-pos .b-wall-n, .complex-world.level-hotel .bldg-hotel-pos .b-wall-w { background: #163254; }
 
-        .complex-world.level-med .bldg-med-pos .b-roof { background: #162447; border-color: #e94560; color: #ff6b6b; box-shadow: 0 0 15px rgba(233,69,96,0.7); }
+        .complex-world.level-med .bldg-med-pos .b-roof { background: #162447; border-color: #e94560; color: #ff6b6b; box-shadow: 0 0 18px rgba(233,69,96,0.8); }
         .complex-world.level-med .bldg-med-pos .b-wall-n, .complex-world.level-med .bldg-med-pos .b-wall-w { background: #111b36; }
 
-        .complex-world.level-academy .bldg-acad-pos .b-roof { background: #0f3057; border-color: #f39c12; color: #f1c40f; box-shadow: 0 0 15px rgba(243,156,18,0.7); }
+        .complex-world.level-academy .bldg-acad-pos .b-roof { background: #0f3057; border-color: #f39c12; color: #f1c40f; box-shadow: 0 0 18px rgba(243,156,18,0.8); }
         .complex-world.level-academy .bldg-acad-pos .b-wall-n, .complex-world.level-academy .bldg-acad-pos .b-wall-w { background: #0a223f; }
-
 
         /* Главен стадион в центъра */
         .main-stadium { position: absolute; width: 170px; height: 140px; top: 50px; left: 80px; transform-style: preserve-3d; }
-        .stadium-pitch { position: absolute; width: 104px; height: 82px; background: linear-gradient(135deg, #27ae60, #1e8449); top: 29px; left: 33px; border: 2px solid #fff; border-radius: 4px; }
+        .stadium-pitch { position: absolute; width: 104px; height: 82px; background: linear-gradient(135deg, #27ae60, #1b7a43); top: 29px; left: 33px; border: 2px solid #fff; border-radius: 6px; box-shadow: inset 0 0 15px rgba(0,0,0,0.3); }
         
-        .stadium-stand { position: absolute; background: linear-gradient(180deg, #3d4f63, #1e2c3a); border: 1px solid #526780; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #cfd8dc; box-shadow: 0 8px 15px rgba(0,0,0,0.6); transition: all 0.5s ease; }
+        .stadium-stand { position: absolute; background: linear-gradient(180deg, #3d4f63, #192430); border: 1px solid #526780; display: flex; align-items: center; justify-content: center; font-size: 8.5px; font-weight: bold; color: #cfd8dc; box-shadow: 0 8px 18px rgba(0,0,0,0.7); transition: all 0.5s ease; }
         .stand-n { width: 104px; height: 20px; top: 9px; left: 33px; transform: rotateX(-50deg); transform-origin: bottom; }
         .stand-s { width: 104px; height: 20px; bottom: 9px; left: 33px; transform: rotateX(50deg); transform-origin: top; }
         .stand-e { width: 74px; height: 20px; right: 9px; top: 60px; transform: rotateY(90deg) rotateX(-50deg); transform-origin: left; }
@@ -92,29 +91,32 @@
         .roof-canopy { position: absolute; background: rgba(102, 252, 241, 0.15); border: 1px solid #66fcf1; pointer-events: none; opacity: 0.3; transition: opacity 0.5s; }
         .roof-n { width: 114px; height: 28px; top: -2px; left: 28px; transform: rotateX(-70deg); transform-origin: bottom; }
         .roof-s { width: 114px; height: 28px; bottom: -2px; left: 28px; transform: rotateX(70deg); transform-origin: top; }
-        .complex-world.level-roof .roof-canopy { opacity: 0.9; box-shadow: 0 0 15px rgba(102,252,241,0.5); }
+        .complex-world.level-roof .roof-canopy { opacity: 0.95; box-shadow: 0 0 20px rgba(102,252,241,0.6); }
 
         .floodlight-tower { position: absolute; width: 6px; height: 6px; background: #555; border-radius: 50%; box-shadow: none; transform: translateZ(35px); transition: all 0.5s; }
         .fl-1 { top: 12px; left: 28px; } .fl-2 { top: 12px; right: 28px; } .fl-3 { bottom: 12px; left: 28px; } .fl-4 { bottom: 12px; right: 28px; }
         .complex-world.level-lights .floodlight-tower { background: #66fcf1; box-shadow: 0 0 15px #66fcf1, 0 0 30px #66fcf1; }
 
-        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 10px; margin-bottom: 12px; font-size: 11px; }
-        .section-title { font-weight: bold; color: #ffb703; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 14px; padding: 12px; margin-bottom: 14px; font-size: 11px; box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+        .section-title { font-weight: bold; color: #ffb703; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
         
-        .upgrade-row { background: #0b0c10; border: 1px solid #2c3542; border-radius: 8px; padding: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .upgrade-btn { background: #66fcf1; color: #0b0c10; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 10px; }
-        .upgrade-btn:disabled { background: #2c3542; color: #555; cursor: not-allowed; }
+        .upgrade-row { background: #0b0c10; border: 1px solid #2c3542; border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .upgrade-btn { background: #66fcf1; color: #0b0c10; border: none; padding: 7px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 10.5px; box-shadow: 0 4px 10px rgba(102,252,241,0.2); }
+        .upgrade-btn:hover { background: #45a29e; }
+        .upgrade-btn:disabled { background: #2c3542; color: #555; cursor: not-allowed; box-shadow: none; }
 
-        .roster-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 140px; overflow-y: auto; padding-right: 4px; }
-        .roster-item { background: #0b0c10; border: 1px solid #2c3542; padding: 6px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; cursor: pointer; }
+        .roster-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 150px; overflow-y: auto; padding-right: 4px; }
+        .roster-item { background: #0b0c10; border: 1px solid #2c3542; padding: 8px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; cursor: pointer; }
+        .roster-item:hover { border-color: #66fcf1; background: #141c24; }
         .roster-item b { color: #66fcf1; }
 
-        .control-btn { width: 100%; background: #1f2833; border: 1px solid #2c3542; color: #66fcf1; padding: 6px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; margin-bottom: 10px; text-align: center; }
+        .control-btn { width: 100%; background: #1f2833; border: 1px solid #66fcf155; color: #66fcf1; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: bold; cursor: pointer; margin-bottom: 14px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .control-btn:hover { background: #2c3542; }
 
-        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: 0 -6px 20px rgba(0,0,0,0.5); }
         .nav-item { color: #a5b1c2; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
         .nav-item.active { color: #66fcf1; }
-        .nav-item span { font-size: 16px; }
+        .nav-item span { font-size: 18px; }
     </style>
 </head>
 <body>
@@ -138,7 +140,7 @@
     <div id="tacticsTab" class="tab-content active">
         <div class="board-header">
             <div class="board-title">🏟️ Тактическа Арена</div>
-            <div style="font-size: 10px; color: #a5b1c2;" id="subInstruction">Цъкни титуляр, после резерва за смяна</div>
+            <div style="font-size: 10.5px; color: #a5b1c2;" id="subInstruction">Цъкни титуляр, после резерва за смяна</div>
         </div>
 
         <div class="stadium-3d-wrapper">
@@ -160,7 +162,7 @@
     <div id="stadiumTab" class="tab-content">
         <div class="board-header">
             <div class="board-title">🏟️ Корпоративен Комплекс</div>
-            <div style="font-size: 10px; color: #66fcf1;" id="homeMatchStatus">🏢 Обемни 3D сгради и спортен център!</div>
+            <div style="font-size: 10.5px; color: #66fcf1;" id="homeMatchStatus">🏢 Обемни 3D сгради и спортен център!</div>
         </div>
 
         <!-- 3D СЦЕНА С ИСТИНСКИ 3D ОБЕМНИ СГРАДИ -->
@@ -221,7 +223,7 @@
         <!-- ФОНД ЗА СТРОЕЖ И ИНВЕСТИЦИИ -->
         <div class="section-box">
             <div class="section-title"><span>🏗️ Разширен Фонд за Инвестиции</span></div>
-            <div style="font-size: 10px; color: #a5b1c2; margin-bottom: 8px;">
+            <div style="font-size: 10.5px; color: #a5b1c2; margin-bottom: 10px;">
                 Наличен общ клубен фонд: <b style="color: #ffb703;" id="clubFundBalance">5,500 🟢</b>
             </div>
 
