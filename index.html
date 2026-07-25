@@ -16,8 +16,28 @@
 
         .content-wrap { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
-        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; font-size: 11px; text-align: center; }
-        .section-title { font-weight: bold; color: #66fcf1; margin-bottom: 8px; }
+        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; font-size: 11px; }
+        .section-title { font-weight: bold; color: #66fcf1; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+        /* КАЛЕНДАР НА МАЧОВЕТЕ */
+        .match-calendar-box { background: linear-gradient(135deg, #1f2833, #151b22); border: 1px solid #2c3542; border-radius: 12px; padding: 12px; }
+        .match-item { background: #121820; border: 1px solid #2c3542; border-radius: 8px; padding: 8px; margin-bottom: 6px; display: flex; flex-direction: column; gap: 4px; }
+        .match-item.today { border-color: #66fcf1; }
+        .match-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; }
+        .match-details { display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #a5b1c2; }
+        
+        .badge-easy { color: #2ecc71; font-weight: bold; }
+        .badge-hard { color: #e74c3c; font-weight: bold; }
+        .badge-normal { color: #f39c12; font-weight: bold; }
+
+        .play-match-btn { background: #2ecc71; color: #0b0c10; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 9px; }
+        .rest-btn { background: #3a4454; color: #66fcf1; border: 1px solid #66fcf1; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 9px; }
+        .rest-btn:active { transform: scale(0.98); }
+
+        /* КЛУБЕН ФОНД И ДАРЕНИЯ */
+        .fund-box { display: flex; justify-content: space-between; align-items: center; }
+        .donate-btn { background: #ffb703; color: #0b0c10; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
+        .donate-btn:active { transform: scale(0.98); }
 
         /* НАВИГАЦИОНЕН БАР */
         .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 8px 0; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
@@ -40,11 +60,74 @@
     </div>
 
     <div class="content-wrap">
-        <div class="section-box">
-            <div class="section-title">🏠 Добре дошли в Team HTPL</div>
-            <p style="color: #a5b1c2; font-size: 11px;">Текущо ниво на играча: <b id="homePlayerLevel" style="color: #66fcf1;">1</b></p>
-            <p style="color: #a5b1c2; font-size: 11px;">Трудност: <b id="homeDifficulty" style="color: #ffb703;">Лесно</b></p>
+        
+        <!-- КАЛЕНДАР НА МАЧОВЕТЕ -->
+        <div class="match-calendar-box">
+            <div class="section-title"><span>📅 Програма / Календар мачове</span></div>
+            
+            <!-- ДНЕС -->
+            <div class="match-item today">
+                <div class="match-header">
+                    <span style="color: #66fcf1;">🟢 ДНЕС - PvP Среща</span>
+                    <span class="badge-easy">Лесен съперник</span>
+                </div>
+                <div class="match-details">
+                    <span>ФК Пълен Блок vs <b>Динамо София</b></span>
+                    <a href="matches.html" class="play-match-btn">Влез в мача</a>
+                </div>
+            </div>
+
+            <!-- УТРЕ -->
+            <div class="match-item">
+                <div class="match-header">
+                    <span style="color: #ffb703;">⚠️ УТРЕ - Дерби мач</span>
+                    <span class="badge-hard">Труден противник!</span>
+                </div>
+                <div class="match-details">
+                    <span>ФК Пълен Блок vs <b style="color: #e74c3c;">Левски (Гост)</b></span>
+                    <button class="rest-btn" onclick="declareRest()">🛌 Кажи на отбора да почива</button>
+                </div>
+            </div>
+
+            <!-- В ДРУГИДЕН -->
+            <div class="match-item">
+                <div class="match-header">
+                    <span style="color: #a5b1c2;">📅 В ДРУГИДЕН</span>
+                    <span class="badge-normal">Нормален</span>
+                </div>
+                <div class="match-details">
+                    <span>ФК Пълен Блок vs <b>Локомотив Пд</b></span>
+                    <span style="font-size: 9px; color: #a5b1c2;" id="restStatusText">Нормален режим</span>
+                </div>
+            </div>
         </div>
+
+        <!-- ПРОФИЛ И НИВО -->
+        <div class="section-box">
+            <div class="section-title"><span>🏠 Добре дошли в Team HTPL</span></div>
+            <div style="display: flex; justify-content: space-between; color: #a5b1c2; margin-bottom: 4px;">
+                <span>Текущо ниво на играча:</span>
+                <b style="color: #66fcf1;" id="homePlayerLevel">1</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: #a5b1c2;">
+                <span>Трудност:</span>
+                <b style="color: #ffb703;" id="homeDifficulty">Лесно</b>
+            </div>
+        </div>
+
+        <!-- ОБЩ КЛУБЕН ФОНД (ДАРЕНИЯ) -->
+        <div class="section-box">
+            <div class="section-title"><span style="color: #ffb703;">💰 Общ Клубен Фонд</span></div>
+            <div style="font-size: 10px; color: #a5b1c2; margin-bottom: 6px;">База/Стадион: <b style="color: #66fcf1;">Академия (Стадион Niv. 1)</b></div>
+            <div class="fund-box">
+                <div>
+                    <div style="font-size: 10px; color: #a5b1c2;">Вноски за трансфери:</div>
+                    <b style="color: #2ecc71; font-size: 12px;" id="clubFundDisplay">3,600 $</b>
+                </div>
+                <button class="donate-btn" onclick="donateToClub()">Дари $50</button>
+            </div>
+        </div>
+
     </div>
 
     <!-- НАВИГАЦИОНЕН БАР -->
@@ -84,6 +167,8 @@
     let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
     let stars = parseInt(localStorage.getItem('stars')) || 1;
     let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
+    let clubFund = parseInt(localStorage.getItem('clubFund')) || 3600;
+    let teamResting = localStorage.getItem('teamResting') === 'true';
 
     function getDifficultyInfo(level) {
         if (level <= 100) return { text: "Лесно", color: "#2ecc71" };
@@ -105,8 +190,39 @@
         diffElem.innerText = diff.text;
         diffElem.style.color = diff.color;
 
+        document.getElementById('clubFundDisplay').innerText = clubFund.toLocaleString() + ' $';
+
+        if (teamResting) {
+            document.getElementById('restStatusText').innerHTML = '<b style="color: #2ecc71;">🛌 Отборът почива за утрешния мач!</b>';
+        } else {
+            document.getElementById('restStatusText').innerText = 'Нормален режим';
+        }
+
         localStorage.setItem('energy', energy);
         localStorage.setItem('lastEnergyTime', lastEnergyTime);
+        localStorage.setItem('cash', cash);
+        localStorage.setItem('diamonds', diamonds);
+        localStorage.setItem('stars', stars);
+        localStorage.setItem('clubFund', clubFund);
+        localStorage.setItem('teamResting', teamResting);
+    }
+
+    function declareRest() {
+        teamResting = true;
+        alert("🛌 Успешно разпоредихте почивка на отбора за утрешния тежък мач срещу Левски! Енергията и кондицията им ще бъдат запазени.");
+        updateUI();
+    }
+
+    function donateToClub() {
+        let donationAmount = 50;
+        if (cash < donationAmount) {
+            alert("❌ Нямате достатъчно зелен кеш 🟢 за дарение!");
+            return;
+        }
+        cash -= donationAmount;
+        clubFund += donationAmount;
+        alert(`🤝 Успешно дарихте $${donationAmount} на клубния фонд! Благодарим ви!`);
+        updateUI();
     }
 
     setInterval(() => {
