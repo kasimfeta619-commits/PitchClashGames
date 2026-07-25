@@ -29,6 +29,17 @@
         .club-name { font-size: 14px; color: #66fcf1; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
         .club-details { font-size: 10px; color: #a5b1c2; display: flex; justify-content: space-around; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; }
 
+        /* LIVE MATCH ВИЗУАЛИЗАЦИЯ */
+        .live-match-banner { display: block; background: linear-gradient(135deg, #1e3d2f, #0b0c10); border: 2px dashed #2ecc71; border-radius: 10px; padding: 8px; margin-top: 8px; text-decoration: none; color: #fff; cursor: pointer; animation: pulseGlow 1.5s infinite; }
+        .live-match-banner:hover { background: linear-gradient(135deg, #264d3d, #0b0c10); }
+        @keyframes pulseGlow {
+            0% { border-color: #2ecc71; box-shadow: 0 0 5px rgba(46,204,113,0.3); }
+            50% { border-color: #66fcf1; box-shadow: 0 0 15px rgba(102,252,241,0.6); }
+            100% { border-color: #2ecc71; box-shadow: 0 0 5px rgba(46,204,113,0.3); }
+        }
+        .live-dot { height: 8px; width: 8px; background-color: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
         /* ОНЛАЙН СЪОТБОРНИЦИ */
         .online-box { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; }
         .online-dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #2ecc71; margin-right: 5px; }
@@ -100,7 +111,17 @@
     <!-- КЛУБНА КАРТА -->
     <div class="club-card">
         <div class="club-name" id="displayClubName">⚽ ФК Пълен Блок</div>
-        <div style="font-size: 10px; color: #ffb703; margin-bottom: 2px;">⚔️ Следващ PvP мач срещу: <b>Динамо София (Реални играчи)</b></div>
+        
+        <!-- ДИНАМИЧЕН ИНДИКАТОР ЗА МАЧ НА ЖИВО -->
+        <a href="matches.html" class="live-match-banner">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 3px;">
+                <span class="live-dot"></span>
+                <span style="color: #2ecc71; font-weight: bold; font-size: 11px;">LIVE MATCH НАЛИЧЕН!</span>
+            </div>
+            <div style="font-size: 10px; color: #ffb703;">⚔️ PvP Среща срещу: <b>Динамо София</b></div>
+            <div style="font-size: 9px; color: #66fcf1; margin-top: 2px; text-decoration: underline;">👉 Натисни тук за да влезеш в мача</div>
+        </a>
+
         <div class="club-details">
             <div>Общ OVR на отбора: <b style="color: #66fcf1;">56.4</b></div>
             <div>Сплотеност: <b style="color: #2ecc71;">94%</b></div>
@@ -329,7 +350,6 @@
         if (playerXp >= reqXp) {
             playerXp -= reqXp;
             playerLevel++;
-            // Отключване на следващ стълб на лигата при качване на ниво (по желание се разширява до 27)
             if (unlockedLadderTier < 27) {
                 unlockedLadderTier++;
             }
