@@ -29,7 +29,6 @@
         .tier-dot { width: 22px; height: 22px; background: #1f2833; border: 2px solid #555; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; position: relative; z-index: 2; cursor: pointer; color: #fff; }
         .tier-dot.active { border-color: #f1c40f; transform: scale(1.15); }
         
-        /* Светене на зоните спрямо кой води */
         .tier-dot.winning { border-color: #3498db; box-shadow: 0 0 10px #3498db, inset 0 0 5px #3498db; }
         .tier-dot.losing { border-color: #e74c3c; box-shadow: 0 0 10px #e74c3c, inset 0 0 5px #e74c3c; }
 
@@ -53,12 +52,11 @@
         .rival-circle-1v1 { width: 38px; height: 38px; background: #2c1215; border: 3px solid #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #ff8787; box-shadow: 0 6px 15px rgba(0,0,0,0.6); }
         .rival-name-lbl-1v1 { font-size: 9px; font-weight: bold; color: #ff8787; margin-top: 2px; background: rgba(0,0,0,0.7); padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
 
-        /* Асистенти от твоя отбор */
+        /* Асистенти */
         .assistant-token { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 8; opacity: 0.85; }
         .assistant-circle { width: 28px; height: 28px; background: #1f2833; border: 2px solid #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: bold; color: #fff; box-shadow: 0 3px 6px rgba(0,0,0,0.4); }
         .assistant-lbl { font-size: 7px; color: #66fcf1; font-weight: bold; background: rgba(0,0,0,0.6); padding: 1px 3px; border-radius: 2px; margin-top: 1px; white-space: nowrap; }
 
-        /* Асистенти на съперника */
         .rival-assistant-token { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 7; opacity: 0.85; }
         .rival-assistant-circle { width: 26px; height: 26px; background: #2c1215; border: 2px solid #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: bold; color: #ff8787; box-shadow: 0 3px 6px rgba(0,0,0,0.4); }
         .rival-assistant-lbl { font-size: 7px; color: #ff8787; font-weight: bold; background: rgba(0,0,0,0.6); padding: 1px 3px; border-radius: 2px; margin-top: 1px; white-space: nowrap; }
@@ -85,7 +83,7 @@
         .sub-footer-bar { background: #0f1611; display: flex; justify-content: space-around; padding: 4px; font-size: 9px; border-top: 1px solid #1a261c; color: #a5b1c2; }
 
         /* НАВИГАЦИОНЕН БАР */
-        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 8px 0; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 8px 0; z-index: 100; box-shadow: -4px 10px rgba(0,0,0,0.3); }
         .nav-item { color: #a5b1c2; text-decoration: none; font-size: 10px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
         .nav-item.active { color: #66fcf1; }
         .nav-item span { font-size: 14px; }
@@ -95,7 +93,7 @@
 
 <div class="app-container">
     
-    <!-- ФИКСИРАН ТОП БАР С НАЧАЛНИ СТОЙНОСТИ -->
+    <!-- ФИКСИРАН ТОП БАР -->
     <div class="top-bar">
         <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">180/180</span></div>
         <div class="res-item" style="color: #2ecc71;">💵 <span id="topCash">500</span></div>
@@ -128,7 +126,6 @@
             <div class="pitch-center-line"></div>
             <div class="pitch-center-circle"></div>
 
-            <!-- Асистенти от твоя отбор -->
             <div class="assistant-token" id="assist1" style="left: 32%; top: 70%;">
                 <div class="assistant-circle">Халф</div>
                 <div class="assistant-lbl">Халф 1</div>
@@ -138,7 +135,6 @@
                 <div class="assistant-lbl">Защитник</div>
             </div>
 
-            <!-- Асистенти на съперника -->
             <div class="rival-assistant-token" id="rivalAssist1" style="left: 32%; top: 30%;">
                 <div class="rival-assistant-circle">Халф</div>
                 <div class="rival-assistant-lbl">Рівал Асист 1</div>
@@ -148,16 +144,14 @@
                 <div class="rival-assistant-lbl">Рівал Асист 2</div>
             </div>
 
-            <!-- Главен твой играч 1в1 -->
             <div class="player-token-1v1" id="myPlayerToken" style="left: 50%; top: 53%;">
                 <div class="player-circle-1v1">ПЕР</div>
                 <div class="player-name-lbl-1v1" id="myPlayerLabel">Капитан</div>
             </div>
 
-            <!-- Главен опонент 1в1 -->
             <div class="rival-token-1v1" id="rivalPlayerToken" style="left: 50%; top: 47%;">
                 <div class="rival-circle-1v1">РИВ</div>
-                <div class="rival-name-lbl-1v1">Рівал</div>
+                <div class="rival-name-lbl-1v1" id="rivalNameLabel">Рівал</div>
             </div>
         </div>
 
@@ -177,7 +171,7 @@
                 <div class="influence-info">
                     НАЛИТО В ЗОНАТА: <b id="pumpedSpentText">0</b>
                     СИЛА ЗА УДАР
-                    <b id="influenceValue">+250K</b>
+                    <b id="influenceValue">+1</b>
                 </div>
                 <button class="pump-btn" onclick="pumpAction()">
                     Атакувай ⚡ <span id="pumpCost">10</span>
@@ -228,7 +222,6 @@
         }
     }
 
-    // Стартови стойности по подразбиране, ако няма запазени данни
     let cash = localStorage.getItem('cash') || "500";
     let gems = localStorage.getItem('gems') !== null ? parseInt(localStorage.getItem('gems')) : 10; 
     let stars = localStorage.getItem('stars') !== null ? parseInt(localStorage.getItem('stars')) : 1; 
@@ -245,11 +238,23 @@
     let savedStarters = JSON.parse(localStorage.getItem('pitchStarters')) || [];
     let mainPlayer = savedStarters.length > 0 ? savedStarters[0] : { name: "Капитан", pos: "НАП" };
 
-    let influencePower = 200000 + (currentTier * 50000);
+    // Списък с произволни имена за съперниците по зони
+    const rivalNamesList = ["Рівал ФК", "Титан Стрит", "Динамо Стар", "Борусия Х", "Аякс 99", "Спартак Про", "Вулкан Кинг", "Ултра Тим", "Галактик ФК"];
+
+    function getRivalForTier(tier) {
+        let index = (tier - 1) % rivalNamesList.length;
+        return rivalNamesList[index];
+    }
+
+    let influencePower = stars * currentTier;
 
     function init1v1Match() {
         document.getElementById('myPlayerName').innerText = mainPlayer.name;
         document.getElementById('myPlayerLabel').innerText = `${mainPlayer.name} (${mainPlayer.pos || 'НАП'})`;
+
+        let currentRivalName = getRivalForTier(currentTier);
+        document.getElementById('rivalPlayerName').innerText = currentRivalName;
+        document.getElementById('rivalNameLabel').innerText = currentRivalName;
 
         if (savedStarters.length > 1) {
             if (savedStarters[1]) {
@@ -286,7 +291,8 @@
     }
 
     function updateUI() {
-        influencePower = 200000 + (currentTier * 50000);
+        // Силата за удар: равни на звездите ти, умножени по зоната
+        influencePower = stars * currentTier;
 
         document.getElementById('topEnergy').innerText = energy + "/" + MAX_ENERGY;
         document.getElementById('topCash').innerText = cash;
@@ -295,18 +301,10 @@
         document.getElementById('subCashVal').innerText = cash;
         document.getElementById('leagueTitleBox').innerText = `HTPL ПВП ЛИГА - ЗОНА ${currentTier}`;
         document.getElementById('currentZoneBadge').innerText = `Зона ${currentTier}`;
-        document.getElementById('influenceValue').innerText = "+" + (influencePower / 1000).toFixed(0) + "K";
+        document.getElementById('influenceValue').innerText = "+" + influencePower;
         
         let currentInvested = tierInvestedPower[currentTier] || 0;
-        let formattedInvested = "0";
-        if (currentInvested >= 1000000) {
-            formattedInvested = (currentInvested / 1000000).toFixed(1) + "M";
-        } else if (currentInvested >= 1000) {
-            formattedInvested = (currentInvested / 1000).toFixed(0) + "K";
-        } else if (currentInvested > 0) {
-            formattedInvested = currentInvested;
-        }
-        document.getElementById('pumpedSpentText').innerText = formattedInvested;
+        document.getElementById('pumpedSpentText').innerText = currentInvested;
 
         tierBallPositions[currentTier] = ballPosition;
         localStorage.setItem('tierBallPositions', JSON.stringify(tierBallPositions));
@@ -352,10 +350,18 @@
 
         energy -= 10;
         
+        // Твоят удар добавя сила
         tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + influencePower;
         localStorage.setItem('tierInvestedPower', JSON.stringify(tierInvestedPower));
 
-        ballPosition -= (Math.random() * 12 + 4); 
+        // Преместване на топката спрямо твоя удар
+        ballPosition -= (Math.random() * 8 + 3); 
+
+        // Рандом опонент (random player) в съответната зона с умножение (напр. в Зона 9 силата му се умножава с 2х или повече)
+        let rivalMultiplier = currentTier >= 9 ? 2.0 : (1.0 + (currentTier * 0.1));
+        let rivalPushBack = (Math.random() * 6 + 2) * (currentTier * 0.2) * rivalMultiplier;
+        ballPosition += rivalPushBack;
+
         if (ballPosition < 12) ballPosition = 12;
         if (ballPosition > 88) ballPosition = 88;
 
@@ -371,6 +377,10 @@
 
         currentTier = tierNum;
         ballPosition = tierBallPositions[currentTier] !== undefined ? tierBallPositions[currentTier] : 50;
+
+        let currentRivalName = getRivalForTier(currentTier);
+        document.getElementById('rivalPlayerName').innerText = currentRivalName;
+        document.getElementById('rivalNameLabel').innerText = currentRivalName;
 
         renderTiers();
         updateUI();
