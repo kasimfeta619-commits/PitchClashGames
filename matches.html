@@ -76,7 +76,10 @@
         .influence-info { font-size: 10px; color: #a5b1c2; }
         .influence-info b { display: block; font-size: 13px; color: #66fcf1; }
         
-        .pump-btn { background: linear-gradient(135deg, #3498db, #2980b9); color: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(52,152,219,0.3); }
+        /* КОНТРОЛИ ЗА ИЗБОР НА СИЛА (1 до 20) */
+        .attack-control-group { display: flex; align-items: center; gap: 6px; }
+        .attack-slider { width: 85px; accent-color: #3498db; cursor: pointer; }
+        .pump-btn { background: linear-gradient(135deg, #3498db, #2980b9); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(52,152,219,0.3); }
         .pump-btn:active { transform: scale(0.95); }
 
         /* МИНИ СТАТУС БАР */
@@ -170,12 +173,15 @@
             <div class="action-row">
                 <div class="influence-info">
                     НАЛИТО В ЗОНАТА: <b id="pumpedSpentText">0</b>
-                    СИЛА ЗА УДАР
-                    <b id="influenceValue">+1</b>
+                    СИЛА ЗА УДАР (ИЗБОР 1-20):
+                    <b id="influenceValue">1</b>
                 </div>
-                <button class="pump-btn" onclick="pumpAction()">
-                    Атакувай ⚡ <span id="pumpCost">10</span>
-                </button>
+                <div class="attack-control-group">
+                    <input type="range" min="1" max="20" value="1" class="attack-slider" id="attackSlider" oninput="updateAttackSlider(this.value)">
+                    <button class="pump-btn" onclick="pumpAction()">
+                        Атакувай ⚡ <span id="pumpCost">1</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -245,8 +251,13 @@
         return rivalNamesList[index];
     }
 
-    // Силата на удара се равнява директно на ЗВЕЗДИТЕ (нивото) на играча
-    let influencePower = stars;
+    let chosenAttackPower = 1;
+
+    function updateAttackSlider(val) {
+        chosenAttackPower = parseInt(val);
+        document.getElementById('influenceValue').innerText = "+" + chosenAttackPower;
+        document.getElementById('pumpCost').innerText = chosenAttackPower;
+    }
 
     function init1v1Match() {
         document.getElementById('myPlayerName').innerText = mainPlayer.name;
@@ -291,9 +302,6 @@
     }
 
     function updateUI() {
-        // Силата за удар е равна на твоите звезди/ниво (stars)
-        influencePower = stars;
-
         document.getElementById('topEnergy').innerText = energy + "/" + MAX_ENERGY;
         document.getElementById('topCash').innerText = cash;
         document.getElementById('topGems').innerText = gems;
@@ -301,7 +309,6 @@
         document.getElementById('subCashVal').innerText = cash;
         document.getElementById('leagueTitleBox').innerText = `HTPL ПВП ЛИГА - ЗОНА ${currentTier}`;
         document.getElementById('currentZoneBadge').innerText = `Зона ${currentTier}`;
-        document.getElementById('influenceValue').innerText = "+" + influencePower;
         
         let currentInvested = tierInvestedPower[currentTier] || 0;
         document.getElementById('pumpedSpentText').innerText = currentInvested;
@@ -343,21 +350,21 @@
     }
 
     function pumpAction() {
-        if (energy < 10) {
-            alert("❌ Нямате достатъчно енергия за дуел!");
+        if (energy < chosenAttackPower) {
+            alert("❌ Нямате достатъчно енергия за този удар!");
             return;
         }
 
-        energy -= 10;
+        energy -= chosenAttackPower;
         
-        tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + influencePower;
+        tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + chosenAttackPower;
         localStorage.setItem('tierInvestedPower', JSON.stringify(tierInvestedPower));
 
-        // Преместване спрямо твоята сила
-        ballPosition -= (Math.random() * 8 + 3); 
+        // Силата на твоя удар премества топката спрямо избраното количество (1 до 20)
+        ballPosition -= (chosenAttackPower * 0.8 + Math.random() * 3); 
 
-        // Рандом опонент с 2х умножение на силата си в Зона 9
-        let rivalMultiplier = currentTier >= 9 ? 2.0 : (1.0 + (currentTier * 0.1));
+        // Рандом опонент с 2х умножение на силата в Зона 9 или по-висока
+        let rivalMultiplier = currentTier >= 9 ? 2.0 : 1.0;
         let rivalPushBack = (Math.random() * 6 + 2) * (currentTier * 0.2) * rivalMultiplier;
         ballPosition += rivalPushBack;
 
