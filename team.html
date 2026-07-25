@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Team HTPL - Динамичен 3D Стадион</title>
+    <title>Team HTPL - Истински 3D Спортен Град</title>
     <style>
         * { box-sizing: border-box; transition: all 0.3s ease-in-out; }
         body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; user-select: none; }
@@ -30,44 +30,74 @@
         .pitch-box-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 130px; height: 45px; border: 2px solid rgba(255,255,255,0.6); border-top: none; }
         .pitch-box-bottom { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 130px; height: 45px; border: 2px solid rgba(255,255,255,0.6); border-bottom: none; }
 
-        .player-token { position: absolute; width: 34px; height: 34px; background: #1f2833; border: 2px solid #ffb703; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #fff; cursor: pointer; transform: translate(-50%, -50%); box-shadow: 0 6px 12px rgba(0,0,0,0.5); z-index: 10; }
-        .player-token.selected { border-color: #66fcf1; background: #2c3542; box-shadow: 0 0 12px #66fcf1; transform: translate(-50%, -50%) scale(1.1); }
-        .player-token span { font-size: 6px; color: #66fcf1; }
-
-        /* ДИНАМИЧЕН 3D СТАДИОН И КОМПЛЕКС */
-        .stadium-3d-scene { width: 100%; height: 260px; perspective: 1400px; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle, #16202b 0%, #08090c 100%); border-radius: 14px; border: 2px solid #2c3542; overflow: hidden; position: relative; }
-        .complex-world { width: 280px; height: 220px; position: relative; transform-style: preserve-3d; transform: rotateX(55deg) rotateZ(0deg); transition: transform 0.1s; }
-        .complex-world.rotating { animation: spinComplex 30s infinite linear; }
-        @keyframes spinComplex { 0% { transform: rotateX(55deg) rotateZ(0deg); } 100% { transform: rotateX(55deg) rotateZ(360deg); } }
-
-        .ground-base { position: absolute; width: 100%; height: 100%; background: #0f171e; border-radius: 12px; border: 2px dashed #22303c; }
-        .main-stadium { position: absolute; width: 160px; height: 130px; top: 15px; left: 60px; transform-style: preserve-3d; }
-        .stadium-pitch { position: absolute; width: 100px; height: 80px; background: linear-gradient(135deg, #27ae60, #1e8449); top: 25px; left: 30px; border: 2px solid #fff; border-radius: 4px; }
+        .player-token-container { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; z-index: 10; width: 60px; text-align: center; }
+        .player-circle { width: 34px; height: 34px; background: #1f2833; border: 2px solid #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #fff; box-shadow: 0 6px 12px rgba(0,0,0,0.5); }
+        .player-token-container.selected .player-circle { border-color: #66fcf1; background: #2c3542; box-shadow: 0 0 12px #66fcf1; transform: scale(1.1); }
         
-        /* Трибуни */
-        .stadium-stand { position: absolute; background: linear-gradient(180deg, #323f4d, #1b2836); border: 1px solid #4a5c72; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #cfd8dc; box-shadow: 0 8px 15px rgba(0,0,0,0.6); transition: all 0.5s ease; }
-        .stand-n { width: 100px; height: 20px; top: 5px; left: 30px; transform: rotateX(-50deg); transform-origin: bottom; }
-        .stand-s { width: 100px; height: 20px; bottom: 5px; left: 30px; transform: rotateX(50deg); transform-origin: top; }
-        .stand-e { width: 70px; height: 20px; right: 5px; top: 55px; transform: rotateY(90deg) rotateX(-50deg); transform-origin: left; }
-        .stand-w { width: 70px; height: 20px; left: 5px; top: 55px; transform: rotateY(-90deg) rotateX(-50deg); transform-origin: right; }
+        .player-name-lbl { font-size: 8px; font-weight: bold; color: #fff; margin-top: 2px; background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 4px; white-space: nowrap; }
+        .player-sub-lbl { font-size: 7px; color: #66fcf1; font-weight: bold; background: rgba(0,0,0,0.7); padding: 1px 4px; border-radius: 3px; margin-top: 1px; }
+
+        /* ИСТИНСКА 3D СЦЕНА НА СПОРТНИЯ ГРАД */
+        .stadium-3d-scene { width: 100%; height: 310px; perspective: 1800px; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle, #1a2634 0%, #06080c 100%); border-radius: 14px; border: 2px solid #2c3542; overflow: hidden; position: relative; }
+        .complex-world { width: 330px; height: 260px; position: relative; transform-style: preserve-3d; transform: rotateX(52deg) rotateZ(0deg); transition: transform 0.1s; }
+        .complex-world.rotating { animation: spinComplex 45s infinite linear; }
+        @keyframes spinComplex { 0% { transform: rotateX(52deg) rotateZ(0deg); } 100% { transform: rotateX(52deg) rotateZ(360deg); } }
+
+        .ground-base { position: absolute; width: 100%; height: 100%; background: #111923; border-radius: 14px; border: 2px solid #2a3b4c; box-shadow: inset 0 0 40px rgba(0,0,0,0.9); }
+        
+        /* Паркови зони с озеленяване */
+        .city-park-zone { position: absolute; background: #134f2c; border: 1px dashed #2ecc71; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 6px; font-weight: bold; color: #a3e4d7; transform: translateZ(1px); }
+        .park-n1 { top: 10px; left: 10px; width: 55px; height: 32px; }
+        .park-n2 { top: 10px; right: 10px; width: 55px; height: 32px; }
+
+        /* ОБЕМНИ 3D СГРАДИ СЪС СТЕНИ (BOX MODEL) */
+        .building-3d { position: absolute; transform-style: preserve-3d; transition: all 0.5s; }
+        
+        /* Разположение на сградите */
+        .bldg-hotel-pos { bottom: 15px; left: 10px; width: 55px; height: 30px; transform: translateZ(0px); }
+        .bldg-med-pos { bottom: 15px; right: 10px; width: 48px; height: 26px; transform: translateZ(0px); }
+        .bldg-acad-pos { top: 95px; right: 10px; width: 55px; height: 26px; transform: translateZ(0px); }
+
+        /* Общи стилове за стените на 3D сградите */
+        .b-roof { position: absolute; width: 100%; height: 100%; background: #212c38; border: 1px solid #415a77; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 5.5px; font-weight: bold; color: #66fcf1; text-align: center; transform: translateZ(22px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .b-wall-n { position: absolute; width: 100%; height: 22px; background: #18222c; bottom: 0; left: 0; transform-origin: bottom; transform: rotateX(90deg); border-top: 1px solid #415a77; }
+        .b-wall-s { position: absolute; width: 100%; height: 22px; background: #141c24; top: 0; left: 0; transform-origin: top; transform: rotateX(-90deg); }
+        .b-wall-e { position: absolute; width: 22px; height: 100%; background: #161f28; top: 0; right: 0; transform-origin: right; transform: rotateY(-90deg); }
+        .b-wall-w { position: absolute; width: 22px; height: 100%; background: #1b2631; top: 0; left: 0; transform-origin: left; transform: rotateY(90deg); }
+
+        /* Активни състояния на сградите */
+        .complex-world.level-hotel .bldg-hotel-pos .b-roof { background: #1f4068; border-color: #66fcf1; color: #66fcf1; box-shadow: 0 0 15px rgba(102,252,241,0.7); }
+        .complex-world.level-hotel .bldg-hotel-pos .b-wall-n, .complex-world.level-hotel .bldg-hotel-pos .b-wall-w { background: #163254; }
+
+        .complex-world.level-med .bldg-med-pos .b-roof { background: #162447; border-color: #e94560; color: #ff6b6b; box-shadow: 0 0 15px rgba(233,69,96,0.7); }
+        .complex-world.level-med .bldg-med-pos .b-wall-n, .complex-world.level-med .bldg-med-pos .b-wall-w { background: #111b36; }
+
+        .complex-world.level-academy .bldg-acad-pos .b-roof { background: #0f3057; border-color: #f39c12; color: #f1c40f; box-shadow: 0 0 15px rgba(243,156,18,0.7); }
+        .complex-world.level-academy .bldg-acad-pos .b-wall-n, .complex-world.level-academy .bldg-acad-pos .b-wall-w { background: #0a223f; }
+
+
+        /* Главен стадион в центъра */
+        .main-stadium { position: absolute; width: 170px; height: 140px; top: 50px; left: 80px; transform-style: preserve-3d; }
+        .stadium-pitch { position: absolute; width: 104px; height: 82px; background: linear-gradient(135deg, #27ae60, #1e8449); top: 29px; left: 33px; border: 2px solid #fff; border-radius: 4px; }
+        
+        .stadium-stand { position: absolute; background: linear-gradient(180deg, #3d4f63, #1e2c3a); border: 1px solid #526780; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #cfd8dc; box-shadow: 0 8px 15px rgba(0,0,0,0.6); transition: all 0.5s ease; }
+        .stand-n { width: 104px; height: 20px; top: 9px; left: 33px; transform: rotateX(-50deg); transform-origin: bottom; }
+        .stand-s { width: 104px; height: 20px; bottom: 9px; left: 33px; transform: rotateX(50deg); transform-origin: top; }
+        .stand-e { width: 74px; height: 20px; right: 9px; top: 60px; transform: rotateY(90deg) rotateX(-50deg); transform-origin: left; }
+        .stand-w { width: 74px; height: 20px; left: 9px; top: 60px; transform: rotateY(-90deg) rotateX(-50deg); transform-origin: right; }
 
         .complex-world.level-stands .stand-n, .complex-world.level-stands .stand-s { height: 38px; }
         .complex-world.level-stands .stand-e, .complex-world.level-stands .stand-w { height: 38px; }
 
-        /* Покриви и козирки */
         .roof-canopy { position: absolute; background: rgba(102, 252, 241, 0.15); border: 1px solid #66fcf1; pointer-events: none; opacity: 0.3; transition: opacity 0.5s; }
-        .roof-n { width: 110px; height: 30px; top: -10px; left: 25px; transform: rotateX(-70deg); transform-origin: bottom; }
-        .roof-s { width: 110px; height: 30px; bottom: -10px; left: 25px; transform: rotateX(70deg); transform-origin: top; }
+        .roof-n { width: 114px; height: 28px; top: -2px; left: 28px; transform: rotateX(-70deg); transform-origin: bottom; }
+        .roof-s { width: 114px; height: 28px; bottom: -2px; left: 28px; transform: rotateX(70deg); transform-origin: top; }
         .complex-world.level-roof .roof-canopy { opacity: 0.9; box-shadow: 0 0 15px rgba(102,252,241,0.5); }
 
-        /* Прожектори */
         .floodlight-tower { position: absolute; width: 6px; height: 6px; background: #555; border-radius: 50%; box-shadow: none; transform: translateZ(35px); transition: all 0.5s; }
-        .fl-1 { top: 10px; left: 25px; } .fl-2 { top: 10px; right: 25px; } .fl-3 { bottom: 10px; left: 25px; } .fl-4 { bottom: 10px; right: 25px; }
+        .fl-1 { top: 12px; left: 28px; } .fl-2 { top: 12px; right: 28px; } .fl-3 { bottom: 12px; left: 28px; } .fl-4 { bottom: 12px; right: 28px; }
         .complex-world.level-lights .floodlight-tower { background: #66fcf1; box-shadow: 0 0 15px #66fcf1, 0 0 30px #66fcf1; }
 
-        .mini-training-pitch { position: absolute; width: 60px; height: 45px; background: #219653; border: 1px solid #fff; border-radius: 3px; bottom: 15px; left: 10px; transform: translateZ(2px); font-size: 6px; color: #fff; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; }
-
-        /* Секции и бутони за строеж */
         .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 10px; margin-bottom: 12px; font-size: 11px; }
         .section-title { font-weight: bold; color: #ffb703; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
         
@@ -81,7 +111,7 @@
 
         .control-btn { width: 100%; background: #1f2833; border: 1px solid #2c3542; color: #66fcf1; padding: 6px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; margin-bottom: 10px; text-align: center; }
 
-        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: -4px 10px rgba(0,0,0,0.3); }
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
         .nav-item { color: #a5b1c2; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
         .nav-item.active { color: #66fcf1; }
         .nav-item span { font-size: 16px; }
@@ -93,15 +123,15 @@
     
     <!-- Горна лента с ресурси -->
     <div class="top-bar">
-        <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">50</span>/50</div>
-        <div class="res-item" style="color: #a29bfe;">🟣 <span id="topDiamonds">1145</span></div>
-        <div class="res-item" style="color: #2ecc71;">🟢 <span id="topCash">4770</span></div>
+        <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">430/50</span></div>
+        <div class="res-item" style="color: #d16ba5;">🟣 <span id="topDiamonds">10</span></div>
+        <div class="res-item" style="color: #2ecc71;">🟢 <span id="topCash">0</span></div>
         <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
     <div class="team-tabs">
         <button class="tab-btn active" onclick="switchTab('tacticsTab', this)">📋 Състав & Резерви</button>
-        <button class="tab-btn" onclick="switchTab('stadiumTab', this)">🏟️ 3D Комплекс</button>
+        <button class="tab-btn" onclick="switchTab('stadiumTab', this)">🏟️ Спортен Град</button>
     </div>
 
     <!-- ТАБ 1: ТАКТИКА И РЕЗЕРВИ -->
@@ -126,18 +156,50 @@
         </div>
     </div>
 
-    <!-- ТАБ 2: ДИНАМИЧЕН 3D КОМПЛЕКС И СТАДИОН -->
+    <!-- ТАБ 2: ИСТИНСКИ 3D СПОРТЕН ГРАД -->
     <div id="stadiumTab" class="tab-content">
         <div class="board-header">
-            <div class="board-title">🏟️ Клубен Комплекс</div>
-            <div style="font-size: 10px; color: #66fcf1;" id="homeMatchStatus">🏡 Стадионът се развива от общия фонд!</div>
+            <div class="board-title">🏟️ Корпоративен Комплекс</div>
+            <div style="font-size: 10px; color: #66fcf1;" id="homeMatchStatus">🏢 Обемни 3D сгради и спортен център!</div>
         </div>
 
-        <!-- 3D СЦЕНА -->
+        <!-- 3D СЦЕНА С ИСТИНСКИ 3D ОБЕМНИ СГРАДИ -->
         <div class="stadium-3d-scene">
             <div class="complex-world rotating" id="complexWorld">
                 <div class="ground-base"></div>
-                <div class="mini-training-pitch">База</div>
+                
+                <!-- Озеленяване / Паркови зони -->
+                <div class="city-park-zone park-n1">🌿 Парк А</div>
+                <div class="city-park-zone park-n2">🌲 Парк Б</div>
+
+                <!-- 3D Сграда: Клубен Хотел -->
+                <div class="building-3d bldg-hotel-pos">
+                    <div class="b-wall-n"></div>
+                    <div class="b-wall-s"></div>
+                    <div class="b-wall-e"></div>
+                    <div class="b-wall-w"></div>
+                    <div class="b-roof" id="bldgHotelText">🏨 Хотел</div>
+                </div>
+
+                <!-- 3D Сграда: Медицински Център -->
+                <div class="building-3d bldg-med-pos">
+                    <div class="b-wall-n"></div>
+                    <div class="b-wall-s"></div>
+                    <div class="b-wall-e"></div>
+                    <div class="b-wall-w"></div>
+                    <div class="b-roof" id="bldgMedText">🏥 Мед. Център</div>
+                </div>
+
+                <!-- 3D Сграда: Младежка Академия -->
+                <div class="building-3d bldg-acad-pos">
+                    <div class="b-wall-n"></div>
+                    <div class="b-wall-s"></div>
+                    <div class="b-wall-e"></div>
+                    <div class="b-wall-w"></div>
+                    <div class="b-roof" id="bldgAcadText">🎓 Академия</div>
+                </div>
+                
+                <!-- Главен стадион -->
                 <div class="main-stadium">
                     <div class="stadium-pitch"></div>
                     <div class="stadium-stand stand-n">Север</div>
@@ -156,36 +218,58 @@
 
         <button class="control-btn" onclick="toggleRotation()">⏹️ Спри/Пусни Въртенето</button>
 
-        <!-- ИНВЕСТИЦИИ ОТ ОБЩИЯ КЛУБЕН ФОНД -->
+        <!-- ФОНД ЗА СТРОЕЖ И ИНВЕСТИЦИИ -->
         <div class="section-box">
-            <div class="section-title"><span>🏗️ Фонд за Строеж и Разширение</span></div>
+            <div class="section-title"><span>🏗️ Разширен Фонд за Инвестиции</span></div>
             <div style="font-size: 10px; color: #a5b1c2; margin-bottom: 8px;">
-                Наличен общ клубен фонд: <b style="color: #ffd700;" id="clubFundBalance">3,500 🪙</b>
+                Наличен общ клубен фонд: <b style="color: #ffb703;" id="clubFundBalance">5,500 🟢</b>
             </div>
 
             <div class="upgrade-row">
                 <div style="font-size: 10px;">
                     <b>Разширение на Трибуни</b><br><span style="color:#a5b1c2;">Визуално увеличава капацитета</span>
                 </div>
-                <button class="upgrade-btn" id="upStandsBtn" onclick="upgradeStadium('stands', 1000)">1,000 🪙</button>
+                <button class="upgrade-btn" id="upStandsBtn" onclick="upgradeStadium('stands', 1000)">1,000 🟢</button>
             </div>
 
             <div class="upgrade-row">
                 <div style="font-size: 10px;">
                     <b>Професионално Осветление</b><br><span style="color:#a5b1c2;">Включва неонови прожектори</span>
                 </div>
-                <button class="upgrade-btn" id="upLightsBtn" onclick="upgradeStadium('lights', 1500)">1,500 🪙</button>
+                <button class="upgrade-btn" id="upLightsBtn" onclick="upgradeStadium('lights', 1500)">1,500 🟢</button>
             </div>
 
             <div class="upgrade-row">
                 <div style="font-size: 10px;">
                     <b>Покривни Козирки</b><br><span style="color:#a5b1c2;">Оформя модерни навеси</span>
                 </div>
-                <button class="upgrade-btn" id="upRoofBtn" onclick="upgradeStadium('roof', 2000)">2,000 🪙</button>
+                <button class="upgrade-btn" id="upRoofBtn" onclick="upgradeStadium('roof', 2000)">2,000 🟢</button>
+            </div>
+
+            <div class="upgrade-row">
+                <div style="font-size: 10px;">
+                    <b>Луксозен Клубен Хотел (3D)</b><br><span style="color:#a5b1c2;">Изгражда обемна сграда</span>
+                </div>
+                <button class="upgrade-btn" id="upHotelBtn" onclick="upgradeStadium('hotel', 1800)">1,800 🟢</button>
+            </div>
+
+            <div class="upgrade-row">
+                <div style="font-size: 10px;">
+                    <b>Медицински Център (3D)</b><br><span style="color:#a5b1c2;">Изгражда здравен корпус</span>
+                </div>
+                <button class="upgrade-btn" id="upMedBtn" onclick="upgradeStadium('med', 1200)">1,200 🟢</button>
+            </div>
+
+            <div class="upgrade-row">
+                <div style="font-size: 10px;">
+                    <b>Младежка Академия (3D)</b><br><span style="color:#a5b1c2;">Изгражда тренировъчен блок</span>
+                </div>
+                <button class="upgrade-btn" id="upAcadBtn" onclick="upgradeStadium('academy', 1600)">1,600 🟢</button>
             </div>
         </div>
     </div>
 
+    <!-- НАВИГАЦИОНЕН БАР -->
     <div class="nav-bar">
         <a href="matches.html" class="nav-item"><span>⚽</span> Мачове</a>
         <a href="training.html" class="nav-item"><span>🏋️</span> Трен.</a>
@@ -197,14 +281,12 @@
 </div>
 
 <script>
-    // Зареждане на ресурсите и текущото ниво от localStorage
-    let energy = parseInt(localStorage.getItem('energy')) || 50;
-    let diamonds = parseInt(localStorage.getItem('diamonds')) || 1145;
-    let cash = parseInt(localStorage.getItem('cash')) || 4770;
-    let clubFund = parseInt(localStorage.getItem('clubFund')) || 3500;
-    
-    // Взимаме реалното ниво на играча (поддържайки съвместимост с ключ playerLevel или нивата от тренировъчния център)
+    let cash = parseInt(localStorage.getItem('cash')) || parseInt(localStorage.getItem('cashBalance')) || 0;
+    let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
+    let energyReserve = parseInt(localStorage.getItem('energyReserve')) || parseInt(localStorage.getItem('energy')) || 430;
+    let maxEnergy = parseInt(localStorage.getItem('maxEnergy')) || 50;
     let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
+    let clubTreasury = parseInt(localStorage.getItem('clubTreasury')) || 5500;
 
     let isRotating = true;
     let selectedStarterIndex = null;
@@ -212,8 +294,10 @@
     let hasStandsUpgraded = JSON.parse(localStorage.getItem('hasStandsUpgraded')) || false;
     let hasLightsUpgraded = JSON.parse(localStorage.getItem('hasLightsUpgraded')) || false;
     let hasRoofUpgraded = JSON.parse(localStorage.getItem('hasRoofUpgraded')) || false;
+    let hasHotelUpgraded = JSON.parse(localStorage.getItem('hasHotelUpgraded')) || false;
+    let hasMedUpgraded = JSON.parse(localStorage.getItem('hasMedUpgraded')) || false;
+    let hasAcademyUpgraded = JSON.parse(localStorage.getItem('hasAcademyUpgraded')) || false;
 
-    // Реални базови стойности на играчите за ново начало
     let baseStarters = [
         { id: 1, name: "Ти (К)", pos: "НАП", x: 50, y: 15, baseOvr: 54 },
         { id: 2, name: "М. Кирилов", pos: "НАП", x: 25, y: 22, baseOvr: 53 },
@@ -240,12 +324,13 @@
     let pitch = document.getElementById('pitchArea');
 
     function updateUI() {
-        document.getElementById('topEnergy').innerText = energy;
+        document.getElementById('topEnergy').innerText = energyReserve + "/" + maxEnergy;
         document.getElementById('topDiamonds').innerText = diamonds;
         document.getElementById('topCash').innerText = cash;
-        document.getElementById('clubFundBalance').innerText = clubFund.toLocaleString() + " 🪙";
+        document.getElementById('clubFundBalance').innerText = clubTreasury.toLocaleString() + " 🟢";
         
-        localStorage.setItem('clubFund', clubFund);
+        localStorage.setItem('clubTreasury', clubTreasury);
+        localStorage.setItem('energyReserve', energyReserve);
 
         let world = document.getElementById('complexWorld');
         
@@ -264,6 +349,24 @@
             document.getElementById('upRoofBtn').innerText = "Готово ✓";
             document.getElementById('upRoofBtn').disabled = true;
         }
+        if (hasHotelUpgraded) {
+            world.classList.add('level-hotel');
+            document.getElementById('upHotelBtn').innerText = "Готово ✓";
+            document.getElementById('upHotelBtn').disabled = true;
+            document.getElementById('bldgHotelText').innerText = "🏨 Хотел [3D]";
+        }
+        if (hasMedUpgraded) {
+            world.classList.add('level-med');
+            document.getElementById('upMedBtn').innerText = "Готово ✓";
+            document.getElementById('upMedBtn').disabled = true;
+            document.getElementById('bldgMedText').innerText = "🏥 Медицински [3D]";
+        }
+        if (hasAcademyUpgraded) {
+            world.classList.add('level-academy');
+            document.getElementById('upAcadBtn').innerText = "Готово ✓";
+            document.getElementById('upAcadBtn').disabled = true;
+            document.getElementById('bldgAcadText').innerText = "🎓 Академия [3D]";
+        }
     }
 
     function switchTab(tabId, btnElement) {
@@ -281,12 +384,12 @@
     }
 
     function upgradeStadium(type, cost) {
-        if (clubFund < cost) {
-            alert("❌ Общият клубен фонд няма достатъчно средства за този строеж!");
+        if (clubTreasury < cost) {
+            alert("❌ Общият клубен фонд няма достатъчно средства за този обект!");
             return;
         }
 
-        clubFund -= cost;
+        clubTreasury -= cost;
 
         if (type === 'stands') {
             hasStandsUpgraded = true;
@@ -300,28 +403,45 @@
             hasRoofUpgraded = true;
             localStorage.setItem('hasRoofUpgraded', true);
             alert("⛺ Покривните козирки бяха изградени!");
+        } else if (type === 'hotel') {
+            hasHotelUpgraded = true;
+            localStorage.setItem('hasHotelUpgraded', true);
+            alert("🏨 3D Клубният хотел беше построен успешно!");
+        } else if (type === 'med') {
+            hasMedUpgraded = true;
+            localStorage.setItem('hasMedUpgraded', true);
+            alert("🏥 3D Медицинският център отвори врати!");
+        } else if (type === 'academy') {
+            hasAcademyUpgraded = true;
+            localStorage.setItem('hasAcademyUpgraded', true);
+            alert("🎓 3D Младежката академия беше изградена!");
         }
 
         updateUI();
     }
 
     function renderBoard() {
-        // Изчисляване на OVR спрямо текущото ниво на играча (playerLevel)
         let levelBonus = Math.floor((playerLevel - 1) / 10);
-        let oldTokens = pitch.querySelectorAll('.player-token');
+        let oldTokens = pitch.querySelectorAll('.player-token-container');
         oldTokens.forEach(t => t.remove());
 
         starters.forEach((p, index) => {
             let currentOvr = (p.baseOvr || 50) + levelBonus;
             p.ovr = currentOvr;
 
-            let token = document.createElement('div');
-            token.className = 'player-token' + (selectedStarterIndex === index ? ' selected' : '');
-            token.style.left = p.x + '%';
-            token.style.top = p.y + '%';
-            token.innerHTML = `${p.name}<br><span>${p.pos} (${currentOvr})</span>`;
-            token.onclick = () => selectStarterForSubs(index);
-            pitch.appendChild(token);
+            let container = document.createElement('div');
+            container.className = 'player-token-container' + (selectedStarterIndex === index ? ' selected' : '');
+            container.style.left = p.x + '%';
+            container.style.top = p.y + '%';
+            
+            container.innerHTML = `
+                <div class="player-circle">${currentOvr}</div>
+                <div class="player-name-lbl">${p.name}</div>
+                <div class="player-sub-lbl">${p.pos}</div>
+            `;
+            
+            container.onclick = () => selectStarterForSubs(index);
+            pitch.appendChild(container);
         });
 
         let subsBox = document.getElementById('subsList');
