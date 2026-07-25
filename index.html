@@ -9,7 +9,7 @@
         .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
         
         .top-bar { background: #1f2833; border: 1px solid #2c3542; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .res-item { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .res-item { display: flex; align-items: center; gap: 4px; font-weight: bold; font-size: 12px; }
         .shop-link-btn { background: #66fcf1; border: none; color: #0b0c10; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
 
         /* НАЙ-ГОРЕН ПРОГРЕС БАР (НИВО И ЗВЕЗДА) */
@@ -46,7 +46,7 @@
 
         /* КЛУБЕН ФОНД */
         .treasury-box { display: flex; justify-content: space-between; align-items: center; }
-        .donate-btn { background: #ffb703; color: #0b0c10; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
+        .donate-btn { background: #ffb703; color: #0b0c10; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 10px; text-align: center; }
         .donate-btn:active { transform: scale(0.98); }
 
         /* ЛИГИ И СТЪЛБОВЕ НА СЪСТЕЗАНИЯТА */
@@ -84,11 +84,12 @@
 
 <div class="app-container">
     
-    <!-- ИГРОВИ РЕСУРСИ -->
+    <!-- ИГРОВИ РЕСУРСИ (СИНХРОНИЗИРАНИ С ЦЯЛАТА ИГРА) -->
     <div class="top-bar">
-        <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">50/50</span></div>
+        <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">180/180</span></div>
+        <div class="res-item" style="color: #2ecc71;">🟢 <span id="topCash">500</span></div>
         <div class="res-item" style="color: #d16ba5;">🟣 <span id="topDiamonds">10</span></div>
-        <div class="res-item" style="color: #2ecc71;">🟢 <span id="topCash">0</span></div>
+        <div class="res-item" style="color: #ffb703;">⭐ <span id="topStars">1</span></div>
         <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
@@ -152,13 +153,14 @@
         <b style="color: #66fcf1;">4 играчи в базата</b>
     </div>
 
-    <!-- ОБЩ КЛУБЕН ФОНД -->
+    <!-- ОБЩ КЛУБЕН ФОНД (БАЗИРАН НА СТАТУСА НА СТАДИОНА / НИВОТО) -->
     <div class="section-box treasury-box">
         <div>
             <div style="font-weight: bold; color: #ffb703; margin-bottom: 2px;">🏦 Общ Клубен Фонд</div>
-            <span style="color: #a5b1c2;">Вноски за нови трансфери: <b id="clubTreasuryVal" style="color:#fff;">3600</b> 🟢</span>
+            <span style="color: #a5b1c2;">База/Стадион: <b id="stadiumTierTitle" style="color:#66fcf1;">Академия (Стадион Niv. 1)</b></span>
+            <div style="font-size: 10px; color: #fff; margin-top: 2px;">Вноски за трансфери: <b id="clubTreasuryVal" style="color:#2ecc71;">3600</b> 🟢</div>
         </div>
-        <button class="donate-btn" onclick="donateToClub()">Дари 50 🟢</button>
+        <button class="donate-btn" id="donateBtnText" onclick="donateToClub()">Дари 50 🟢</button>
     </div>
 
     <!-- КЛУБЕН ЧАТ НА ЖИВО -->
@@ -190,9 +192,10 @@
 </div>
 
 <script>
-    let cash = parseInt(localStorage.getItem('cash')) || 0; 
+    // Синхронизирани основни ресурси с останалите страници на играта
+    let cash = parseInt(localStorage.getItem('cash')) !== null ? parseInt(localStorage.getItem('cash')) : 500; 
     let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
-    let energyReserve = parseInt(localStorage.getItem('energyReserve')) || 50; 
+    let energyReserve = localStorage.getItem('energyReserve') !== null ? parseInt(localStorage.getItem('energyReserve')) : 180; 
     let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
     let playerXp = parseInt(localStorage.getItem('playerXp')) || 0;
     let clubTreasury = parseInt(localStorage.getItem('clubTreasury')) || 3600;
@@ -202,44 +205,39 @@
     let unlockedLadderTier = parseInt(localStorage.getItem('unlockedLadderTier')) || 1;
     let selectedLadderTier = parseInt(localStorage.getItem('selectedLadderTier')) || 1;
 
-    // Пълен масив с 27-те стълба на лигите
+    // Пълен масив с 27-те стълба на лигите и нивата на стадиона
     const allLadders = [
-        // Етап 1: Академия (Стълбове 1 до 3)
-        { tier: 1, name: "Академия - Ниво 3", category: "Академия", rewardCash: 120, rewardXp: 4 },
-        { tier: 2, name: "Академия - Ниво 2", category: "Академия", rewardCash: 160, rewardXp: 6 },
-        { tier: 3, name: "Академия - Ниво 1", category: "Академия", rewardCash: 210, rewardXp: 8 },
+        { tier: 1, name: "Академия - Ниво 3", category: "Академия", stadium: "Академия (Стадион Niv. 1)", rewardCash: 120, rewardXp: 4, donationCost: 50 },
+        { tier: 2, name: "Академия - Ниво 2", category: "Академия", stadium: "Академия (Стадион Niv. 2)", rewardCash: 160, rewardXp: 6, donationCost: 75 },
+        { tier: 3, name: "Академия - Ниво 1", category: "Академия", stadium: "Академия (Стадион Niv. 3)", rewardCash: 210, rewardXp: 8, donationCost: 100 },
         
-        // Етап 2: Регионални лиги (Стълбове 4 до 9)
-        { tier: 4, name: "Регионална Дивизия 3C", category: "Регионални", rewardCash: 280, rewardXp: 10 },
-        { tier: 5, name: "Регионална Дивизия 3B", category: "Регионални", rewardCash: 350, rewardXp: 12 },
-        { tier: 6, name: "Регионална Дивизия 3A", category: "Регионални", rewardCash: 430, rewardXp: 15 },
-        { tier: 7, name: "Регионална Дивизия 2B", category: "Регионални", rewardCash: 520, rewardXp: 18 },
-        { tier: 8, name: "Регионална Дивизия 2A", category: "Регионални", rewardCash: 620, rewardXp: 22 },
-        { tier: 9, name: "Регионална Премиер Лига", category: "Регионални", rewardCash: 750, rewardXp: 25 },
+        { tier: 4, name: "Регионална Дивизия 3C", category: "Регионални", stadium: "Регионален комплекс (Niv. 1)", rewardCash: 280, rewardXp: 10, donationCost: 150 },
+        { tier: 5, name: "Регионална Дивизия 3B", category: "Регионални", stadium: "Регионален комплекс (Niv. 2)", rewardCash: 350, rewardXp: 12, donationCost: 200 },
+        { tier: 6, name: "Регионална Дивизия 3A", category: "Регионални", stadium: "Регионален комплекс (Niv. 3)", rewardCash: 430, rewardXp: 15, donationCost: 250 },
+        { tier: 7, name: "Регионална Дивизия 2B", category: "Регионални", stadium: "Градски стадион (Niv. 1)", rewardCash: 520, rewardXp: 18, donationCost: 350 },
+        { tier: 8, name: "Регионална Дивизия 2A", category: "Регионални", stadium: "Градски стадион (Niv. 2)", rewardCash: 620, rewardXp: 22, donationCost: 450 },
+        { tier: 9, name: "Регионална Премиер Лига", category: "Регионални", stadium: "Градски стадион (Niv. 3)", rewardCash: 750, rewardXp: 25, donationCost: 600 },
 
-        // Етап 3: Национални лиги (Стълбове 10 до 18)
-        { tier: 10, name: "Национална Лига C3", category: "Национални", rewardCash: 900, rewardXp: 30 },
-        { tier: 11, name: "Национална Лига C2", category: "Национални", rewardCash: 1080, rewardXp: 35 },
-        { tier: 12, name: "Национална Лига C1", category: "Национални", rewardCash: 1300, rewardXp: 40 },
-        { tier: 13, name: "Национална Лига B3", category: "Национални", rewardCash: 1550, rewardXp: 48 },
-        { tier: 14, name: "Национална Лига B2", category: "Национални", rewardCash: 1850, rewardXp: 55 },
-        { tier: 15, name: "Национална Лига B1", category: "Национални", rewardCash: 2200, rewardXp: 65 },
-        { tier: 16, name: "Национална Елитна 3", category: "Национални", rewardCash: 2600, rewardXp: 75 },
-        { tier: 17, name: "Национална Елитна 2", category: "Национални", rewardCash: 3100, rewardXp: 90 },
-        { tier: 18, name: "Национална Елитна 1", category: "Национални", rewardCash: 3700, rewardXp: 110 },
+        { tier: 10, name: "Национална Лига C3", category: "Национални", stadium: "Национална арена (Niv. 1)", rewardCash: 900, rewardXp: 30, donationCost: 800 },
+        { tier: 11, name: "Национална Лига C2", category: "Национални", stadium: "Национална арена (Niv. 2)", rewardCash: 1080, rewardXp: 35, donationCost: 1000 },
+        { tier: 12, name: "Национална Лига C1", category: "Национални", stadium: "Национална арена (Niv. 3)", rewardCash: 1300, rewardXp: 40, donationCost: 1300 },
+        { tier: 13, name: "Национална Лига B3", category: "Национални", stadium: "Модерна база (Niv. 1)", rewardCash: 1550, rewardXp: 48, donationCost: 1600 },
+        { tier: 14, name: "Национална Лига B2", category: "Национални", stadium: "Модерна база (Niv. 2)", rewardCash: 1850, rewardXp: 55, donationCost: 2000 },
+        { tier: 15, name: "Национална Лига B1", category: "Национални", stadium: "Модерна база (Niv. 3)", rewardCash: 2200, rewardXp: 65, donationCost: 2500 },
+        { tier: 16, name: "Национална Елитна 3", category: "Национални", stadium: "Супер стадион (Niv. 1)", rewardCash: 2600, rewardXp: 75, donationCost: 3100 },
+        { tier: 17, name: "Национална Елитна 2", category: "Национални", stadium: "Супер стадион (Niv. 2)", rewardCash: 3100, rewardXp: 90, donationCost: 3800 },
+        { tier: 18, name: "Национална Елитна 1", category: "Национални", stadium: "Супер стадион (Niv. 3)", rewardCash: 3700, rewardXp: 110, donationCost: 4600 },
 
-        // Етап 4: Континентални турнири (Стълбове 19 до 24)
-        { tier: 19, name: "Континентален Квалификатор", category: "Континентални", rewardCash: 4400, rewardXp: 130 },
-        { tier: 20, name: "Континентален Групов Етап", category: "Континентални", rewardCash: 5200, rewardXp: 155 },
-        { tier: 21, name: "Континентален Осминафинал", category: "Континентални", rewardCash: 6100, rewardXp: 185 },
-        { tier: 22, name: "Континентален Четвъртфинал", category: "Континентални", rewardCash: 7200, rewardXp: 220 },
-        { tier: 23, name: "Континентален Полуфинал", category: "Континентални", rewardCash: 8500, rewardXp: 260 },
-        { tier: 24, name: "Континентален Финал", category: "Континентални", rewardCash: 10000, rewardXp: 310 },
+        { tier: 19, name: "Континентален Квалификатор", category: "Континентални", stadium: "Международен комплекс (Niv. 1)", rewardCash: 4400, rewardXp: 130, donationCost: 5500 },
+        { tier: 20, name: "Континентален Групов Етап", category: "Континентални", stadium: "Международен комплекс (Niv. 2)", rewardCash: 5200, rewardXp: 155, donationCost: 6500 },
+        { tier: 21, name: "Континентален Осминафинал", category: "Континентални", stadium: "Международен комплекс (Niv. 3)", rewardCash: 6100, rewardXp: 185, donationCost: 7800 },
+        { tier: 22, name: "Континентален Четвъртфинал", category: "Континентални", stadium: "Континентална Арена (Niv. 1)", rewardCash: 7200, rewardXp: 220, donationCost: 9300 },
+        { tier: 23, name: "Континентален Полуфинал", category: "Континентални", stadium: "Континентална Арена (Niv. 2)", rewardCash: 8500, rewardXp: 260, donationCost: 11000 },
+        { tier: 24, name: "Континентален Финал", category: "Континентални", stadium: "Континентална Арена (Niv. 3)", rewardCash: 10000, rewardXp: 310, donationCost: 13500 },
 
-        // Етап 5: Световен връх (Стълбове 25 до 27)
-        { tier: 25, name: "Световна Серия - Бронзов Елит", category: "Световни", rewardCash: 12500, rewardXp: 380 },
-        { tier: 26, name: "Световна Серия - Сребърен Шлем", category: "Световни", rewardCash: 15500, rewardXp: 470 },
-        { tier: 27, name: "Световно - Връх №1 (Гранд Финал)", category: "Световни", rewardCash: 20000, rewardXp: 600 }
+        { tier: 25, name: "Световна Серия - Бронзов Елит", category: "Световни", stadium: "Световен стадион ⭐ (Бронз)", rewardCash: 12500, rewardXp: 380, donationCost: 16000 },
+        { tier: 26, name: "Световна Серия - Сребърен Шлем", category: "Световни", stadium: "Световен стадион ⭐⭐ (Сребро)", rewardCash: 15500, rewardXp: 470, donationCost: 20000 },
+        { tier: 27, name: "Световно - Връх №1 (Гранд Финал)", category: "Световни", stadium: "Глобален Мега Стадион ⭐⭐⭐ (Злато)", rewardCash: 20000, rewardXp: 600, donationCost: 25000 }
     ];
 
     document.getElementById('displayClubName').innerText = "⚽ " + teamName;
@@ -261,9 +259,10 @@
     }
 
     function updateUI() {
-        document.getElementById('topEnergy').innerText = energyReserve + "/50";
-        document.getElementById('topDiamonds').innerText = diamonds;
+        document.getElementById('topEnergy').innerText = energyReserve + "/180";
         document.getElementById('topCash').innerText = cash;
+        document.getElementById('topDiamonds').innerText = diamonds;
+        document.getElementById('topStars').innerText = playerLevel; // Използваме нивото като звезди
         document.getElementById('playerLevelDisplay').innerText = playerLevel;
         document.getElementById('nextLevelNum').innerText = playerLevel + 1;
 
@@ -296,11 +295,15 @@
 
         document.getElementById('clubTreasuryVal').innerText = clubTreasury.toLocaleString();
 
-        // Актуализиране на лигите
+        // Актуализиране на лигите и стадиона за фонда спрямо избрания стълб
         let activeLadder = allLadders.find(l => l.tier === selectedLadderTier) || allLadders[0];
         document.getElementById('currentTierLabel').innerText = `Ниво ${selectedLadderTier} / 27`;
         document.getElementById('activeLadderName').innerText = activeLadder.name;
         document.getElementById('activeLadderReward').innerText = `Награда: ${activeLadder.rewardCash} 🟢 + ${activeLadder.rewardXp} XP`;
+        
+        // Динамични данни за стадиона и сумата за дарение според нивото
+        document.getElementById('stadiumTierTitle').innerText = activeLadder.stadium;
+        document.getElementById('donateBtnText').innerText = `Дари ${activeLadder.donationCost} 🟢`;
 
         renderLadders();
 
@@ -328,7 +331,7 @@
             card.innerHTML = `
                 <div class="ladder-info">
                     <b>${ladder.tier}. ${ladder.name}</b>
-                    <span>Категория: ${ladder.category} | Награда: ${ladder.rewardCash} 🟢</span>
+                    <span>Стадион: ${ladder.stadium} | Награда: ${ladder.rewardCash} 🟢</span>
                 </div>
                 <div>
                     ${isActive ? '<span style="color:#ffb703; font-weight:bold; font-size:9px;">[ИЗБРАНА]</span>' : 
@@ -353,21 +356,23 @@
             if (unlockedLadderTier < 27) {
                 unlockedLadderTier++;
             }
-            alert(`🎉 Поздравления! Вие достигнахте ниво ${playerLevel}! Отключен е нов стълб в лигите! 🚀`);
+            alert(`🎉 Поздравления! Вие достигнахте ниво/звезда ${playerLevel}! Отключен е нов етап и по-мощен стадион! 🚀`);
             updateUI();
         }
     }
 
     function donateToClub() {
-        let donation = 50;
+        let activeLadder = allLadders.find(l => l.tier === selectedLadderTier) || allLadders[0];
+        let donation = activeLadder.donationCost; // Динамична сума според текущия етап/стадион
+
         if (cash < donation) {
-            alert("❌ Нямате достатъчно зелен кеш 🟢 за дарение!");
+            alert(`❌ Нямате достатъчно зелен кеш 🟢! За етап "${activeLadder.stadium}" са нужни ${donation} 🟢 за дарение.`);
             return;
         }
         cash -= donation;
         clubTreasury += donation;
         updateUI();
-        alert("🤝 Успешно дарихте 50 🟢 в общия клубен фонд за нови звездни трансфери.");
+        alert(`🤝 Успешно направихте вноска от ${donation} 🟢 в клубния фонд за развитие на "${activeLadder.stadium}".`);
     }
 
     function sendChatMessage() {
@@ -388,9 +393,9 @@
 
         setTimeout(() => {
             let replies = [
-                "Браво! Така се говори!",
+                "Браво! Така се гради клубен стадион!",
                 "Само победа довечера! ⚽",
-                "Аз загрявам във фитнеса.",
+                "Аз дарих за новите трансфери.",
                 "Чакам мача с нетърпение!"
             ];
             let randomReply = replies[Math.floor(Math.random() * replies.length)];
