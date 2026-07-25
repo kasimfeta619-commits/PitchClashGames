@@ -83,7 +83,7 @@
         .sub-footer-bar { background: #0f1611; display: flex; justify-content: space-around; padding: 4px; font-size: 9px; border-top: 1px solid #1a261c; color: #a5b1c2; }
 
         /* НАВИГАЦИОНЕН БАР */
-        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 8px 0; z-index: 100; box-shadow: -4px 10px rgba(0,0,0,0.3); }
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 8px 0; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
         .nav-item { color: #a5b1c2; text-decoration: none; font-size: 10px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
         .nav-item.active { color: #66fcf1; }
         .nav-item span { font-size: 14px; }
@@ -238,7 +238,6 @@
     let savedStarters = JSON.parse(localStorage.getItem('pitchStarters')) || [];
     let mainPlayer = savedStarters.length > 0 ? savedStarters[0] : { name: "Капитан", pos: "НАП" };
 
-    // Списък с произволни имена за съперниците по зони
     const rivalNamesList = ["Рівал ФК", "Титан Стрит", "Динамо Стар", "Борусия Х", "Аякс 99", "Спартак Про", "Вулкан Кинг", "Ултра Тим", "Галактик ФК"];
 
     function getRivalForTier(tier) {
@@ -246,7 +245,8 @@
         return rivalNamesList[index];
     }
 
-    let influencePower = stars * currentTier;
+    // Силата на удара се равнява директно на ЗВЕЗДИТЕ (нивото) на играча
+    let influencePower = stars;
 
     function init1v1Match() {
         document.getElementById('myPlayerName').innerText = mainPlayer.name;
@@ -291,8 +291,8 @@
     }
 
     function updateUI() {
-        // Силата за удар: равни на звездите ти, умножени по зоната
-        influencePower = stars * currentTier;
+        // Силата за удар е равна на твоите звезди/ниво (stars)
+        influencePower = stars;
 
         document.getElementById('topEnergy').innerText = energy + "/" + MAX_ENERGY;
         document.getElementById('topCash').innerText = cash;
@@ -350,14 +350,13 @@
 
         energy -= 10;
         
-        // Твоят удар добавя сила
         tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + influencePower;
         localStorage.setItem('tierInvestedPower', JSON.stringify(tierInvestedPower));
 
-        // Преместване на топката спрямо твоя удар
+        // Преместване спрямо твоята сила
         ballPosition -= (Math.random() * 8 + 3); 
 
-        // Рандом опонент (random player) в съответната зона с умножение (напр. в Зона 9 силата му се умножава с 2х или повече)
+        // Рандом опонент с 2х умножение на силата си в Зона 9
         let rivalMultiplier = currentTier >= 9 ? 2.0 : (1.0 + (currentTier * 0.1));
         let rivalPushBack = (Math.random() * 6 + 2) * (currentTier * 0.2) * rivalMultiplier;
         ballPosition += rivalPushBack;
