@@ -84,7 +84,7 @@
 
 <div class="app-container">
     
-    <!-- ИГРОВИ РЕСУРСИ (СИНХРОНИЗИРАНИ С ЦЯЛАТА ИГРА) -->
+    <!-- ИГРОВИ РЕСУРСИ (СИНХРОНИЗИРАНИ СЪС СИМВОЛ ЗА ДОЛАР) -->
     <div class="top-bar">
         <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">180/180</span></div>
         <div class="res-item" style="color: #2ecc71;">$ <span id="topCash">500</span></div>
@@ -139,7 +139,7 @@
         <div class="ladder-overview">
             <div style="font-size: 9px; color: #a5b1c2; text-transform: uppercase;">Текуща избрана лига:</div>
             <div class="current-ladder-badge" id="activeLadderName">Академия - Ниво 3</div>
-            <div style="font-size: 9px; color: #ffb703;" id="activeLadderReward">Награда: 120 $ + 4 XP</div>
+            <div style="font-size: 9px; color: #ffb703;" id="activeLadderReward">Награда: $120 + 4 XP</div>
         </div>
 
         <div class="ladders-container" id="laddersList">
@@ -153,14 +153,14 @@
         <b style="color: #66fcf1;">4 играчи в базата</b>
     </div>
 
-    <!-- ОБЩ КЛУБЕН ФОНД (БАЗИРАН НА СТАТУСА НА СТАДИОНА / НИВОТО) -->
+    <!-- ОБЩ КЛУБЕН ФОНД -->
     <div class="section-box treasury-box">
         <div>
             <div style="font-weight: bold; color: #ffb703; margin-bottom: 2px;">🏦 Общ Клубен Фонд</div>
             <span style="color: #a5b1c2;">База/Стадион: <b id="stadiumTierTitle" style="color:#66fcf1;">Академия (Стадион Niv. 1)</b></span>
             <div style="font-size: 10px; color: #fff; margin-top: 2px;">Вноски за трансфери: <b id="clubTreasuryVal" style="color:#2ecc71;">3600</b> $</div>
         </div>
-        <button class="donate-btn" id="donateBtnText" onclick="donateToClub()">Дари 50 $</button>
+        <button class="donate-btn" id="donateBtnText" onclick="donateToClub()">Дари $50</button>
     </div>
 
     <!-- КЛУБЕН ЧАТ НА ЖИВО -->
@@ -192,8 +192,7 @@
 </div>
 
 <script>
-    // Синхронизирани основни ресурси с останалите страници на играта
-    let cash = parseInt(localStorage.getItem('cash')) !== null ? parseInt(localStorage.getItem('cash')) : 500; 
+    let cash = localStorage.getItem('cash') !== null ? parseInt(localStorage.getItem('cash')) : 500; 
     let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
     let energyReserve = localStorage.getItem('energyReserve') !== null ? parseInt(localStorage.getItem('energyReserve')) : 180; 
     let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
@@ -201,11 +200,9 @@
     let clubTreasury = parseInt(localStorage.getItem('clubTreasury')) || 3600;
     let teamName = localStorage.getItem('playerTeam') || "ФК Пълен Блок";
 
-    // Система за стълбовете на лигите (от 1 до 27)
     let unlockedLadderTier = parseInt(localStorage.getItem('unlockedLadderTier')) || 1;
     let selectedLadderTier = parseInt(localStorage.getItem('selectedLadderTier')) || 1;
 
-    // Пълен масив с 27-те стълба на лигите и нивата на стадиона
     const allLadders = [
         { tier: 1, name: "Академия - Ниво 3", category: "Академия", stadium: "Академия (Стадион Niv. 1)", rewardCash: 120, rewardXp: 4, donationCost: 50 },
         { tier: 2, name: "Академия - Ниво 2", category: "Академия", stadium: "Академия (Стадион Niv. 2)", rewardCash: 160, rewardXp: 6, donationCost: 75 },
@@ -298,10 +295,10 @@
         let activeLadder = allLadders.find(l => l.tier === selectedLadderTier) || allLadders[0];
         document.getElementById('currentTierLabel').innerText = `Ниво ${selectedLadderTier} / 27`;
         document.getElementById('activeLadderName').innerText = activeLadder.name;
-        document.getElementById('activeLadderReward').innerText = `Награда: ${activeLadder.rewardCash} $ + ${activeLadder.rewardXp} XP`;
+        document.getElementById('activeLadderReward').innerText = `Награда: $${activeLadder.rewardCash} + ${activeLadder.rewardXp} XP`;
         
         document.getElementById('stadiumTierTitle').innerText = activeLadder.stadium;
-        document.getElementById('donateBtnText').innerText = `Дари ${activeLadder.donationCost} $`;
+        document.getElementById('donateBtnText').innerText = `Дари $${activeLadder.donationCost}`;
 
         renderLadders();
 
@@ -329,7 +326,7 @@
             card.innerHTML = `
                 <div class="ladder-info">
                     <b>${ladder.tier}. ${ladder.name}</b>
-                    <span>Стадион: ${ladder.stadium} | Награда: ${ladder.rewardCash} $</span>
+                    <span>Стадион: ${ladder.stadium} | Награда: $${ladder.rewardCash}</span>
                 </div>
                 <div>
                     ${isActive ? '<span style="color:#ffb703; font-weight:bold; font-size:9px;">[ИЗБРАНА]</span>' : 
@@ -364,13 +361,13 @@
         let donation = activeLadder.donationCost; 
 
         if (cash < donation) {
-            alert(`❌ Нямате достатъчно кеш ($)! За етап "${activeLadder.stadium}" са нужни ${donation} $ за дарение.`);
+            alert(`❌ Нямате достатъчно кеш ($)! За етап "${activeLadder.stadium}" са нужни $${donation} за дарение.`);
             return;
         }
         cash -= donation;
         clubTreasury += donation;
         updateUI();
-        alert(`🤝 Успешно направихте вноска от ${donation} $ в клубния фонд за развитие на "${activeLadder.stadium}".`);
+        alert(`🤝 Успешно направихте вноска от $${donation} в клубния фонд за развитие на "${activeLadder.stadium}".`);
     }
 
     function sendChatMessage() {
