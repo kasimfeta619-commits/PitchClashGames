@@ -147,12 +147,13 @@
                 <div class="rival-assistant-lbl">Рівал Асист 2</div>
             </div>
 
-            <div class="player-token-1v1" id="myPlayerToken" style="left: 50%; top: 53%;">
+            <!-- ИЗПРАВЕНО: Разделени вертикално, за да няма застъпване в центъра -->
+            <div class="player-token-1v1" id="myPlayerToken" style="left: 42%; top: 55%;">
                 <div class="player-circle-1v1">ПЕР</div>
                 <div class="player-name-lbl-1v1" id="myPlayerLabel">Капитан</div>
             </div>
 
-            <div class="rival-token-1v1" id="rivalPlayerToken" style="left: 50%; top: 47%;">
+            <div class="rival-token-1v1" id="rivalPlayerToken" style="left: 58%; top: 45%;">
                 <div class="rival-circle-1v1">РИВ</div>
                 <div class="rival-name-lbl-1v1" id="rivalNameLabel">Рівал</div>
             </div>
@@ -234,10 +235,11 @@
     let currentTier = parseInt(localStorage.getItem('currentTier')) || 1;
 
     let tierBallPositions = JSON.parse(localStorage.getItem('tierBallPositions')) || {};
-    tierBallPositions[1] = 50; 
+    if (tierBallPositions[1] === undefined) tierBallPositions[1] = 50; 
 
+    // ИЗПРАВЕНО: Зареждаме налятата сила от паметта, без да я зануляваме автоматично!
     let tierInvestedPower = JSON.parse(localStorage.getItem('tierInvestedPower')) || {};
-    tierInvestedPower[1] = 0;
+    if (tierInvestedPower[1] === undefined) tierInvestedPower[1] = 0;
 
     let ballPosition = tierBallPositions[currentTier] !== undefined ? tierBallPositions[currentTier] : 50;
 
@@ -360,10 +362,8 @@
         tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + chosenAttackPower;
         localStorage.setItem('tierInvestedPower', JSON.stringify(tierInvestedPower));
 
-        // Силата на твоя удар премества топката спрямо избраното количество (1 до 20)
         ballPosition -= (chosenAttackPower * 0.8 + Math.random() * 3); 
 
-        // Рандом опонент с 2х умножение на силата в Зона 9 или по-висока
         let rivalMultiplier = currentTier >= 9 ? 2.0 : 1.0;
         let rivalPushBack = (Math.random() * 6 + 2) * (currentTier * 0.2) * rivalMultiplier;
         ballPosition += rivalPushBack;
