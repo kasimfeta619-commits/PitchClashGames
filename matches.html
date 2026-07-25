@@ -213,11 +213,14 @@
     let currentTier = parseInt(localStorage.getItem('currentTier')) || 1;
     let influencePower = parseInt(localStorage.getItem('influencePower')) || 265000;
 
+    // Зона 1 винаги започва от чисто ново начало (0 налити точки и 50% топка)
     let tierBallPositions = JSON.parse(localStorage.getItem('tierBallPositions')) || {};
-    let ballPosition = tierBallPositions[currentTier] !== undefined ? tierBallPositions[currentTier] : 50;
+    tierBallPositions[1] = 50; 
 
-    // Ресетваме налятата сила да тръгва от 0 за чисто ново започване
     let tierInvestedPower = JSON.parse(localStorage.getItem('tierInvestedPower')) || {};
+    tierInvestedPower[1] = 0;
+
+    let ballPosition = tierBallPositions[currentTier] !== undefined ? tierBallPositions[currentTier] : 50;
 
     let savedStarters = JSON.parse(localStorage.getItem('pitchStarters')) || [];
     let mainPlayer = savedStarters.length > 0 ? savedStarters[0] : { name: "Капитан", ovr: 125, pos: "НАП" };
@@ -274,7 +277,7 @@
         document.getElementById('currentZoneBadge').innerText = `Зона ${currentTier}`;
         document.getElementById('influenceValue').innerText = "+" + (influencePower / 1000).toFixed(0) + "K";
         
-        // Показваме налятото количество (започва от 0, а ако има налити, ги показва в K или M)
+        // Показваме налятото количество за текущата зона
         let currentInvested = tierInvestedPower[currentTier] || 0;
         let formattedInvested = "0";
         if (currentInvested >= 1000000) {
@@ -327,7 +330,6 @@
 
         energy -= 10;
         
-        // Добавяме стойност при клик (например по 100K сила на клик)
         let addedPowerStep = 100000; 
         tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + addedPowerStep;
         localStorage.setItem('tierInvestedPower', JSON.stringify(tierInvestedPower));
