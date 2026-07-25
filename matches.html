@@ -207,13 +207,35 @@
 </div>
 
 <script>
-    let energy = parseInt(localStorage.getItem('energy')) || 180;
+    const MAX_ENERGY = 180;
+    let energy = parseInt(localStorage.getItem('energy'));
+    let lastEnergyTime = parseInt(localStorage.getItem('lastEnergyTime'));
+
+    let now = Date.now();
+    if (isNaN(energy)) {
+        energy = MAX_ENERGY;
+        lastEnergyTime = now;
+    } else {
+        // Изчисляване на изминалото време докато играчът е бил извън страницата
+        if (!lastEnergyTime) {
+            lastEnergyTime = now;
+        } else {
+            let elapsedMs = now - lastEnergyTime;
+            // 1 час = 3600000 милисекунди за 10 енергия (т.е. 360000 мс за 1 енергия)
+            let energyGained = Math.floor(elapsedMs / 360000); 
+            if (energyGained > 0) {
+                energy = Math.min(MAX_ENERGY, energy + energyGained);
+                // Запазваме остатъка от времето, за да не се губи
+                lastEnergyTime = now - (elapsedMs % 360000);
+            }
+        }
+    }
+
     let cash = localStorage.getItem('cash') || "2.85M";
-    let stars = parseInt(localStorage.getItem('stars')) || 0; // Започват от 0
+    let stars = parseInt(localStorage.getItem('stars')) || 0; 
     let currentTier = parseInt(localStorage.getItem('currentTier')) || 1;
     let influencePower = parseInt(localStorage.getItem('influencePower')) || 265000;
 
-    // Зона 1 винаги започва от чисто ново начало (0 налити точки и 50% топка)
     let tierBallPositions = JSON.parse(localStorage.getItem('tierBallPositions')) || {};
     tierBallPositions[1] = 50; 
 
@@ -270,7 +292,7 @@
     }
 
     function updateUI() {
-        document.getElementById('topEnergy').innerText = energy + "/180";
+        document.getElementById('topEnergy').innerText = energy + "/" + MAX_ENERGY;
         document.getElementById('topCash').innerText = cash;
         document.getElementById('topStars').innerText = stars;
         document.getElementById('leagueTitleBox').innerText = `HTPL ПВП ЛИГА - ЗОНА ${currentTier}`;
@@ -316,6 +338,7 @@
 
         localStorage.setItem('currentTier', currentTier);
         localStorage.setItem('energy', energy);
+        localStorage.setItem('lastEnergyTime', lastEnergyTime);
         localStorage.setItem('stars', stars);
 
         renderTiers(); 
@@ -354,12 +377,19 @@
         updateUI();
     }
 
+    // Проверка за добавяне на енергия (1 енергия на всеки 6 минути, общо 10 за 1 час)
     setInterval(() => {
-        if (energy < 180) {
-            energy += 1;
+        let currentTime = Date.now();
+        let elapsed = currentTime - lastEnergyTime;
+        
+        // 360000 мс = 6 минути за 1 единица енергия (т.е. 10 единици за 1 час)
+        if (energy < MAX_ENERGY && elapsed >= 360000) {
+            let unitsToAdd = Math.floor(elapsed / 360000);
+            energy = Math.min(MAX_ENERGY, energy + unitsToAdd);
+            lastEnergyTime = currentTime - (elapsed % 360000);
             updateUI();
         }
-    }, 2000);
+    }, 1000);
 
     init1v1Match();
     renderTiers();
