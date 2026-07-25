@@ -2,181 +2,48 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Team HTPL - Клубен Хъб & 27 Стълба на Лигите</title>
+    <title>Team HTPL - Хъб</title>
     <style>
-        * { box-sizing: border-box; transition: all 0.3s ease-in-out; }
-        body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; user-select: none; }
-        .app-container { width: 100%; max-width: 420px; padding-bottom: 75px; }
+        * { box-sizing: border-box; transition: all 0.25s ease-in-out; }
+        body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; justify-content: center; height: 100vh; overflow: hidden; user-select: none; }
         
-        .top-bar { background: #1f2833; border: 1px solid #2c3542; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .res-item { display: flex; align-items: center; gap: 4px; font-weight: bold; font-size: 12px; }
-        .shop-link-btn { background: #66fcf1; border: none; color: #0b0c10; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-decoration: none; }
-
-        /* НАЙ-ГОРЕН ПРОГРЕС БАР (НИВО И ЗВЕЗДА) */
-        .top-progress-box { background: linear-gradient(135deg, #1f2833, #151b22); border: 1px solid #ffb703; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(255,183,3,0.15); }
-        .top-progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; }
-        .top-progress-bar-container { background: #0b0c10; height: 10px; border-radius: 5px; overflow: hidden; border: 1px solid #2c3542; position: relative; }
-        .top-progress-bar { background: linear-gradient(90deg, #ffb703, #2ecc71); width: 0%; height: 100%; transition: width 0.3s; }
-
-        .level-up-btn { background: #2ecc71; color: #0b0c10; border: none; width: 100%; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; margin-top: 8px; display: none; }
-        .level-up-btn:active { transform: scale(0.98); }
-
-        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; margin-bottom: 12px; font-size: 11px; }
-        .section-title { font-weight: bold; color: #66fcf1; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-
-        /* КЛУБНА КАРТА */
-        .club-card { background: linear-gradient(135deg, #1f2833, #0b0c10); border: 2px solid #66fcf1; border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(102,252,241,0.2); }
-        .club-name { font-size: 14px; color: #66fcf1; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
-        .club-details { font-size: 10px; color: #a5b1c2; display: flex; justify-content: space-around; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; }
-
-        /* LIVE MATCH ВИЗУАЛИЗАЦИЯ */
-        .live-match-banner { display: block; background: linear-gradient(135deg, #1e3d2f, #0b0c10); border: 2px dashed #2ecc71; border-radius: 10px; padding: 8px; margin-top: 8px; text-decoration: none; color: #fff; cursor: pointer; animation: pulseGlow 1.5s infinite; }
-        .live-match-banner:hover { background: linear-gradient(135deg, #264d3d, #0b0c10); }
-        @keyframes pulseGlow {
-            0% { border-color: #2ecc71; box-shadow: 0 0 5px rgba(46,204,113,0.3); }
-            50% { border-color: #66fcf1; box-shadow: 0 0 15px rgba(102,252,241,0.6); }
-            100% { border-color: #2ecc71; box-shadow: 0 0 5px rgba(46,204,113,0.3); }
-        }
-        .live-dot { height: 8px; width: 8px; background-color: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71; animation: blink 1s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        /* ОНЛАЙН СЪОТБОРНИЦИ */
-        .online-box { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; }
-        .online-dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #2ecc71; margin-right: 5px; }
-
-        /* КЛУБЕН ФОНД */
-        .treasury-box { display: flex; justify-content: space-between; align-items: center; }
-        .donate-btn { background: #ffb703; color: #0b0c10; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 10px; text-align: center; }
-        .donate-btn:active { transform: scale(0.98); }
-
-        /* ЛИГИ И СТЪЛБОВЕ НА СЪСТЕЗАНИЯТА */
-        .ladder-overview { background: #0b0c10; border: 1px solid #415a77; border-radius: 10px; padding: 10px; margin-bottom: 10px; text-align: center; }
-        .current-ladder-badge { font-size: 13px; font-weight: bold; color: #66fcf1; margin-bottom: 4px; }
+        .app-container { width: 100%; max-width: 420px; height: 100%; background: #121820; display: flex; flex-direction: column; position: relative; overflow-y: auto; padding-top: 45px; padding-bottom: 75px; }
         
-        .ladders-container { max-height: 200px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 6px; }
-        .ladder-card { background: #0b0c10; border: 1px solid #2c3542; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left; }
-        .ladder-card.unlocked { border-color: #66fcf1; box-shadow: 0 0 8px rgba(102,252,241,0.2); }
-        .ladder-card.locked { opacity: 0.4; cursor: not-allowed; background: #07080a; }
-        .ladder-card.active-tier { background: #1f304a; border-color: #ffb703; box-shadow: 0 0 10px rgba(255,183,3,0.3); }
+        /* ФИКСИРАН ТОП БАР (РЕСУРСИ) */
+        .top-bar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; background: #1f2833; border-bottom: 1px solid #2c3542; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .res-item { display: flex; align-items: center; gap: 3px; font-weight: bold; }
+        .shop-link-btn { background: #66fcf1; border: none; color: #0b0c10; padding: 3px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; text-decoration: none; }
 
-        .ladder-info b { display: block; font-size: 10px; color: #fff; }
-        .ladder-info span { font-size: 9px; color: #a5b1c2; }
-        
-        .action-play-btn { background: #66fcf1; color: #0b0c10; border: none; padding: 5px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 9px; }
+        .content-wrap { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
-        /* ЧАТ НА ЖИВО */
-        .chat-box { background: #0b0c10; border: 1px solid #2c3542; border-radius: 8px; padding: 8px; height: 110px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; font-size: 10px; }
-        .chat-msg { background: rgba(255,255,255,0.03); padding: 5px 8px; border-radius: 6px; line-height: 1.3; }
-        .chat-msg b { color: #66fcf1; }
-        
-        .chat-input-group { display: flex; gap: 6px; }
-        .chat-input { flex: 1; background: #0b0c10; border: 1px solid #2c3542; padding: 6px 10px; border-radius: 6px; color: #fff; font-size: 10px; outline: none; }
-        .chat-send-btn { background: #66fcf1; color: #0b0c10; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 10px; }
+        .section-box { background: #1f2833; border: 1px solid #2c3542; border-radius: 12px; padding: 12px; font-size: 11px; text-align: center; }
+        .section-title { font-weight: bold; color: #66fcf1; margin-bottom: 8px; }
 
         /* НАВИГАЦИОНЕН БАР */
-        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 10px; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
-        .nav-item { color: #a5b1c2; text-decoration: none; font-size: 11px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; justify-content: space-around; background: #1f2833; border-top: 1px solid #2c3542; padding: 8px 0; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+        .nav-item { color: #a5b1c2; text-decoration: none; font-size: 10px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
         .nav-item.active { color: #66fcf1; }
-        .nav-item span { font-size: 16px; }
+        .nav-item span { font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     
-    <!-- ИГРОВИ РЕСУРСИ (СИНХРОНИЗИРАНИ СЪС СИМВОЛ ЗА ДОЛАР) -->
+    <!-- ФИКСИРАН ТОП БАР (РЕСУРСИ) -->
     <div class="top-bar">
         <div class="res-item" style="color: #ffb703;">⚡ <span id="topEnergy">180/180</span></div>
-        <div class="res-item" style="color: #2ecc71;">$ <span id="topCash">500</span></div>
-        <div class="res-item" style="color: #d16ba5;">🟣 <span id="topDiamonds">10</span></div>
-        <div class="res-item" style="color: #ffb703;">⭐ <span id="topStars">1</span></div>
+        <div class="res-item" style="color: #2ecc71;">💵 <span id="topCash">500</span></div>
+        <div class="res-item" style="color: #9b59b6;">💎 <span id="topDiamonds">10</span></div>
+        <div class="res-item" style="color: #66fcf1;">⭐ <span id="topStars">1</span></div>
         <a href="shop.html" class="shop-link-btn">Магазин</a>
     </div>
 
-    <!-- 🌟 НАЙ-ГОРЕН ПРОГРЕС БАР (НИВО И XP) -->
-    <div class="top-progress-box">
-        <div class="top-progress-header">
-            <span>⭐ Ниво <b style="color: #66fcf1;" id="playerLevelDisplay">1</b> (<span id="difficultyDisplay" style="color: #ffb703;">Лесно</span>)</span>
-            <span style="color: #a5b1c2;">Остават: <b style="color: #ff4757;" id="remainingXpDisplay">100</b> XP</span>
-        </div>
-        <div class="top-progress-header" style="font-size: 10px; color: #a5b1c2; margin-bottom: 4px;">
-            <span>Опит: <b style="color: #fff;" id="currentXpDisplay">0</b> / <span id="requiredXpDisplay">100</span> XP</span>
-            <span id="xpPercentDisplay" style="color: #66fcf1; font-weight: bold;">0%</span>
-        </div>
-        <div class="top-progress-bar-container">
-            <div class="top-progress-bar" id="xpProgressBar"></div>
-        </div>
-        <button class="level-up-btn" id="levelUpBtn" onclick="levelUpPlayer()">⬆️ Качи до Ниво <span id="nextLevelNum">2</span>! (Готово)</button>
-    </div>
-
-    <!-- КЛУБНА КАРТА -->
-    <div class="club-card">
-        <div class="club-name" id="displayClubName">⚽ ФК Пълен Блок</div>
-        
-        <!-- ДИНАМИЧЕН ИНДИКАТОР ЗА МАЧ НА ЖИВО -->
-        <a href="matches.html" class="live-match-banner">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 3px;">
-                <span class="live-dot"></span>
-                <span style="color: #2ecc71; font-weight: bold; font-size: 11px;">LIVE MATCH НАЛИЧЕН!</span>
-            </div>
-            <div style="font-size: 10px; color: #ffb703;">⚔️ PvP Среща срещу: <b>Динамо София</b></div>
-            <div style="font-size: 9px; color: #66fcf1; margin-top: 2px; text-decoration: underline;">👉 Натисни тук за да влезеш в мача</div>
-        </a>
-
-        <div class="club-details">
-            <div>Общ OVR на отбора: <b style="color: #66fcf1;">56.4</b></div>
-            <div>Сплотеност: <b style="color: #2ecc71;">94%</b></div>
-        </div>
-    </div>
-
-    <!-- 🏆 27 СТЪЛБА НА ЛИГИТЕ И СЪСТЕЗАНИЯТА -->
-    <div class="section-box">
-        <div class="section-title">
-            <span>🏆 27 Стълба на Лигите</span>
-            <span style="font-size: 9px; color: #a5b1c2;" id="currentTierLabel">Ниво 1 / 27</span>
-        </div>
-
-        <div class="ladder-overview">
-            <div style="font-size: 9px; color: #a5b1c2; text-transform: uppercase;">Текуща избрана лига:</div>
-            <div class="current-ladder-badge" id="activeLadderName">Академия - Ниво 3</div>
-            <div style="font-size: 9px; color: #ffb703;" id="activeLadderReward">Награда: $120 + 4 XP</div>
-        </div>
-
-        <div class="ladders-container" id="laddersList">
-            <!-- Динамично генериране на 27-те стълба -->
-        </div>
-    </div>
-
-    <!-- ОНЛАЙН СЪОТБОРНИЦИ -->
-    <div class="section-box online-box">
-        <span style="color: #a5b1c2;"><span class="online-dot"></span> Онлайн съотборници в клуба:</span>
-        <b style="color: #66fcf1;">4 играчи в базата</b>
-    </div>
-
-    <!-- ОБЩ КЛУБЕН ФОНД -->
-    <div class="section-box treasury-box">
-        <div>
-            <div style="font-weight: bold; color: #ffb703; margin-bottom: 2px;">🏦 Общ Клубен Фонд</div>
-            <span style="color: #a5b1c2;">База/Стадион: <b id="stadiumTierTitle" style="color:#66fcf1;">Академия (Стадион Niv. 1)</b></span>
-            <div style="font-size: 10px; color: #fff; margin-top: 2px;">Вноски за трансфери: <b id="clubTreasuryVal" style="color:#2ecc71;">3600</b> $</div>
-        </div>
-        <button class="donate-btn" id="donateBtnText" onclick="donateToClub()">Дари $50</button>
-    </div>
-
-    <!-- КЛУБЕН ЧАТ НА ЖИВО -->
-    <div class="section-box">
-        <div class="section-title">
-            <span>💬 Клубен чат на живо</span>
-            <span style="font-size: 9px; color: #a5b1c2; font-weight: normal;">Синхронизирано</span>
-        </div>
-        <div class="chat-box" id="chatBox">
-            <div class="chat-msg"><b>Капитана (Ти):</b> Момчета, готов ли е съставът за мача в 20:00?</div>
-            <div class="chat-msg"><b>М. Кирилов:</b> Да, аз тренирах удар и вдигнах OVR! Готов съм.</div>
-            <div class="chat-msg"><b>Б. Стоянов:</b> Пазя защитата, давай смело! 🔥</div>
-        </div>
-        <div class="chat-input-group">
-            <input type="text" class="chat-input" id="chatInput" placeholder="Напиши съобщение към отбора...">
-            <button class="chat-send-btn" onclick="sendChatMessage()">Прати</button>
+    <div class="content-wrap">
+        <div class="section-box">
+            <div class="section-title">🏠 Добре дошли в Team HTPL</div>
+            <p style="color: #a5b1c2; font-size: 11px;">Текущо ниво на играча: <b id="homePlayerLevel" style="color: #66fcf1;">1</b></p>
+            <p style="color: #a5b1c2; font-size: 11px;">Трудност: <b id="homeDifficulty" style="color: #ffb703;">Лесно</b></p>
         </div>
     </div>
 
@@ -192,60 +59,31 @@
 </div>
 
 <script>
-    let cash = localStorage.getItem('cash') !== null ? parseInt(localStorage.getItem('cash')) : 500; 
-    let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
-    let energyReserve = localStorage.getItem('energyReserve') !== null ? parseInt(localStorage.getItem('energyReserve')) : 180; 
-    let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
-    let playerXp = parseInt(localStorage.getItem('playerXp')) || 0;
-    let clubTreasury = parseInt(localStorage.getItem('clubTreasury')) || 3600;
-    let teamName = localStorage.getItem('playerTeam') || "ФК Пълен Блок";
+    const MAX_ENERGY = 180;
+    let energy = parseInt(localStorage.getItem('energy'));
+    let lastEnergyTime = parseInt(localStorage.getItem('lastEnergyTime'));
 
-    let unlockedLadderTier = parseInt(localStorage.getItem('unlockedLadderTier')) || 1;
-    let selectedLadderTier = parseInt(localStorage.getItem('selectedLadderTier')) || 1;
-
-    const allLadders = [
-        { tier: 1, name: "Академия - Ниво 3", category: "Академия", stadium: "Академия (Стадион Niv. 1)", rewardCash: 120, rewardXp: 4, donationCost: 50 },
-        { tier: 2, name: "Академия - Ниво 2", category: "Академия", stadium: "Академия (Стадион Niv. 2)", rewardCash: 160, rewardXp: 6, donationCost: 75 },
-        { tier: 3, name: "Академия - Ниво 1", category: "Академия", stadium: "Академия (Стадион Niv. 3)", rewardCash: 210, rewardXp: 8, donationCost: 100 },
-        
-        { tier: 4, name: "Регионална Дивизия 3C", category: "Регионални", stadium: "Регионален комплекс (Niv. 1)", rewardCash: 280, rewardXp: 10, donationCost: 150 },
-        { tier: 5, name: "Регионална Дивизия 3B", category: "Регионални", stadium: "Регионален комплекс (Niv. 2)", rewardCash: 350, rewardXp: 12, donationCost: 200 },
-        { tier: 6, name: "Регионална Дивизия 3A", category: "Регионални", stadium: "Регионален комплекс (Niv. 3)", rewardCash: 430, rewardXp: 15, donationCost: 250 },
-        { tier: 7, name: "Регионална Дивизия 2B", category: "Регионални", stadium: "Градски стадион (Niv. 1)", rewardCash: 520, rewardXp: 18, donationCost: 350 },
-        { tier: 8, name: "Регионална Дивизия 2A", category: "Регионални", stadium: "Градски стадион (Niv. 2)", rewardCash: 620, rewardXp: 22, donationCost: 450 },
-        { tier: 9, name: "Регионална Премиер Лига", category: "Регионални", stadium: "Градски стадион (Niv. 3)", rewardCash: 750, rewardXp: 25, donationCost: 600 },
-
-        { tier: 10, name: "Национална Лига C3", category: "Национални", stadium: "Национална арена (Niv. 1)", rewardCash: 900, rewardXp: 30, donationCost: 800 },
-        { tier: 11, name: "Национална Лига C2", category: "Национални", stadium: "Национална арена (Niv. 2)", rewardCash: 1080, rewardXp: 35, donationCost: 1000 },
-        { tier: 12, name: "Национална Лига C1", category: "Национални", stadium: "Национална арена (Niv. 3)", rewardCash: 1300, rewardXp: 40, donationCost: 1300 },
-        { tier: 13, name: "Национална Лига B3", category: "Национални", stadium: "Модерна база (Niv. 1)", rewardCash: 1550, rewardXp: 48, donationCost: 1600 },
-        { tier: 14, name: "Национална Лига B2", category: "Национални", stadium: "Модерна база (Niv. 2)", rewardCash: 1850, rewardXp: 55, donationCost: 2000 },
-        { tier: 15, name: "Национална Лига B1", category: "Национални", stadium: "Модерна база (Niv. 3)", rewardCash: 2200, rewardXp: 65, donationCost: 2500 },
-        { tier: 16, name: "Национална Елитна 3", category: "Национални", stadium: "Супер стадион (Niv. 1)", rewardCash: 2600, rewardXp: 75, donationCost: 3100 },
-        { tier: 17, name: "Национална Елитна 2", category: "Национални", stadium: "Супер стадион (Niv. 2)", rewardCash: 3100, rewardXp: 90, donationCost: 3800 },
-        { tier: 18, name: "Национална Елитна 1", category: "Национални", stadium: "Супер стадион (Niv. 3)", rewardCash: 3700, rewardXp: 110, donationCost: 4600 },
-
-        { tier: 19, name: "Континентален Квалификатор", category: "Континентални", stadium: "Международен комплекс (Niv. 1)", rewardCash: 4400, rewardXp: 130, donationCost: 5500 },
-        { tier: 20, name: "Континентален Групов Етап", category: "Континентални", stadium: "Международен комплекс (Niv. 2)", rewardCash: 5200, rewardXp: 155, donationCost: 6500 },
-        { tier: 21, name: "Континентален Осминафинал", category: "Континентални", stadium: "Международен комплекс (Niv. 3)", rewardCash: 6100, rewardXp: 185, donationCost: 7800 },
-        { tier: 22, name: "Континентален Четвъртфинал", category: "Континентални", stadium: "Континентална Арена (Niv. 1)", rewardCash: 7200, rewardXp: 220, donationCost: 9300 },
-        { tier: 23, name: "Континентален Полуфинал", category: "Континентални", stadium: "Континентална Арена (Niv. 2)", rewardCash: 8500, rewardXp: 260, donationCost: 11000 },
-        { tier: 24, name: "Континентален Финал", category: "Континентални", stadium: "Континентална Арена (Niv. 3)", rewardCash: 10000, rewardXp: 310, donationCost: 13500 },
-
-        { tier: 25, name: "Световна Серия - Бронзов Елит", category: "Световни", stadium: "Световен стадион ⭐ (Бронз)", rewardCash: 12500, rewardXp: 380, donationCost: 16000 },
-        { tier: 26, name: "Световна Серия - Сребърен Шлем", category: "Световни", stadium: "Световен стадион ⭐⭐ (Сребро)", rewardCash: 15500, rewardXp: 470, donationCost: 20000 },
-        { tier: 27, name: "Световно - Връх №1 (Гранд Финал)", category: "Световни", stadium: "Глобален Мега Стадион ⭐⭐⭐ (Злато)", rewardCash: 20000, rewardXp: 600, donationCost: 25000 }
-    ];
-
-    document.getElementById('displayClubName').innerText = "⚽ " + teamName;
-
-    function getRequiredXp(level) {
-        if (level <= 100) return level * 100;
-        else if (level <= 200) return 10000 + (level - 100) * 250;
-        else if (level <= 500) return 35000 + (level - 200) * 600;
-        else if (level <= 1000) return 215000 + (level - 500) * 1500;
-        else return 965000 + (level - 1000) * 4000;
+    let now = Date.now();
+    if (isNaN(energy)) {
+        energy = MAX_ENERGY;
+        lastEnergyTime = now;
+    } else {
+        if (!lastEnergyTime) {
+            lastEnergyTime = now;
+        } else {
+            let elapsedMs = now - lastEnergyTime;
+            let energyGained = Math.floor(elapsedMs / 360000); 
+            if (energyGained > 0) {
+                energy = Math.min(MAX_ENERGY, energy + energyGained);
+                lastEnergyTime = now - (elapsedMs % 360000);
+            }
+        }
     }
+
+    let cash = parseInt(localStorage.getItem('cash')) || 500; 
+    let diamonds = localStorage.getItem('diamonds') !== null ? parseInt(localStorage.getItem('diamonds')) : 10;
+    let stars = parseInt(localStorage.getItem('stars')) || 1;
+    let playerLevel = parseInt(localStorage.getItem('playerLevel')) || 1;
 
     function getDifficultyInfo(level) {
         if (level <= 100) return { text: "Лесно", color: "#2ecc71" };
@@ -256,158 +94,32 @@
     }
 
     function updateUI() {
-        document.getElementById('topEnergy').innerText = energyReserve + "/180";
-        document.getElementById('topCash').innerText = cash;
+        document.getElementById('topEnergy').innerText = energy + "/" + MAX_ENERGY;
         document.getElementById('topDiamonds').innerText = diamonds;
-        document.getElementById('topStars').innerText = playerLevel; 
-        document.getElementById('playerLevelDisplay').innerText = playerLevel;
-        document.getElementById('nextLevelNum').innerText = playerLevel + 1;
-
-        let reqXp = getRequiredXp(playerLevel);
+        document.getElementById('topCash').innerText = cash;
+        document.getElementById('topStars').innerText = stars;
+        
+        document.getElementById('homePlayerLevel').innerText = playerLevel;
         let diff = getDifficultyInfo(playerLevel);
-
-        let diffElem = document.getElementById('difficultyDisplay');
+        let diffElem = document.getElementById('homeDifficulty');
         diffElem.innerText = diff.text;
         diffElem.style.color = diff.color;
 
-        let remainingXp = reqXp - playerXp;
-        if (remainingXp < 0) remainingXp = 0;
+        localStorage.setItem('energy', energy);
+        localStorage.setItem('lastEnergyTime', lastEnergyTime);
+    }
 
-        document.getElementById('currentXpDisplay').innerText = playerXp.toLocaleString();
-        document.getElementById('requiredXpDisplay').innerText = reqXp.toLocaleString();
-        document.getElementById('remainingXpDisplay').innerText = remainingXp.toLocaleString();
-
-        let xpPercent = (playerXp / reqXp) * 100;
-        if (xpPercent > 100) xpPercent = 100;
+    setInterval(() => {
+        let currentTime = Date.now();
+        let elapsed = currentTime - lastEnergyTime;
         
-        document.getElementById('xpPercentDisplay').innerText = xpPercent.toFixed(1) + '%';
-        document.getElementById('xpProgressBar').style.width = xpPercent + '%';
-
-        let levelUpBtn = document.getElementById('levelUpBtn');
-        if (playerXp >= reqXp) {
-            levelUpBtn.style.display = "block";
-        } else {
-            levelUpBtn.style.display = "none";
-        }
-
-        document.getElementById('clubTreasuryVal').innerText = clubTreasury.toLocaleString();
-
-        let activeLadder = allLadders.find(l => l.tier === selectedLadderTier) || allLadders[0];
-        document.getElementById('currentTierLabel').innerText = `Ниво ${selectedLadderTier} / 27`;
-        document.getElementById('activeLadderName').innerText = activeLadder.name;
-        document.getElementById('activeLadderReward').innerText = `Награда: $${activeLadder.rewardCash} + ${activeLadder.rewardXp} XP`;
-        
-        document.getElementById('stadiumTierTitle').innerText = activeLadder.stadium;
-        document.getElementById('donateBtnText').innerText = `Дари $${activeLadder.donationCost}`;
-
-        renderLadders();
-
-        localStorage.setItem('cash', cash);
-        localStorage.setItem('diamonds', diamonds);
-        localStorage.setItem('energyReserve', energyReserve);
-        localStorage.setItem('playerLevel', playerLevel);
-        localStorage.setItem('playerXp', playerXp);
-        localStorage.setItem('clubTreasury', clubTreasury);
-        localStorage.setItem('selectedLadderTier', selectedLadderTier);
-        localStorage.setItem('unlockedLadderTier', unlockedLadderTier);
-    }
-
-    function renderLadders() {
-        let container = document.getElementById('laddersList');
-        container.innerHTML = '';
-
-        allLadders.forEach(ladder => {
-            let isUnlocked = ladder.tier <= unlockedLadderTier;
-            let isActive = ladder.tier === selectedLadderTier;
-            
-            let card = document.createElement('div');
-            card.className = `ladder-card ${isUnlocked ? 'unlocked' : 'locked'} ${isActive ? 'active-tier' : ''}`;
-            
-            card.innerHTML = `
-                <div class="ladder-info">
-                    <b>${ladder.tier}. ${ladder.name}</b>
-                    <span>Стадион: ${ladder.stadium} | Награда: $${ladder.rewardCash}</span>
-                </div>
-                <div>
-                    ${isActive ? '<span style="color:#ffb703; font-weight:bold; font-size:9px;">[ИЗБРАНА]</span>' : 
-                      isUnlocked ? `<button class="action-play-btn" onclick="selectLadder(${ladder.tier})">Избери</button>` : 
-                      '<span style="color:#555; font-size:9px;">🔒 Заключена</span>'}
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
-    function selectLadder(tier) {
-        selectedLadderTier = tier;
-        updateUI();
-    }
-
-    function levelUpPlayer() {
-        let reqXp = getRequiredXp(playerLevel);
-        if (playerXp >= reqXp) {
-            playerXp -= reqXp;
-            playerLevel++;
-            if (unlockedLadderTier < 27) {
-                unlockedLadderTier++;
-            }
-            alert(`🎉 Поздравления! Вие достигнахте ниво/звезда ${playerLevel}! Отключен е нов етап и по-мощен стадион! 🚀`);
+        if (energy < MAX_ENERGY && elapsed >= 360000) {
+            let unitsToAdd = Math.floor(elapsed / 360000);
+            energy = Math.min(MAX_ENERGY, energy + unitsToAdd);
+            lastEnergyTime = currentTime - (elapsed % 360000);
             updateUI();
         }
-    }
-
-    function donateToClub() {
-        let activeLadder = allLadders.find(l => l.tier === selectedLadderTier) || allLadders[0];
-        let donation = activeLadder.donationCost; 
-
-        if (cash < donation) {
-            alert(`❌ Нямате достатъчно кеш ($)! За етап "${activeLadder.stadium}" са нужни $${donation} за дарение.`);
-            return;
-        }
-        cash -= donation;
-        clubTreasury += donation;
-        updateUI();
-        alert(`🤝 Успешно направихте вноска от $${donation} в клубния фонд за развитие на "${activeLadder.stadium}".`);
-    }
-
-    function sendChatMessage() {
-        let input = document.getElementById('chatInput');
-        let text = input.value.trim();
-        if (!text) return;
-
-        let chatBox = document.getElementById('chatBox');
-        let playerName = localStorage.getItem('playerTeam') || "Ти";
-
-        let msgDiv = document.createElement('div');
-        msgDiv.className = 'chat-msg';
-        msgDiv.innerHTML = `<b>${escapeHtml(playerName)}:</b> ${escapeHtml(text)}`;
-        chatBox.appendChild(msgDiv);
-
-        input.value = '';
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        setTimeout(() => {
-            let replies = [
-                "Браво! Така се гради клубен стадион!",
-                "Само победа довечера! ⚽",
-                "Аз дарих за новите трансфери.",
-                "Чакам мача с нетърпение!"
-            ];
-            let randomReply = replies[Math.floor(Math.random() * replies.length)];
-            let bots = ["М. Кирилов", "Б. Стоянов", "П. Славков", "Ив. Георгиев"];
-            let randomBot = bots[Math.floor(Math.random() * bots.length)];
-
-            let botMsgDiv = document.createElement('div');
-            botMsgDiv.className = 'chat-msg';
-            botMsgDiv.innerHTML = `<b>${randomBot}:</b> ${randomReply}`;
-            chatBox.appendChild(botMsgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 2000);
-    }
-
-    function escapeHtml(str) {
-        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
+    }, 1000);
 
     updateUI();
 </script>
