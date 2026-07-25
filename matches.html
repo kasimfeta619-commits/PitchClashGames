@@ -119,7 +119,6 @@
         <!-- СТАТИСТИКА -->
         <div class="stage-stats-row">
             <div class="stat-badge">ДУЕЛ 1в1 + ПОМОЩНИЦИ</div>
-            <div class="stat-badge" id="playerOvrBadge">OVR: 125</div>
             <div class="stat-badge" id="currentZoneBadge">Зона 1</div>
         </div>
 
@@ -130,33 +129,33 @@
 
             <!-- Асистенти от твоя отбор -->
             <div class="assistant-token" id="assist1" style="left: 32%; top: 70%;">
-                <div class="assistant-circle">118</div>
+                <div class="assistant-circle" style="font-size: 7px;">Халф</div>
                 <div class="assistant-lbl">Халф 1</div>
             </div>
             <div class="assistant-token" id="assist2" style="left: 68%; top: 75%;">
-                <div class="assistant-circle">115</div>
+                <div class="assistant-circle" style="font-size: 7px;">Защ</div>
                 <div class="assistant-lbl">Защитник</div>
             </div>
 
             <!-- Асистенти на съперника -->
             <div class="rival-assistant-token" id="rivalAssist1" style="left: 32%; top: 30%;">
-                <div class="rival-assistant-circle">116</div>
+                <div class="rival-assistant-circle" style="font-size: 7px;">Халф</div>
                 <div class="rival-assistant-lbl">Рівал Асист 1</div>
             </div>
             <div class="rival-assistant-token" id="rivalAssist2" style="left: 68%; top: 25%;">
-                <div class="rival-assistant-circle">114</div>
+                <div class="rival-assistant-circle" style="font-size: 7px;">Защ</div>
                 <div class="rival-assistant-lbl">Рівал Асист 2</div>
             </div>
 
             <!-- Главен твой играч 1в1 -->
             <div class="player-token-1v1" id="myPlayerToken" style="left: 50%; top: 53%;">
-                <div class="player-circle-1v1" id="myPlayerOvr">125</div>
+                <div class="player-circle-1v1" style="font-size: 10px;">ПЕР</div>
                 <div class="player-name-lbl-1v1" id="myPlayerLabel">Капитан</div>
             </div>
 
             <!-- Главен опонент 1в1 -->
             <div class="rival-token-1v1" id="rivalPlayerToken" style="left: 50%; top: 47%;">
-                <div class="rival-circle-1v1" id="rivalPlayerOvr">120</div>
+                <div class="rival-circle-1v1" style="font-size: 10px;">РИВ</div>
                 <div class="rival-name-lbl-1v1">Рівал</div>
             </div>
         </div>
@@ -177,7 +176,7 @@
                 <div class="influence-info">
                     НАЛИТО В ЗОНАТА: <b id="pumpedSpentText">0</b>
                     СИЛА ЗА УДАР
-                    <b id="influenceValue">+265K</b>
+                    <b id="influenceValue">+250K</b>
                 </div>
                 <button class="pump-btn" onclick="pumpAction()">
                     Атакувай ⚡ <span id="pumpCost">10</span>
@@ -216,16 +215,13 @@
         energy = MAX_ENERGY;
         lastEnergyTime = now;
     } else {
-        // Изчисляване на изминалото време докато играчът е бил извън страницата
         if (!lastEnergyTime) {
             lastEnergyTime = now;
         } else {
             let elapsedMs = now - lastEnergyTime;
-            // 1 час = 3600000 милисекунди за 10 енергия (т.е. 360000 мс за 1 енергия)
             let energyGained = Math.floor(elapsedMs / 360000); 
             if (energyGained > 0) {
                 energy = Math.min(MAX_ENERGY, energy + energyGained);
-                // Запазваме остатъка от времето, за да не се губи
                 lastEnergyTime = now - (elapsedMs % 360000);
             }
         }
@@ -234,7 +230,6 @@
     let cash = localStorage.getItem('cash') || "2.85M";
     let stars = parseInt(localStorage.getItem('stars')) || 0; 
     let currentTier = parseInt(localStorage.getItem('currentTier')) || 1;
-    let influencePower = parseInt(localStorage.getItem('influencePower')) || 265000;
 
     let tierBallPositions = JSON.parse(localStorage.getItem('tierBallPositions')) || {};
     tierBallPositions[1] = 50; 
@@ -245,24 +240,22 @@
     let ballPosition = tierBallPositions[currentTier] !== undefined ? tierBallPositions[currentTier] : 50;
 
     let savedStarters = JSON.parse(localStorage.getItem('pitchStarters')) || [];
-    let mainPlayer = savedStarters.length > 0 ? savedStarters[0] : { name: "Капитан", ovr: 125, pos: "НАП" };
+    let mainPlayer = savedStarters.length > 0 ? savedStarters[0] : { name: "Капитан", pos: "НАП" };
+
+    // СИЛАТА НА УДАРА ВЕЧЕ СЕ БАЗИРА ИЗЦЯЛО НА ТЕКУЩАТА ЗОНА (НИВО)
+    // Напр. Зона 1 дава 200,000 сила, а всяко следващо ниво я увеличава прогресивно
+    let influencePower = 200000 + (currentTier * 50000);
 
     function init1v1Match() {
         document.getElementById('myPlayerName').innerText = mainPlayer.name;
-        let pOvr = mainPlayer.ovr || mainPlayer.baseOvr || 125;
-        document.getElementById('myPlayerOvr').innerText = pOvr;
         document.getElementById('myPlayerLabel').innerText = `${mainPlayer.name} (${mainPlayer.pos || 'НАП'})`;
-        document.getElementById('playerOvrBadge').innerText = "OVR: " + pOvr;
-        document.getElementById('rivalPlayerOvr').innerText = pOvr - Math.floor(Math.random() * 5);
 
         if (savedStarters.length > 1) {
             if (savedStarters[1]) {
                 document.querySelector('#assist1 .assistant-lbl').innerText = savedStarters[1].name;
-                document.querySelector('#assist1 .assistant-circle').innerText = savedStarters[1].ovr || 118;
             }
             if (savedStarters[2]) {
                 document.querySelector('#assist2 .assistant-lbl').innerText = savedStarters[2].name;
-                document.querySelector('#assist2 .assistant-circle').innerText = savedStarters[2].ovr || 115;
             }
         }
     }
@@ -292,6 +285,9 @@
     }
 
     function updateUI() {
+        // Преизчисляваме силата на удара спрямо актуалното ниво (зона)
+        influencePower = 200000 + (currentTier * 50000);
+
         document.getElementById('topEnergy').innerText = energy + "/" + MAX_ENERGY;
         document.getElementById('topCash').innerText = cash;
         document.getElementById('topStars').innerText = stars;
@@ -352,8 +348,7 @@
 
         energy -= 10;
         
-        let addedPowerStep = 100000; 
-        tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + addedPowerStep;
+        tierInvestedPower[currentTier] = (tierInvestedPower[currentTier] || 0) + influencePower;
         localStorage.setItem('tierInvestedPower', JSON.stringify(tierInvestedPower));
 
         ballPosition -= (Math.random() * 12 + 4); 
@@ -377,12 +372,10 @@
         updateUI();
     }
 
-    // Проверка за добавяне на енергия (1 енергия на всеки 6 минути, общо 10 за 1 час)
     setInterval(() => {
         let currentTime = Date.now();
         let elapsed = currentTime - lastEnergyTime;
         
-        // 360000 мс = 6 минути за 1 единица енергия (т.е. 10 единици за 1 час)
         if (energy < MAX_ENERGY && elapsed >= 360000) {
             let unitsToAdd = Math.floor(elapsed / 360000);
             energy = Math.min(MAX_ENERGY, energy + unitsToAdd);
