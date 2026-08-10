@@ -86,13 +86,12 @@
     }
   </style>
 </head>
-<body class="text-white min-h-screen px-3 py-4 pb-24 font-sans">
+<body class="text-white min-h-screen px-3 py-4 pb-24 font-sans" onload="init()">
 
   <div class="max-w-md mx-auto space-y-3">
 
-    <!-- ГОРЕН УНИФИЦИРАН HEADER BAR (Ниво, XP, Енергия, Монети, Диаманти, Магазин) -->
+    <!-- ГОРЕН УНИФИЦИРАН HEADER BAR -->
     <div class="space-y-2">
-      <!-- ГОРЕН XP / НИВО БАР -->
       <div class="relative w-full bg-[#1c2128] border border-white/10 rounded-full p-1 flex items-center shadow-inner">
         <div class="absolute -left-1 flex items-center gap-1 bg-[#1c2128] border border-amber-500/50 px-2.5 py-1 rounded-full text-amber-400 font-bold text-xs shadow-md z-10">
           <span>★</span>
@@ -104,7 +103,6 @@
         </div>
       </div>
 
-      <!-- ДОЛЕН РЕД НА ХЕДЪРА (Енергия 100, Монети, Диаманти, Магазин) -->
       <div class="flex items-center gap-2 overflow-x-auto">
         <div class="flex items-center gap-2 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5 flex-1 min-w-[110px]">
           <span class="text-[#00c5bd] text-sm">⚡</span>
@@ -139,157 +137,31 @@
       </div>
     </div>
 
-    <!-- ОСНОВЕН ДИНАМИЧЕН КОНТЕЙНЕР (Сменя се спрямо таба) -->
+    <!-- ОСНОВЕН ДИНАМИЧЕН КОНТЕЙНЕР -->
     <div id="tab-content" class="space-y-3">
-      <!-- Съдържание по подразбиране (Мачове) -->
-      
-      <!-- Резултат / Статус табло -->
-      <div class="flex items-center justify-between bg-[#1c2128] border border-white/10 rounded-2xl px-4 py-2.5">
-        <div class="flex items-center gap-2 flex-1">
-          <div class="w-9 h-9 bg-[#00c5bd]/20 border border-[#00c5bd]/50 rounded-xl flex items-center justify-center">
-            <span class="text-[10px] font-bold text-[#00c5bd]">МОЯ</span>
-          </div>
-          <div>
-            <p class="text-[9px] text-white/40 font-bold uppercase">Мой отбор</p>
-            <p class="text-white text-xs font-bold truncate max-w-24">Моят отбор</p>
-          </div>
-        </div>
-        
-        <div class="flex flex-col items-center px-2">
-          <span class="text-[9px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">LIVE МАЧ</span>
-          <div id="score-display" class="font-bold text-lg my-0.5">0 - 0</div>
-        </div>
-
-        <div class="flex items-center gap-2 flex-1 justify-end text-right">
-          <div>
-            <p class="text-[9px] text-white/40 font-bold uppercase">Съперник</p>
-            <p class="text-white text-xs font-bold truncate max-w-24">Ривал ФК</p>
-          </div>
-          <div class="w-9 h-9 bg-[#ff4c4c]/20 border border-[#ff4c4c]/50 rounded-xl flex items-center justify-center">
-            <span class="text-[10px] font-bold text-[#ff4c4c]">РИВ</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Избор на зона (Горни бутони от 1 до 11) -->
-      <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-3">
-        <div class="flex items-center justify-between mb-2">
-          <p id="selected-zone-info" class="text-[10px] text-white/50 font-bold uppercase tracking-wide">Зона 11 (НАП)</p>
-        </div>
-        <div id="zones-bar" class="flex items-center gap-2 overflow-x-auto pb-2 pt-1"></div>
-      </div>
-
-      <!-- 2Д Терен с членовете на отбора на всяка позиция -->
-      <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#2e8b57]" style="aspect-ratio:3/4">
-        <div class="absolute inset-2 border-2 border-white/30 rounded-lg pointer-events-none"></div>
-        <div class="absolute left-2 right-2 top-1/2 h-0.5 bg-white/30 pointer-events-none"></div>
-        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-2 border-white/30 rounded-full pointer-events-none"></div>
-        <div class="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-white/15 pointer-events-none"></div>
-        <div id="pitch-nodes"></div>
-      </div>
-
-      <!-- Бутони за действия -->
-      <div id="action-panel" class="bg-[#1c2128] border border-white/15 rounded-2xl p-4 space-y-3">
-        <div class="flex items-center justify-between">
-          <p id="zone-action-title" class="text-xs font-bold text-[#40c4ff]">Зона 11</p>
-          <span id="zone-progress-text" class="text-[10px] text-white/40">Налято: ТИ: 0 | СЪПЕРНИК: 0</span>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between text-[9px] mb-1">
-            <span class="text-[#00c5bd] font-bold" id="my-zone-score-text">ТИ: 0</span>
-            <span id="zone-share-text" class="text-white/40">дял 50%</span>
-            <span class="text-[#ff4c4c] font-bold" id="opp-zone-score-text">0 :СЪПЕРНИК</span>
-          </div>
-          <div class="flex h-3 rounded-full overflow-hidden bg-[#ff4c4c]/30">
-            <div id="zone-progress-bar" class="h-full bg-gradient-to-r from-[#00c5bd] to-[#40c4ff] transition-all" style="width:50%"></div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 pt-1">
-          <!-- РУЛЕТКА -->
-          <div id="roulette-box" class="bg-gradient-to-br from-purple-900/45 to-pink-900/45 border border-purple-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
-            <button id="roulette-main-btn" onclick="executeAction('roulette')" class="w-full cursor-pointer">
-              <p class="text-[10px] font-bold text-purple-300 flex items-center justify-center gap-1">
-                <span id="roulette-icon">🎰</span> Рулетка
-              </p>
-              <p class="text-[9px] text-purple-400 font-bold" id="roulette-val-display">1 ⚡</p>
-            </button>
-            <div class="flex items-center justify-center gap-1 border-t border-purple-500/30 pt-1 mt-0.5">
-              <span class="text-[8px] text-white/60">Залог:</span>
-              <button id="roulette-cycle-btn" onclick="cycleRouletteEnergy(event)" class="bg-purple-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-purple-400 transition-all">1 ⚡</button>
-            </div>
-          </div>
-
-          <!-- Бърз спринт -->
-          <div class="bg-[#00c5bd]/15 border border-[#00c5bd]/40 rounded-xl p-1.5 text-center flex flex-col justify-between">
-            <button onclick="executeAction('sprint')" class="w-full cursor-pointer">
-              <p class="text-[10px] font-bold text-white">Бърз спринт</p>
-              <p class="text-[9px] font-bold text-[#00c5bd]" id="sprint-val-display">5 ⚡</p>
-            </button>
-            <div class="flex items-center justify-center gap-1 border-t border-[#00c5bd]/30 pt-1 mt-0.5">
-              <span class="text-[8px] text-white/60">Избор:</span>
-              <button onclick="cycleSprintEnergy(event)" class="bg-[#00c5bd] text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-[#40c4ff] transition-all" id="sprint-cycle-btn">5 ⚡</button>
-            </div>
-          </div>
-
-          <!-- МОЩЕН УДАР -->
-          <div id="power-box" class="bg-gradient-to-br from-amber-900/45 to-orange-900/45 border border-amber-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
-            <button id="power-main-btn" onclick="executeAction('power')" class="w-full cursor-pointer">
-              <p class="text-[10px] font-bold text-amber-300">Мощен удар</p>
-              <p class="text-[9px] text-amber-400 font-bold" id="power-val-display">20 ⚡</p>
-            </button>
-            <div class="flex items-center justify-center gap-1 border-t border-amber-500/30 pt-1 mt-0.5">
-              <span class="text-[8px] text-white/60">Залог:</span>
-              <button id="power-cycle-btn" onclick="cyclePowerEnergy(event)" class="bg-amber-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-amber-400 transition-all">20 ⚡</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="match-log" class="bg-[#111216] rounded-xl p-2.5 h-16 overflow-y-auto space-y-1 text-[11px] text-white/60">
-          <div>[00:00] Мачът стартира. Избери зона и направи ход.</div>
-        </div>
-      </div>
-
-      <!-- КРУГЛИ АВАТАРИ НА СЪСТАВА И РЕЗЕРВИТЕ -->
-      <div class="bg-[#1c2128] border border-amber-500/30 rounded-2xl p-3 space-y-3">
-        <div class="flex items-center justify-between">
-          <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wide">👑 Състав на Отбора (Цъкни за смяна в Зона <span id="current-selected-zone-num">11</span>)</p>
-        </div>
-        <div id="squad-circles-container" class="flex items-center gap-3 overflow-x-auto pb-2 pt-1"></div>
-      </div>
-
+      <!-- Динамично се зарежда чрез JavaScript -->
     </div>
 
   </div>
 
   <!-- Долна навигационна лента (HomeBar) -->
   <nav class="home-bar">
-    <!-- Мачове -->
     <button onclick="changeTab('matches')" data-tab="matches" class="nav-btn active">
       <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6m12 5h1.5a2.5 2.5 0 000-5H18M6 4h12v6a6 6 0 01-12 0V4zm6 11v4m-3 0h6"></path></svg>
       <span>Мачове</span>
     </button>
-
-    <!-- Трен. -->
     <button onclick="changeTab('training')" data-tab="training" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M6.5 6h-3a1 1 0 00-1 1v10a1 1 0 001 1h3M17.5 6h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M6.5 12h11M2 10h2v4H2zm18 0h2v4h-2z"></path></svg>
       <span>Трен.</span>
     </button>
-
-    <!-- Начало -->
     <button onclick="changeTab('home')" data-tab="home" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
       <span>Начало</span>
     </button>
-
-    <!-- Отбор -->
     <button onclick="changeTab('team')" data-tab="team" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
       <span>Отбор</span>
     </button>
-
-    <!-- Профил -->
     <button onclick="changeTab('profile')" data-tab="profile" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
       <span>Профил</span>
@@ -311,7 +183,6 @@
       { id: 9, name: "Христо Х.", pos: "ХАЛФ", attack: 68, tech: 72, speed: 70, starter: true, x: 82, y: 50 },
       { id: 10, name: "Мартин Тит.", pos: "НАП", attack: 70, tech: 60, speed: 65, starter: true, x: 35, y: 28 },
       { id: 11, name: "Иван Снайп.", pos: "НАП", attack: 75, tech: 65, speed: 70, starter: true, x: 65, y: 28 },
-      // Резерви
       { id: 12, name: "Христо СУПЕР", pos: "ХАЛФ", attack: 85, tech: 75, speed: 80, starter: false },
       { id: 13, name: "Александър В.", pos: "Врат", attack: 55, tech: 50, speed: 50, starter: false },
       { id: 14, name: "Илиян Р.", pos: "НАП", attack: 80, tech: 70, speed: 75, starter: false }
@@ -326,14 +197,12 @@
 
     const rouletteValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let currentRouletteIndex = 0;
-    let isRouletteSpinning = false;
 
     const powerValues = [20, 25, 30, 35, 40, 45, 50];
     let currentPowerIndex = 0;
 
     function init() {
-      renderMatchesContent();
-      updateUI();
+      changeTab('matches');
     }
 
     function changeTab(tabId) {
@@ -631,168 +500,53 @@
         } else if (z.opp > z.my && z.opp > 0) {
           bg = "bg-[#ff4c4c] border-white text-white shadow-[0_0_10px_#ff4c4c]";
         } else if (z.my > 0 && z.my === z.opp) {
-          bg = "bg-amber-500 border-white text-black shadow-[0_0_10px_#f59e0b]";
+          bg = "bg-amber-500 border-white text-black";
         }
 
-        if(isSel) {
-          bg += " ring-4 ring-[#40c4ff] z-20 scale-110";
+        if (isSel) {
+          bg += " ring-2 ring-[#40c4ff] scale-110 z-20 shadow-xl font-bold";
         }
 
-        const btn = document.createElement("button");
-        btn.className = `absolute -translate-x-1/2 -translate-y-1/2 px-2 py-1 rounded-xl border text-center transition-all flex flex-col items-center justify-center cursor-pointer ${bg} ${pulseClass}`;
-        btn.style.left = member.x + "%";
-        btn.style.top = member.y + "%";
+        const node = document.createElement("button");
+        node.className = `absolute -translate-x-1/2 -translate-y-1/2 rounded-xl px-2 py-1 flex flex-col items-center border transition-all cursor-pointer ${bg} ${pulseClass}`;
+        node.style.left = member.x + "%";
+        node.style.top = member.y + "%";
         
-        btn.innerHTML = `
-          <span class="text-[9px] font-extrabold leading-tight">${zone}</span>
-          <span class="text-[8px] font-semibold opacity-90 truncate max-w-[55px]">${member.name}</span>
+        const shortName = member.name.split(" ")[0];
+        node.innerHTML = `
+          <span class="text-[9px] font-extrabold leading-tight">${zone}. ${shortName}</span>
+          <span class="text-[7px] opacity-75">${member.pos}</span>
         `;
-        
-        btn.onclick = () => { selectedZone = zone; updateUI(); renderPitchNodes(); renderZonesBar(); renderSquadCircles(); };
-        container.appendChild(btn);
+        node.onclick = () => { selectedZone = zone; updateUI(); renderPitchNodes(); renderZonesBar(); renderSquadCircles(); };
+        container.appendChild(node);
       });
     }
 
-    function updateUI() {
-      document.getElementById("player-energy").innerText = player.energy;
-      document.getElementById("player-max-energy").innerText = player.maxEnergy;
-      
-      let energyPercent = Math.max(0, Math.min(100, (player.energy / player.maxEnergy) * 100));
-      const energyFill = document.getElementById("energy-fill");
-      if(energyFill) energyFill.style.width = energyPercent + "%";
-
-      document.getElementById("player-coins").innerText = player.coins;
-      document.getElementById("player-gems").innerText = player.gems;
-      document.getElementById("player-level").innerText = player.level;
-      document.getElementById("xp-text").innerText = `${player.xp} / 400`;
-      document.getElementById("xp-fill").style.width = Math.min(100, (player.xp / 400) * 100) + "%";
-
-      const zoneInfo = document.getElementById("selected-zone-info");
-      if(!zoneInfo) return;
-
-      const currentMember = squad[selectedZone - 1];
-      let multText = (currentMember.pos === getZoneDefaultPos(selectedZone)) ? "★ [2x Родна позиция]" : "[1x Извън позиция]";
-
-      zoneInfo.innerText = `Зона ${selectedZone} (${currentMember.pos} - ${currentMember.name}) ${multText}`;
-      document.getElementById("zone-action-title").innerText = `Зона ${selectedZone} (${currentMember.pos}: ${currentMember.name})`;
-      
-      const circleTextElem = document.getElementById("current-selected-zone-num");
-      if(circleTextElem) circleTextElem.innerText = selectedZone;
-
-      const z = zones[selectedZone - 1];
-      const total = (z.my + z.opp) || 1;
-      const share = Math.round((z.my / total) * 100);
-      document.getElementById("my-zone-score-text").innerText = `ТИ: ${z.my}`;
-      document.getElementById("opp-zone-score-text").innerText = `${z.opp} :СЪПЕРНИК`;
-      document.getElementById("zone-progress-text").innerText = `Налято: ТИ: ${z.my} | СЪПЕРНИК: ${z.opp}`;
-      document.getElementById("zone-share-text").innerText = `дял ${share}%`;
-      document.getElementById("zone-progress-bar").style.width = share + "%";
-    }
-
-    function getZoneDefaultPos(zone) {
-      if (zone === 1) return "Врат";
-      if (zone >= 2 && zone <= 5) return "ЗАЩ";
-      if (zone >= 6 && zone <= 9) return "ХАЛФ";
-      return "НАП";
-    }
-
-    function logMessage(text) {
-      const logBox = document.getElementById("match-log");
-      if(!logBox) return;
-      const timeStr = new Date().toTimeString().split(' ')[0];
-      const div = document.createElement("div");
-      div.innerText = `[${timeStr}] ${text}`;
-      logBox.prepend(div);
-    }
-
     function executeAction(type) {
-      let cost = 0, push = 0, name = "";
-      const currentMember = squad[selectedZone - 1];
-      let zoneMult = (currentMember.pos === getZoneDefaultPos(selectedZone)) ? 2.0 : 1.0;
-
-      if (type === 'roulette') {
-        if (isRouletteSpinning) return;
-        
-        cost = rouletteValues[currentRouletteIndex];
-        let mult = cost / 1;
-
-        if (player.energy < cost) {
-          logMessage(`⚠️ Нямаш достатъчно енергия за рулетката! Изисква се ${cost} ⚡.`);
-          return;
-        }
-
-        player.energy -= cost;
-        isRouletteSpinning = true;
-
-        const iconElem = document.getElementById("roulette-icon");
-        iconElem.classList.add("animate-spin-fast");
-        logMessage(`🎰 [РУЛЕТКА] Завъртане с ${cost} ⚡ в зона ${selectedZone}...`);
-
-        setTimeout(() => {
-          iconElem.classList.remove("animate-spin-fast");
-          isRouletteSpinning = false;
-
-          let randPrize = Math.random();
-          
-          if (randPrize < 0.25) {
-            let bonusEnergy = Math.round((Math.floor(Math.random() * 20) + 10) * mult);
-            player.energy = Math.min(player.maxEnergy, player.energy + bonusEnergy);
-            logMessage(`⚡ [РУЛЕТКА] БОНУС ЕНЕРГИЯ! Спечелихте +${bonusEnergy} ⚡ обратно!`);
-          } 
-          else if (randPrize < 0.50) {
-            push = Math.round((Math.floor(Math.random() * 30) + 20) * mult * zoneMult);
-            zones[selectedZone - 1].my += push;
-            logMessage(`🎯 [РУЛЕТКА] ЗОНОВИ ТОЧКИ! +${push} точки в зона ${selectedZone}!`);
-          } 
-          else if (randPrize < 0.75) {
-            push = Math.round(50 * mult * zoneMult);
-            zones[selectedZone - 1].my += push;
-            logMessage(`🧤 [РУЛЕТКА] ЗЛАТНИ РЪКАВИЦИ! Бонус тласък от +${push} точки в зона ${selectedZone}!`);
-          } 
-          else {
-            push = Math.round(80 * mult * zoneMult);
-            zones[selectedZone - 1].my += push;
-            logMessage(`🏃‍♂️ [РУЛЕТКА] СУПЕР СПРИНТ КЪСМЕТ! Избухване с +${push} точки в зона ${selectedZone}!`);
-          }
-
-          updateUI();
-          renderZonesBar();
-          renderPitchNodes();
-        }, 600);
-
-        updateUI();
-        return;
-      } 
-      else if (type === 'sprint') { 
-        cost = sprintValues[currentSprintIndex]; 
-        let mult = cost / 5; 
-        name = `Бърз спринт (${cost}⚡)`; 
-        push = Math.round((currentMember.attack * 0.3 + 10) * mult * zoneMult);
-        logMessage(`🏃‍♂️ ${name} в зона ${selectedZone} (${currentMember.name}): +${push} точки (-${cost}⚡)`);
-      } 
-      else if (type === 'power') { 
-        cost = powerValues[currentPowerIndex]; 
-        let mult = cost / 20;
-        name = `Мощен удар (${cost}⚡)`; 
-        push = Math.round((currentMember.attack * 0.5 + 20) * mult * zoneMult * 1.5);
-        logMessage(`💥 ${name} в зона ${selectedZone} (${currentMember.name}): +${push} точки (-${cost}⚡)`);
-      }
-
-      if (player.energy < cost) {
-        logMessage(`⚠️ Нямаш достатъчно енергия за ${name}! Изисква се ${cost} ⚡.`);
-        return;
-      }
-
-      player.energy -= cost;
-      const z = zones[selectedZone - 1];
-      z.my += push;
-      
-      updateUI();
-      renderZonesBar();
-      renderPitchNodes();
+      logMessage(`Извършено действие: ${type} в зона ${selectedZone}`);
     }
 
-    window.onload = init;
+    function logMessage(msg) {
+      const log = document.getElementById("match-log");
+      if(!log) return;
+      const div = document.createElement("div");
+      div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      log.prepend(div);
+    }
+
+    function updateUI() {
+      const z = zones[selectedZone - 1];
+      const zoneTitle = document.getElementById("selected-zone-info");
+      if(zoneTitle) zoneTitle.innerText = `Зона ${selectedZone} (${ squad[selectedZone-1]?.pos || '' })`;
+      
+      const zoneActionTitle = document.getElementById("zone-action-title");
+      if(zoneActionTitle) zoneActionTitle.innerText = `Зона ${selectedZone}`;
+
+      const myScoreText = document.getElementById("my-zone-score-text");
+      const oppScoreText = document.getElementById("opp-zone-score-text");
+      if(myScoreText) myScoreText.innerText = `ТИ: ${z.my}`;
+      if(oppScoreText) oppScoreText.innerText = `${z.opp} :СЪПЕРНИК`;
+    }
   </script>
 </body>
 </html>
