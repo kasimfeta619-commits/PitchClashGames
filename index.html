@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pitch Clash - Хъб</title>
+    <title>Pitch Clash - Обединен Хъб</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { box-sizing: border-box; transition: all 0.2s ease-in-out; }
@@ -104,15 +104,12 @@
     <!-- ОСНОВНО СЪДЪРЖАНИЕ НА СТРАНИЦИТЕ -->
     <div class="content-container">
         
-        <!-- ТАБ 1: НАЧАЛО (ОРИГИНАЛЕН ХЪБ ОТ СНИМКАТА) -->
+        <!-- ТАБ 1: НАЧАЛО (ОРИГИНАЛЕН ХЪБ) -->
         <div id="tab-home" class="tab-content active">
             
-            <!-- Дневен диамант -->
             <div class="daily-gem-box">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-[#40c4ff]/10 border border-[#40c4ff]/30 flex items-center justify-center text-[#40c4ff]">
-                        💎
-                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-[#40c4ff]/10 border border-[#40c4ff]/30 flex items-center justify-center text-[#40c4ff]">💎</div>
                     <div>
                         <div class="font-bold text-xs text-white">Дневен диамант</div>
                         <div class="text-[10px] text-zinc-400">+1 💎 на всеки 24 часа</div>
@@ -124,7 +121,6 @@
                 </div>
             </div>
 
-            <!-- Профил карта с OVR -->
             <div class="profile-card">
                 <div class="flex justify-between items-start">
                     <div>
@@ -150,7 +146,6 @@
                 </div>
             </div>
 
-            <!-- Три основни бутона -->
             <div class="triple-btns">
                 <button class="menu-tile tile-orange" onclick="switchTab('matches')">
                     <span style="font-size: 18px;">🏆</span>
@@ -166,7 +161,6 @@
                 </button>
             </div>
 
-            <!-- PvP Сезонен Дуел -->
             <div class="pvp-card">
                 <div class="flex justify-between items-center">
                     <div>
@@ -187,7 +181,6 @@
                 </button>
             </div>
 
-            <!-- Последни мачове -->
             <div class="space-y-2">
                 <div class="flex justify-between items-center text-xs">
                     <span class="font-bold text-zinc-300">Последни мачове</span>
@@ -207,54 +200,26 @@
                         <div class="text-[9px] text-amber-400">★ 40/10</div>
                     </div>
                 </div>
-
-                <div class="match-row">
-                    <div class="flex items-center gap-3">
-                        <div class="match-badge badge-win">П</div>
-                        <div class="text-[11px]">
-                            <div class="font-semibold">Академия А <span class="text-zinc-500 font-normal">vs</span> Ривал ФК</div>
-                            <div class="text-[9px] text-zinc-400">Академия 3 • ⚽ 3 🔺 2</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold text-xs text-white">8–3</div>
-                        <div class="text-[9px] text-amber-400">★ 40/10</div>
-                    </div>
-                </div>
-
-                <div class="match-row">
-                    <div class="flex items-center gap-3">
-                        <div class="match-badge badge-loss" style="background:#7f1d1d; color:#f87171;">3</div>
-                        <div class="text-[11px]">
-                            <div class="font-semibold">Академия А <span class="text-zinc-500 font-normal">vs</span> Ривал ФК</div>
-                            <div class="text-[9px] text-zinc-400">Академия 3 • ⚽ 1 🔺 2</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold text-xs text-white">2–9</div>
-                        <div class="text-[9px] text-amber-400">★ 40/10</div>
-                    </div>
-                </div>
             </div>
 
         </div>
 
         <!-- ТАБ 2: МАЧОВЕ -->
         <div id="tab-matches" class="tab-content">
-            <div class="box-card">
-                <div class="font-bold text-teal-400 mb-2">⚽ Състезания & PvP Дуели</div>
-                <div class="text-zinc-400 text-[11px] mb-3">Изберете мач за игра или изиграйте бърза среща за печелене на опит и точки в лигата.</div>
-                <button class="w-full bg-teal-500 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer" onclick="playQuickMatch()">Започни PvP Мач (-10 ⚡)</button>
+            <div class="box-card space-y-3">
+                <div class="font-bold text-teal-400">⚽ Календар и Състезания</div>
+                <div class="text-zinc-400 text-[11px]">Тук можете да следите активните си мачове, турнири и да пускате симулации за лигата.</div>
+                <button class="w-full bg-teal-500 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer" onclick="playQuickMatch()">Стартирай PvP Мач (-10 ⚡)</button>
             </div>
         </div>
 
         <!-- ТАБ 3: ТРЕНИРОВКИ -->
         <div id="tab-training" class="tab-content">
-            <div class="box-card">
-                <div class="font-bold text-teal-400 mb-2">🏋️ Тренировъчен Център</div>
-                <div class="flex justify-between items-center bg-[#161b22] p-2.5 rounded-lg border border-white/5 mb-2">
+            <div class="box-card space-y-3">
+                <div class="font-bold text-teal-400">🏋️ Тренировъчен Център</div>
+                <div class="flex justify-between items-center bg-[#161b22] p-2.5 rounded-lg border border-white/5">
                     <div>
-                        <div class="font-bold">Индивидуална тренировка</div>
+                        <div class="font-bold text-xs">Индивидуална тренировка</div>
                         <div class="text-[10px] text-zinc-400">Разход: 15 ⚡ | Награда: +50 XP</div>
                     </div>
                     <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="doTraining(15, 50)">Тренирай</button>
@@ -262,21 +227,35 @@
             </div>
         </div>
 
-        <!-- ТАБ 4: ОТБОР -->
+        <!-- ТАБ 4: ОТБОР (Интегриран тактически изглед) -->
         <div id="tab-team" class="tab-content">
-            <div class="box-card">
-                <div class="font-bold text-teal-400 mb-2">🏅 Отборен състав</div>
+            <div class="box-card space-y-3">
+                <div class="flex justify-between items-center">
+                    <div class="font-bold text-teal-400">🏅 Отборен състав (Формация 4-4-2)</div>
+                    <span class="text-xs bg-zinc-800 px-2 py-1 rounded text-amber-400 font-bold">11 / 11</span>
+                </div>
+                
+                <!-- Мини игрище визуализация за отбора -->
+                <div class="relative w-full rounded-xl overflow-hidden bg-gradient-to-b from-green-800 to-green-900 border border-white/10" style="height: 220px;">
+                    <div class="absolute inset-0 flex items-center justify-center text-center p-4">
+                        <div class="text-xs text-white/80">
+                            <div class="font-bold mb-1">⚽ Стартова единадесеторка</div>
+                            <div class="text-[10px] text-zinc-300">kasim112233 (ST), Ив. Иванов (CAM), Д. Георгиев (CB) и др.</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="space-y-2 text-[11px]">
                     <div class="flex justify-between bg-[#161b22] p-2 rounded border border-white/5">
-                        <span>10. kasim112233 (ST)</span>
+                        <span>10. kasim112233 (Нападател - ST)</span>
                         <span class="text-amber-400 font-bold">OVR 68</span>
                     </div>
                     <div class="flex justify-between bg-[#161b22] p-2 rounded border border-white/5">
-                        <span>7. Ив. Иванов (CAM)</span>
+                        <span>7. Ив. Иванов (Полузащитник - CAM)</span>
                         <span class="text-amber-400 font-bold">OVR 65</span>
                     </div>
                     <div class="flex justify-between bg-[#161b22] p-2 rounded border border-white/5">
-                        <span>4. Д. Георгиев (CB)</span>
+                        <span>4. Д. Георгиев (Защитник - CB)</span>
                         <span class="text-amber-400 font-bold">OVR 64</span>
                     </div>
                 </div>
@@ -298,10 +277,10 @@
         <!-- ТАБ 6: МАГАЗИН -->
         <div id="tab-shop" class="tab-content">
             <div class="box-card space-y-3">
-                <div class="font-bold text-teal-400">🛒 Магазин</div>
+                <div class="font-bold text-teal-400">🛒 Клубен Магазин</div>
                 <div class="flex justify-between items-center bg-[#161b22] p-2.5 rounded-lg border border-white/5">
                     <div>
-                        <div class="font-bold">Пакет Енергия (+50)</div>
+                        <div class="font-bold text-xs">Пакет Енергия (+50 ⚡)</div>
                         <div class="text-[10px] text-zinc-400">Цена: 5 💎</div>
                     </div>
                     <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="buyEnergyPack()">Купи</button>
