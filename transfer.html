@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pitch Clash - Трансферен прозорец</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #111418;
+      margin: 0;
+      min-height: 100vh;
+    }
+    /* HomeBar стилове */
+    .home-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #1B2028;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 40;
+    }
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      padding: 4px 0;
+      border-radius: 12px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      color: #ffffff;
+    }
+    .nav-btn.active {
+      color: #00e6c3;
+      background-color: rgba(0, 137, 123, 0.15);
+    }
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+      margin-bottom: 4px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .nav-btn span {
+      font-size: 10px;
+      font-weight: 600;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen px-3 py-4 pb-24 font-sans" onload="init()">
+
+  <div class="max-w-md mx-auto space-y-4">
+
+    <!-- ГОРЕН УНИФИЦИРАН HEADER BAR -->
+    <div class="space-y-2">
+      <div class="relative w-full bg-[#1c2128] border border-white/10 rounded-full p-1 flex items-center shadow-inner">
+        <div class="absolute -left-1 flex items-center gap-1 bg-[#1c2128] border border-amber-500/50 px-2.5 py-1 rounded-full text-amber-400 font-bold text-xs shadow-md z-10">
+          <span>★</span>
+          <span id="player-level">1</span>
+        </div>
+        <div class="w-full bg-[#252b36] rounded-full h-5 relative overflow-hidden flex items-center justify-center">
+          <div id="xp-fill" class="absolute left-0 top-0 bottom-0 bg-amber-400 rounded-full transition-all" style="width: 35%;"></div>
+          <span id="xp-text" class="relative z-10 text-[11px] font-bold text-black">150 / 400</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 overflow-x-auto">
+        <div class="flex items-center gap-2 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5 flex-1 min-w-[110px]">
+          <span class="text-[#00c5bd] text-sm">⚡</span>
+          <div class="flex-1 bg-black/50 rounded-full h-2 overflow-hidden">
+            <div id="energy-fill" class="bg-[#00c5bd] h-full rounded-full transition-all" style="width: 100%;"></div>
+          </div>
+          <span class="text-xs font-bold text-white"><span id="player-energy">100</span>/<span id="player-max-energy">100</span></span>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5">
+          <span class="text-amber-500 text-sm">🪙</span>
+          <span id="player-coins" class="text-xs font-bold text-white">500</span>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5">
+          <span class="text-[#40c4ff] text-sm">💎</span>
+          <span id="player-gems" class="text-xs font-bold text-white">10</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Заглавие -->
+    <div>
+      <h1 class="text-xl font-bold">Трансферен прозорец</h1>
+      <p class="text-xs text-gray-400">Смени клуба си с реален отбор</p>
+    </div>
+
+    <!-- Текущ клуб -->
+    <div id="current-club-card" class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-800 to-emerald-950 border border-white/10 p-4 shadow-lg">
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="relative z-10">
+        <p class="text-white/60 text-xs mb-1">Текущ клуб</p>
+        <p id="current-club-name" class="text-xl font-bold text-white">Моят отбор</p>
+        <p id="current-club-league" class="text-white/60 text-sm">Първа лига</p>
+      </div>
+    </div>
+
+    <!-- Филтри за лиги -->
+    <div class="flex gap-1.5 overflow-x-auto pb-1">
+      <button onclick="setFilter('same')" id="filter-same" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-[#00c5bd] text-black cursor-pointer whitespace-nowrap">Текуща лига</button>
+      <button onclick="setFilter('higher')" id="filter-higher" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-[#1c2128] border border-white/10 text-gray-400 cursor-pointer whitespace-nowrap">По-висока</button>
+      <button onclick="setFilter('lower')" id="filter-lower" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-[#1c2128] border border-white/10 text-gray-400 cursor-pointer whitespace-nowrap">По-ниска</button>
+      <button onclick="setFilter('all')" id="filter-all" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-[#1c2128] border border-white/10 text-gray-400 cursor-pointer whitespace-nowrap">Всички</button>
+    </div>
+
+    <!-- Съобщение за успех -->
+    <div id="success-box" class="hidden bg-[#00c5bd]/15 border border-[#00c5bd]/40 rounded-2xl p-3 items-center gap-3">
+      <span class="text-lg">🎉</span>
+      <p id="success-text" class="font-semibold text-xs text-[#00c5bd]"></p>
+    </div>
+
+    <!-- Списък с клубове -->
+    <div id="clubs-container" class="space-y-3">
+      <!-- Динамично зареждане на отборите -->
+    </div>
+
+  </div>
+
+  <!-- Долна навигационна лента -->
+  <nav class="home-bar">
+    <a href="matches.html" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6m12 5h1.5a2.5 2.5 0 000-5H18M6 4h12v6a6 6 0 01-12 0V4zm6 11v4m-3 0h6"></path></svg>
+      <span>Мачове</span>
+    </a>
+    <a href="training.html" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M6.5 6h-3a1 1 0 00-1 1v10a1 1 0 001 1h3M17.5 6h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M6.5 12h11M2 10h2v4H2zm18 0h2v4h-2z"></path></svg>
+      <span>Трен.</span>
+    </a>
+    <a href="index.html" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      <span>Начало</span>
+    </a>
+    <a href="team.html" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      <span>Отбор</span>
+    </a>
+    <a href="profile.html" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+      <span>Профил</span>
+    </a>
+  </nav>
+
+  <script>
+    const TRANSFER_CLUBS = {
+      "Академия 3": [
+        { name: "Академия А", budget: 200, prestige: 1 },
+        { name: "Академия Б", budget: 180, prestige: 1 },
+        { name: "Младеж Изток", budget: 150, prestige: 1 },
+      ],
+      "Академия 2": [
+        { name: "Академия Елит", budget: 350, prestige: 2 },
+        { name: "Таланти ФК", budget: 300, prestige: 2 },
+        { name: "Надежди FC", budget: 280, prestige: 2 },
+      ],
+      "Академия 1": [
+        { name: "Академия Топ", budget: 500, prestige: 3 },
+        { name: "Суперталанти", budget: 480, prestige: 3 },
+        { name: "Про Юноши", budget: 450, prestige: 3 },
+      ],
+      "Трета лига": [
+        { name: "Балкан", budget: 700, prestige: 4 },
+        { name: "Добруджа", budget: 650, prestige: 4 },
+        { name: "Родопи", budget: 600, prestige: 4 },
+        { name: "Дунав", budget: 580, prestige: 4 },
+      ],
+      "Втора лига": [
+        { name: "Берое", budget: 1200, prestige: 5 },
+        { name: "Черно море", budget: 1100, prestige: 5 },
+        { name: "Витоша", budget: 1000, prestige: 5 },
+        { name: "Септември", budget: 950, prestige: 5 },
+      ],
+      "Първа лига": [
+        { name: "ЦСКА", budget: 2500, prestige: 7 },
+        { name: "Левски", budget: 2300, prestige: 7 },
+        { name: "Лудогорец", budget: 3000, prestige: 8 },
+        { name: "Ботев Пловдив", budget: 1800, prestige: 6 },
+      ],
+      "Епик лига": [
+        { name: "Ajax", budget: 8000, prestige: 8 },
+        { name: "Porto", budget: 7000, prestige: 8 },
+        { name: "Benfica", budget: 7500, prestige: 8 },
+        { name: "Villarreal", budget: 6000, prestige: 7 },
+      ],
+      "Legendary": [
+        { name: "Barcelona", budget: 25000, prestige: 10 },
+        { name: "Real Madrid", budget: 30000, prestige: 10 },
+        { name: "Bayern Munich", budget: 28000, prestige: 10 },
+        { name: "Man City", budget: 32000, prestige: 10 },
+      ],
+      "World Class": [
+        { name: "All-Star XI", budget: 99999, prestige: 10 },
+        { name: "Galaxy XI", budget: 99999, prestige: 10 },
+        { name: "World Best", budget: 99999, prestige: 10 },
+      ],
+    };
+
+    const LEAGUE_COLORS = {
+      "Академия 3": "from-slate-700 to-slate-900",
+      "Академия 2": "from-slate-600 to-slate-800",
+      "Академия 1": "from-zinc-600 to-zinc-800",
+      "Трета лига": "from-amber-800 to-amber-950",
+      "Втора лига": "from-blue-800 to-blue-950",
+      "Първа лига": "from-emerald-700 to-emerald-950",
+      "Епик лига": "from-purple-800 to-purple-950",
+      "Legendary": "from-rose-800 to-rose-950",
+      "World Class": "from-amber-500 to-yellow-700",
+    };
+
+    let player = JSON.parse(localStorage.getItem('pitch_clash_player')) || {
+      energy: 100,
+      maxEnergy: 100,
+      coins: 5000,
+      gems: 10,
+      level: 1,
+      xp: 150,
+      club: "ЦСКА",
+      league: "Първа лига"
+    };
+
+    let currentFilter = "same";
+
+    function init() {
+      updateHeaderUI();
+      updateCurrentClubUI();
+      renderClubs();
+    }
+
+    function savePlayer() {
+      localStorage.setItem('pitch_clash_player', JSON.stringify(player));
+    }
+
+    function updateHeaderUI() {
+      document.getElementById("player-level").innerText = player.level || 1;
+      document.getElementById("player-energy").innerText = player.energy;
+      document.getElementById("player-max-energy").innerText = player.maxEnergy;
+      document.getElementById("energy-fill").style.width = (player.energy / player.maxEnergy * 100) + "%";
+      document.getElementById("player-coins").innerText = (player.coins || 0).toLocaleString();
+      document.getElementById("player-gems").innerText = player.gems;
+      document.getElementById("xp-text").innerText = `${player.xp || 150} / 400`;
+      document.getElementById("xp-fill").style.width = (((player.xp || 150) / 400) * 100) + "%";
+    }
+
+    function updateCurrentClubUI() {
+      document.getElementById("current-club-name").innerText = player.club || "Без клуб";
+      document.getElementById("current-club-league").innerText = player.league || "Първа лига";
+      const card = document.getElementById("current-club-card");
+      const gradient = LEAGUE_COLORS[player.league] || "from-emerald-700 to-emerald-950";
+      card.className = `relative overflow-hidden rounded-2xl bg-gradient-to-r ${gradient} border border-white/10 p-4 shadow-lg`;
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      ['same', 'higher', 'lower', 'all'].forEach(f => {
+        const btn = document.getElementById(`filter-${f}`);
+        if (f === filter) {
+          btn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-[#00c5bd] text-black cursor-pointer whitespace-nowrap";
+        } else {
+          btn.className = "flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all bg-[#1c2128] border border-white/10 text-gray-400 cursor-pointer whitespace-nowrap";
+        }
+      });
+      renderClubs();
+    }
+
+    function renderClubs() {
+      const container = document.getElementById("clubs-container");
+      container.innerHTML = "";
+
+      const allLeagues = Object.keys(TRANSFER_CLUBS);
+      const playerLeagueIndex = allLeagues.indexOf(player.league);
+
+      let filteredClubs = [];
+      allLeagues.forEach((league, i) => {
+        if (currentFilter === "same" && i !== playerLeagueIndex) return;
+        if (currentFilter === "higher" && i <= playerLeagueIndex) return;
+        if (currentFilter === "lower" && i >= playerLeagueIndex) return;
+
+        TRANSFER_CLUBS[league].forEach(club => {
+          if (club.name !== player.club) {
+            filteredClubs.push({ ...club, league });
+          }
+        });
+      });
+
+      if (filteredClubs.length === 0) {
+        container.innerHTML = `
+          <div class="bg-[#1c2128] border border-dashed border-white/10 rounded-2xl p-8 text-center">
+            <p class="text-gray-400 text-xs">Няма налични клубове в тази категория</p>
+          </div>
+        `;
+        return;
+      }
+
+      filteredClubs.forEach(club => {
+        const fee = Math.floor(club.budget * 0.1);
+        const canAfford = (player.coins || 0) >= fee;
+        const leagueGradient = LEAGUE_COLORS[club.league] || "from-slate-700 to-slate-950";
+        const stars = "★".repeat(club.prestige) + "☆".repeat(Math.max(0, 10 - club.prestige));
+
+        const card = document.createElement("div");
+        card.className = "bg-[#1c2128] border border-white/10 rounded-2xl p-4 flex items-center gap-3 shadow-md";
+        card.innerHTML = `
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${leagueGradient} flex items-center justify-center flex-shrink-0 border border-white/10">
+            <span class="text-base">⚽</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-sm text-white truncate">${club.name}</p>
+            <p class="text-xs text-gray-400">${club.league}</p>
+            <p class="text-[10px] text-amber-400 tracking-tighter">${stars.substring(0, 10)}</p>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <p class="text-[10px] text-gray-400 mb-0.5">Такса</p>
+            <p class="text-xs font-bold ${canAfford ? 'text-white' : 'text-red-400'}">🪙 ${fee.toLocaleString()}</p>
+            <button 
+              onclick="doTransfer('${club.name}', '${club.league}', ${fee})"
+              class="mt-1.5 bg-[#00c5bd] hover:bg-[#00a8a0] disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold px-3 py-1 rounded-xl text-xs transition-all cursor-pointer shadow-sm"
+              ${!canAfford ? 'disabled' : ''}
+            >
+              Подпиши
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function doTransfer(clubName, leagueName, fee) {
+      if (player.coins < fee) return;
+
+      player.coins -= fee;
+      player.club = clubName;
+      player.league = leagueName;
+      savePlayer();
+
+      updateHeaderUI();
+      updateCurrentClubUI();
+      renderClubs();
+
+      const successBox = document.getElementById("success-box");
+      const successText = document.getElementById("success-text");
+      successText.innerText = `Успешен трансфер! Добре дошъл в ${clubName}! 🎉`;
+      successBox.classList.remove("hidden");
+      successBox.classList.add("flex");
+
+      setTimeout(() => {
+        successBox.classList.remove("flex");
+        successBox.classList.add("hidden");
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
