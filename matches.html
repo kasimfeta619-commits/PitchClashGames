@@ -3,85 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pitch Clash - Зонални мачове на живо</title>
+  <title>Pitch Clash - Мачове</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      background-color: #111418;
-      margin: 0;
-      min-height: 100vh;
-    }
-    @keyframes ballJump {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-    .zone-ball-jump {
-      animation: ballJump 0.8s infinite ease-in-out;
-    }
-    @keyframes pulse-gentle {
-      0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-      50% { transform: translate(-50%, -50%) translateY(-3px); }
-    }
-    .pitch-ball-pulse {
-      animation: pulse-gentle 1.5s infinite ease-in-out;
-    }
-    
+    body { background-color: #111418; margin: 0; min-height: 100vh; }
     .home-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: #1B2028;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 8px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 40;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background-color: #1B2028; border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px; display: flex; justify-content: space-around; align-items: center; z-index: 40;
     }
     .nav-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      padding: 4px 0;
-      border-radius: 12px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: rgba(255, 255, 255, 0.5);
-      transition: all 0.2s ease;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 64px; padding: 4px 0; border-radius: 12px; background: transparent; border: none; cursor: pointer;
+      color: rgba(255, 255, 255, 0.5); transition: all 0.2s ease;
     }
-    .nav-btn:hover {
-      color: #ffffff;
-    }
-    .nav-btn.active {
-      color: #00e6c3;
-      background-color: rgba(0, 137, 123, 0.15);
-    }
-    .nav-btn svg {
-      width: 20px;
-      height: 20px;
-      margin-bottom: 4px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .nav-btn span {
-      font-size: 10px;
-      font-weight: 600;
-      font-family: sans-serif;
-    }
+    .nav-btn:hover { color: #ffffff; }
+    .nav-btn.active { color: #00e6c3; background-color: rgba(0, 137, 123, 0.15); }
+    .nav-btn svg { width: 20px; height: 20px; margin-bottom: 4px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-btn span { font-size: 10px; font-weight: 600; font-family: sans-serif; }
   </style>
 </head>
-<body class="text-white min-h-screen px-3 py-4 pb-24 font-sans" onload="init()">
+<body class="text-white min-h-screen px-3 py-4 pb-24 font-sans" onload="initMatches()">
 
   <div class="max-w-md mx-auto space-y-3">
 
-    <!-- ГОРЕН УНИФИЦИРАН HEADER BAR -->
+    <!-- ГОРЕН HEADER BAR (Синхронизиран с localStorage) -->
     <div class="space-y-2">
       <div class="relative w-full bg-[#1c2128] border border-white/10 rounded-full p-1 flex items-center shadow-inner">
         <div class="absolute -left-1 flex items-center gap-1 bg-[#1c2128] border border-amber-500/50 px-2.5 py-1 rounded-full text-amber-400 font-bold text-xs shadow-md z-10">
@@ -112,573 +58,104 @@
           <span class="text-[#40c4ff] text-sm">💎</span>
           <span id="player-gems" class="text-xs font-bold text-white">10</span>
         </div>
-
-        <button onclick="alert('Магазин')" class="flex items-center gap-1.5 bg-[#7c3aed] hover:bg-[#6d28d9] transition-all text-white font-bold px-3.5 py-1.5 rounded-full text-xs shadow-md cursor-pointer flex-shrink-0">
-          <span>🛒</span>
-          <span>Магазин</span>
-        </button>
       </div>
     </div>
 
-    <!-- Заглавие на секцията -->
-    <div class="flex items-center justify-between pt-1">
-      <div>
-        <h1 class="text-xl font-bold" id="page-title">Pitch Clash</h1>
-        <p id="match-subtitle" class="text-xs text-gray-400">Зонални двубои на живо</p>
-      </div>
+    <!-- Заглавие -->
+    <div class="pt-1 flex items-center justify-between">
+      <h1 class="text-xl font-bold">Мачове</h1>
+      <button onclick="location.href='shop.html'" class="bg-[#252b36] hover:bg-[#303846] border border-white/10 text-xs px-3 py-1.5 rounded-full font-semibold transition">Магазин</button>
     </div>
 
-    <!-- ОСНОВЕН ДИНАМИЧЕН КОНТЕЙНЕР -->
-    <div id="tab-content" class="space-y-3"></div>
+    <!-- ОСНОВНО СЪДЪРЖАНИЕ НА МАЧОВЕТЕ -->
+    <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-4 space-y-4">
+      <p class="text-xs text-gray-300">Изиграй мач срещу съперник и спечели награди!</p>
+      
+      <div class="bg-[#111216] border border-white/10 rounded-xl p-3 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold text-[#00c5bd]">⚽ Бърз мач</p>
+          <p class="text-[10px] text-gray-400">Награда: +50 монети, +20 XP</p>
+        </div>
+        <button onclick="playMatch(10)" class="bg-[#00c5bd] hover:bg-[#00b2aa] text-black text-xs font-bold px-3.5 py-1.5 rounded-lg cursor-pointer transition">Играй (10 ⚡)</button>
+      </div>
+    </div>
 
   </div>
 
-  <!-- Долна навигационна лента (HomeBar) -->
+  <!-- ДОЛНА НАВИГАЦИЯ (Свързва се с останалите отделни файлове) -->
   <nav class="home-bar">
-    <button onclick="changeTab('matches')" data-tab="matches" class="nav-btn active">
+    <button onclick="location.href='matches.html'" class="nav-btn active">
       <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6m12 5h1.5a2.5 2.5 0 000-5H18M6 4h12v6a6 6 0 01-12 0V4zm6 11v4m-3 0h6"></path></svg>
       <span>Мачове</span>
     </button>
-    <button onclick="changeTab('training')" data-tab="training" class="nav-btn">
+    <button onclick="location.href='training.html'" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M6.5 6h-3a1 1 0 00-1 1v10a1 1 0 001 1h3M17.5 6h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M6.5 12h11M2 10h2v4H2zm18 0h2v4h-2z"></path></svg>
       <span>Трен.</span>
     </button>
-    <button onclick="changeTab('home')" data-tab="home" class="nav-btn">
+    <button onclick="location.href='index.html'" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
       <span>Начало</span>
     </button>
-    <button onclick="changeTab('team')" data-tab="team" class="nav-btn">
+    <button onclick="location.href='team.html'" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
       <span>Отбор</span>
     </button>
-    <button onclick="changeTab('profile')" data-tab="profile" class="nav-btn">
+    <button onclick="location.href='profile.html'" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
       <span>Профил</span>
     </button>
   </nav>
 
   <script>
-    const NUM_ZONES = 11;
-    
-    let squad = [
-      { id: 1, name: "Боби Врат", pos: "Врат", attack: 40, tech: 40, speed: 40, starter: true, x: 50, y: 88 },
-      { id: 2, name: "Димитър С.", pos: "ЗАЩ", attack: 45, tech: 50, speed: 85, starter: true, x: 18, y: 72 },
-      { id: 3, name: "Кирил З.", pos: "ЗАЩ", attack: 50, tech: 45, speed: 50, starter: true, x: 40, y: 75 },
-      { id: 4, name: "Стефан З.", pos: "ЗАЩ", attack: 48, tech: 45, speed: 52, starter: true, x: 60, y: 75 },
-      { id: 5, name: "Тодор С.", pos: "ЗАЩ", attack: 52, tech: 48, speed: 50, starter: true, x: 82, y: 72 },
-      { id: 6, name: "Георги Х.", pos: "ХАЛФ", attack: 60, tech: 80, speed: 60, starter: true, x: 18, y: 50 },
-      { id: 7, name: "Никола Х.", pos: "ХАЛФ", attack: 65, tech: 70, speed: 65, starter: true, x: 42, y: 53 },
-      { id: 8, name: "Петър Х.", pos: "ХАЛФ", attack: 62, tech: 68, speed: 64, starter: true, x: 58, y: 53 },
-      { id: 9, name: "Христо Х.", pos: "ХАЛФ", attack: 68, tech: 72, speed: 70, starter: true, x: 82, y: 50 },
-      { id: 10, name: "Мартин Тит.", pos: "НАП", attack: 70, tech: 60, speed: 65, starter: true, x: 35, y: 28 },
-      { id: 11, name: "Иван Снайп.", pos: "НАП", attack: 75, tech: 65, speed: 70, starter: true, x: 65, y: 28 },
-      { id: 12, name: "Христо СУПЕР", pos: "ХАЛФ", attack: 85, tech: 75, speed: 80, starter: false },
-      { id: 13, name: "Александър В.", pos: "Врат", attack: 55, tech: 50, speed: 50, starter: false },
-      { id: 14, name: "Илиян Р.", pos: "НАП", attack: 80, tech: 70, speed: 75, starter: false }
-    ];
+    // Общ обект за играча по подразбиране
+    let player = { energy: 100, maxEnergy: 100, coins: 500, gems: 10, level: 1, xp: 150, maxXp: 400 };
 
-    let player = { energy: 100, maxEnergy: 100, coins: 500, gems: 10, level: 1, xp: 150 };
-    let selectedZone = 11;
-    let zones = Array.from({length: NUM_ZONES}, (_, i) => ({ zone: i+1, status: "pending", my: 0, opp: 0 }));
-
-    const sprintValues = [1, 2, 3, 5, 10, 15, 20];
-    let currentSprintIndex = 3; 
-
-    const rouletteValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    let currentRouletteIndex = 0;
-
-    const powerValues = [20, 25, 30, 35, 40, 45, 50];
-    let currentPowerIndex = 0;
-
-    function init() {
-      changeTab('matches');
-    }
-
-    function changeTab(tabId) {
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        if (btn.getAttribute('data-tab') === tabId) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-
-      const titleElem = document.getElementById("page-title");
-      const subtitleElem = document.getElementById("match-subtitle");
-      const contentElem = document.getElementById("tab-content");
-
-      if (tabId === 'matches') {
-        titleElem.innerText = "Pitch Clash";
-        subtitleElem.innerText = "Зонални двубои на живо";
-        subtitleElem.style.display = "block";
-        contentElem.innerHTML = `
-          <div class="flex items-center justify-between bg-[#1c2128] border border-white/10 rounded-2xl px-4 py-2.5">
-            <div class="flex items-center gap-2 flex-1">
-              <div class="w-9 h-9 bg-[#00c5bd]/20 border border-[#00c5bd]/50 rounded-xl flex items-center justify-center">
-                <span class="text-[10px] font-bold text-[#00c5bd]">МОЯ</span>
-              </div>
-              <div>
-                <p class="text-[9px] text-white/40 font-bold uppercase">Мой отбор</p>
-                <p class="text-white text-xs font-bold truncate max-w-24">Моят отбор</p>
-              </div>
-            </div>
-            <div class="flex flex-col items-center px-2">
-              <span class="text-[9px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">LIVE МАЧ</span>
-              <div id="score-display" class="font-bold text-lg my-0.5">0 - 0</div>
-            </div>
-            <div class="flex items-center gap-2 flex-1 justify-end text-right">
-              <div>
-                <p class="text-[9px] text-white/40 font-bold uppercase">Съперник</p>
-                <p class="text-white text-xs font-bold truncate max-w-24">Ривал ФК</p>
-              </div>
-              <div class="w-9 h-9 bg-[#ff4c4c]/20 border border-[#ff4c4c]/50 rounded-xl flex items-center justify-center">
-                <span class="text-[10px] font-bold text-[#ff4c4c]">РИВ</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-3">
-            <div class="flex items-center justify-between mb-2">
-              <p id="selected-zone-info" class="text-[10px] text-white/50 font-bold uppercase tracking-wide">Зона 11 (НАП)</p>
-            </div>
-            <div id="zones-bar" class="flex items-center gap-2 overflow-x-auto pb-2 pt-1"></div>
-          </div>
-
-          <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#2e8b57]" style="aspect-ratio:3/4">
-            <div class="absolute inset-2 border-2 border-white/30 rounded-lg pointer-events-none"></div>
-            <div class="absolute left-2 right-2 top-1/2 h-0.5 bg-white/30 pointer-events-none"></div>
-            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-2 border-white/30 rounded-full pointer-events-none"></div>
-            <div class="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-white/15 pointer-events-none"></div>
-            <div id="pitch-nodes"></div>
-          </div>
-
-          <div id="action-panel" class="bg-[#1c2128] border border-white/15 rounded-2xl p-4 space-y-3">
-            <div class="flex items-center justify-between">
-              <p id="zone-action-title" class="text-xs font-bold text-[#40c4ff]">Зона 11</p>
-              <span id="zone-progress-text" class="text-[10px] text-white/40">Налято: ТИ: 0 | СЪПЕРНИК: 0</span>
-            </div>
-            <div>
-              <div class="flex items-center justify-between text-[9px] mb-1">
-                <span class="text-[#00c5bd] font-bold" id="my-zone-score-text">ТИ: 0</span>
-                <span id="zone-share-text" class="text-white/40">дял 50%</span>
-                <span class="text-[#ff4c4c] font-bold" id="opp-zone-score-text">0 :СЪПЕРНИК</span>
-              </div>
-              <div class="flex h-3 rounded-full overflow-hidden bg-[#ff4c4c]/30">
-                <div id="zone-progress-bar" class="h-full bg-gradient-to-r from-[#00c5bd] to-[#40c4ff] transition-all" style="width:50%"></div>
-              </div>
-            </div>
-            <div class="grid grid-cols-3 gap-2 pt-1">
-              <div id="roulette-box" class="bg-gradient-to-br from-purple-900/45 to-pink-900/45 border border-purple-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
-                <button id="roulette-main-btn" onclick="executeAction('roulette')" class="w-full cursor-pointer">
-                  <p class="text-[10px] font-bold text-purple-300 flex items-center justify-center gap-1"><span id="roulette-icon">🎰</span> Рулетка</p>
-                  <p class="text-[9px] text-purple-400 font-bold" id="roulette-val-display">1 ⚡</p>
-                </button>
-                <div class="flex items-center justify-center gap-1 border-t border-purple-500/30 pt-1 mt-0.5">
-                  <span class="text-[8px] text-white/60">Залог:</span>
-                  <button id="roulette-cycle-btn" onclick="cycleRouletteEnergy(event)" class="bg-purple-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-purple-400 transition-all">1 ⚡</button>
-                </div>
-              </div>
-              <div class="bg-[#00c5bd]/15 border border-[#00c5bd]/40 rounded-xl p-1.5 text-center flex flex-col justify-between">
-                <button onclick="executeAction('sprint')" class="w-full cursor-pointer">
-                  <p class="text-[10px] font-bold text-white">Бърз спринт</p>
-                  <p class="text-[9px] font-bold text-[#00c5bd]" id="sprint-val-display">5 ⚡</p>
-                </button>
-                <div class="flex items-center justify-center gap-1 border-t border-[#00c5bd]/30 pt-1 mt-0.5">
-                  <span class="text-[8px] text-white/60">Избор:</span>
-                  <button onclick="cycleSprintEnergy(event)" class="bg-[#00c5bd] text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-[#40c4ff] transition-all" id="sprint-cycle-btn">5 ⚡</button>
-                </div>
-              </div>
-              <div id="power-box" class="bg-gradient-to-br from-amber-900/45 to-orange-900/45 border border-amber-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
-                <button id="power-main-btn" onclick="executeAction('power')" class="w-full cursor-pointer">
-                  <p class="text-[10px] font-bold text-amber-300">Мощен удар</p>
-                  <p class="text-[9px] text-amber-400 font-bold" id="power-val-display">20 ⚡</p>
-                </button>
-                <div class="flex items-center justify-center gap-1 border-t border-amber-500/30 pt-1 mt-0.5">
-                  <span class="text-[8px] text-white/60">Залог:</span>
-                  <button id="power-cycle-btn" onclick="cyclePowerEnergy(event)" class="bg-amber-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-amber-400 transition-all">20 ⚡</button>
-                </div>
-              </div>
-            </div>
-            <div id="match-log" class="bg-[#111216] rounded-xl p-2.5 h-16 overflow-y-auto space-y-1 text-[11px] text-white/60">
-              <div>[00:00] Мачът стартира. Избери зона и направи ход.</div>
-            </div>
-          </div>
-
-          <div class="bg-[#1c2128] border border-amber-500/30 rounded-2xl p-3 space-y-3">
-            <div class="flex items-center justify-between">
-              <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wide">👑 Състав на Отбора (Цъкни за смяна в Зона <span id="current-selected-zone-num">11</span>)</p>
-            </div>
-            <div id="squad-circles-container" class="flex items-center gap-3 overflow-x-auto pb-2 pt-1"></div>
-          </div>
-        `;
-        renderMatchesContent();
-
-      } else if (tabId === 'training') {
-        titleElem.innerText = "Тренировъчен център";
-        subtitleElem.style.display = "none";
-        contentElem.innerHTML = `
-          <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-4 space-y-4">
-            <p class="text-xs text-gray-300">Подобри качествата на играчите си, за да печелиш по-лесно мачовете!</p>
-            
-            <div class="bg-[#111216] border border-white/10 rounded-xl p-3 flex items-center justify-between">
-              <div>
-                <p class="text-xs font-bold text-amber-400">🏃 Интензивна тренировка</p>
-                <p class="text-[10px] text-gray-400">Увеличава скоростта на целия отбор (+2)</p>
-              </div>
-              <button onclick="alert('Успешна тренировка!')" class="bg-[#00c5bd] text-black text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer">15 ⚡</button>
-            </div>
-
-            <div class="bg-[#111216] border border-white/10 rounded-xl p-3 flex items-center justify-between">
-              <div>
-                <p class="text-[10px] font-bold text-[#40c4ff]">🎯 Тренировка за техника</p>
-                <p class="text-[9px] text-gray-400">Подобрява успеваемостта в рулетката</p>
-              </div>
-              <button onclick="alert('Успешна тренировка!')" class="bg-[#40c4ff] text-black text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer">20 ⚡</button>
-            </div>
-          </div>
-        `;
-
-      } else if (tabId === 'home') {
-        titleElem.innerText = "Главно меню";
-        subtitleElem.style.display = "none";
-        contentElem.innerHTML = `
-          <div class="space-y-3">
-            <div class="bg-gradient-to-r from-teal-900/40 to-[#1c2128] border border-[#00c5bd]/30 rounded-2xl p-4">
-              <h2 class="text-sm font-bold text-[#00c5bd] mb-1">⚽ Добре дошли в Pitch Clash!</h2>
-              <p class="text-xs text-gray-300">Твоят клуб е готов за нови битки. Влез в секция „Мачове“, за да се изправиш срещу съперници в реално време.</p>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div onclick="changeTab('matches')" class="bg-[#1c2128] border border-white/10 rounded-xl p-4 text-center cursor-pointer hover:border-[#00c5bd] transition-all">
-                <span class="text-2xl">⚔️</span>
-                <p class="text-xs font-bold mt-2">Започни мач</p>
-              </div>
-              <div onclick="changeTab('team')" class="bg-[#1c2128] border border-white/10 rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition-all">
-                <span class="text-2xl">🛡️</span>
-                <p class="text-xs font-bold mt-2">Управление отбор</p>
-              </div>
-            </div>
-          </div>
-        `;
-
-      } else if (tabId === 'team') {
-        titleElem.innerText = "Управление на отбора";
-        subtitleElem.style.display = "none";
-        let squadListHtml = squad.map(m => `
-          <div class="bg-[#111216] border border-white/10 rounded-xl p-2.5 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-[#00c5bd]/20 border border-[#00c5bd] flex items-center justify-center text-[10px] font-bold">${m.pos}</div>
-              <div>
-                <p class="text-xs font-bold">${m.name}</p>
-                <p class="text-[9px] text-gray-400">Атака: ${m.attack} | Техника: ${m.tech}</p>
-              </div>
-            </div>
-            <span class="text-[9px] font-bold px-2 py-0.5 rounded ${m.starter ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">
-              ${m.starter ? 'Титуляр' : 'Резерва'}
-            </span>
-          </div>
-        `).join('');
-
-        contentElem.innerHTML = `
-          <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-4 space-y-3">
-            <p class="text-xs font-bold text-amber-400">Списък с футболисти (${squad.length})</p>
-            <div class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
-              ${squadListHtml}
-            </div>
-          </div>
-        `;
-
-      } else if (tabId === 'profile') {
-        titleElem.innerText = "Профил на мениджъра";
-        subtitleElem.style.display = "none";
-        contentElem.innerHTML = `
-          <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-4 space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-amber-500/20 border border-amber-500 rounded-full flex items-center justify-center text-xl font-bold text-amber-400">👑</div>
-              <div>
-                <p class="text-sm font-bold">Мениджър</p>
-                <p class="text-xs text-gray-400">Ниво ${player.level} • Клуб ФК Пич</p>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-              <div class="bg-[#111216] p-2.5 rounded-xl text-center">
-                <p class="text-[10px] text-gray-400">Спечелени мачове</p>
-                <p class="text-sm font-bold text-emerald-400">3</p>
-              </div>
-              <div class="bg-[#111216] p-2.5 rounded-xl text-center">
-                <p class="text-[10px] text-gray-400">Общ рейтинг</p>
-                <p class="text-sm font-bold text-[#40c4ff]">68 ОВР</p>
-              </div>
-            </div>
-          </div>
-        `;
+    function initMatches() {
+      // Зареждаме запазените данни от localStorage при отваряне на страницата
+      const savedPlayer = localStorage.getItem('pitchClashPlayer');
+      if (savedPlayer) {
+        player = JSON.parse(savedPlayer);
       }
-    }
-
-    function renderMatchesContent() {
-      renderZonesBar();
-      renderPitchNodes();
-      renderSquadCircles();
       updateUI();
     }
 
-    function cycleSprintEnergy(event) {
-      event.stopPropagation();
-      currentSprintIndex = (currentSprintIndex + 1) % sprintValues.length;
-      let val = sprintValues[currentSprintIndex];
-      document.getElementById("sprint-val-display").innerText = val + " ⚡";
-      document.getElementById("sprint-cycle-btn").innerText = val + " ⚡";
-    }
-
-    function cycleRouletteEnergy(event) {
-      event.stopPropagation();
-      currentRouletteIndex = (currentRouletteIndex + 1) % rouletteValues.length;
-      let val = rouletteValues[currentRouletteIndex];
-      document.getElementById("roulette-val-display").innerText = val + " ⚡";
-      document.getElementById("roulette-cycle-btn").innerText = val + " ⚡";
-    }
-
-    function cyclePowerEnergy(event) {
-      event.stopPropagation();
-      currentPowerIndex = (currentPowerIndex + 1) % powerValues.length;
-      let val = powerValues[currentPowerIndex];
-      document.getElementById("power-val-display").innerText = val + " ⚡";
-      document.getElementById("power-cycle-btn").innerText = val + " ⚡";
-    }
-
-    function renderSquadCircles() {
-      const container = document.getElementById("squad-circles-container");
-      if(!container) return;
-      container.innerHTML = "";
-      
-      const zoneNumElem = document.getElementById("current-selected-zone-num");
-      if(zoneNumElem) zoneNumElem.innerText = selectedZone;
-
-      squad.forEach((member, index) => {
-        const item = document.createElement("div");
-        const isStarter = member.starter;
-        
-        let borderStyle = "border-white/20 bg-[#111216]";
-        let badgeColor = "bg-black/60 text-amber-400";
-
-        if (isStarter) {
-          borderStyle = "border-[#00c5bd] bg-[#00c5bd]/15 ring-1 ring-[#00c5bd]/40";
-          badgeColor = "bg-[#00c5bd] text-black font-extrabold";
-        } else {
-          borderStyle = "border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20";
-          badgeColor = "bg-amber-500 text-black font-extrabold";
-        }
-
-        item.className = `flex flex-col items-center flex-shrink-0 cursor-pointer transition-all group`;
-        item.onclick = () => makeSubstitution(index);
-
-        const shortName = member.name.split(" ")[0];
-
-        item.innerHTML = `
-          <div class="relative w-12 h-12 rounded-full border-2 ${borderStyle} flex items-center justify-center shadow-md group-hover:scale-105 transition-all">
-            <span class="text-[11px] font-bold text-white">${shortName.substring(0,3)}</span>
-            <span class="absolute -bottom-1 -right-1 text-[8px] px-1 rounded-full ${badgeColor}">${member.pos}</span>
-          </div>
-          <span class="text-[9px] text-white/70 mt-1 truncate max-w-[56px] text-center">${member.name}</span>
-          <span class="text-[8px] text-amber-400 font-mono">АТК:${member.attack}</span>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-    function makeSubstitution(benchIndex) {
-      const targetMember = squad[benchIndex];
-      const starterIndex = selectedZone - 1;
-      const currentStarter = squad[starterIndex];
-
-      if (targetMember.starter) {
-        logMessage(`⚠️ ${targetMember.name} вече е титуляр на терена! Избери резерва за смяна.`);
+    function playMatch(cost) {
+      if (player.energy < cost) {
+        alert("Нямаш достатъчно енергия за мач!");
         return;
       }
-
-      let tempX = currentStarter.x;
-      let tempY = currentStarter.y;
-
-      targetMember.starter = true;
-      targetMember.x = tempX;
-      targetMember.y = tempY;
-
-      currentStarter.starter = false;
-      delete currentStarter.x;
-      delete currentStarter.y;
-
-      squad = squad.filter(m => m.starter).concat(squad.filter(m => !m.starter));
-
-      logMessage(`👑 [СМЯНА] В зона ${selectedZone} влезе ${targetMember.name} (${targetMember.pos}, АТК: ${targetMember.attack})`);
       
-      renderSquadCircles();
-      renderPitchNodes();
-      renderZonesBar();
+      // Логика при изиграване на мач
+      player.energy -= cost;
+      player.coins += 50;
+      player.xp += 20;
+
+      // Проверка за ново ниво
+      if (player.xp >= player.maxXp) {
+        player.level += 1;
+        player.xp -= player.maxXp;
+        player.maxXp += 100;
+        alert("Честито! Качи ново ниво!");
+      }
+
+      saveData();
       updateUI();
+      alert("Победа! Спечели 50 монети и 20 XP.");
     }
 
-    function renderZonesBar() {
-      const bar = document.getElementById("zones-bar");
-      if(!bar) return;
-      bar.innerHTML = "";
-      zones.forEach(z => {
-        const btn = document.createElement("button");
-        const isSel = z.zone === selectedZone;
-        
-        let bg = "bg-[#1c2128] border-white/15 text-white/60";
-        let jumpClass = "";
-        
-        if (z.my > z.opp) {
-          bg = "bg-[#00c5bd]/30 border-[#00c5bd] text-[#00c5bd] shadow-[0_0_8px_rgba(0,197,189,0.4)]";
-          jumpClass = "zone-ball-jump"; 
-        } else if (z.opp > z.my && z.opp > 0) {
-          bg = "bg-[#ff4c4c]/30 border-[#ff4c4c] text-[#ff4c4c] shadow-[0_0_8px_rgba(255,76,76,0.4)]";
-        } else if (z.my > 0 && z.my === z.opp) {
-          bg = "bg-amber-500/30 border-amber-500 text-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.4)]";
-        }
-
-        if(isSel) {
-          bg += " ring-2 ring-[#40c4ff] scale-110 font-bold shadow-lg";
-        }
-
-        btn.className = `flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all relative cursor-pointer ${jumpClass} ${bg}`;
-        if (jumpClass) {
-          btn.style.animationDelay = ((z.zone * 0.1) % 1) + "s";
-        }
-
-        btn.innerText = z.zone;
-        btn.onclick = () => { selectedZone = z.zone; updateUI(); renderPitchNodes(); renderZonesBar(); renderSquadCircles(); };
-        bar.appendChild(btn);
-      });
-    }
-
-    function renderPitchNodes() {
-      const container = document.getElementById("pitch-nodes");
-      if(!container) return;
-      container.innerHTML = "";
-      
-      const starters = squad.slice(0, 11);
-
-      starters.forEach((member, i) => {
-        const zone = i + 1;
-        const z = zones[i];
-        const isSel = zone === selectedZone;
-        
-        let bg = "bg-[#1c2128]/90 border-white/40 text-white";
-        let pulseClass = "";
-
-        if (z.my > z.opp) {
-          bg = "bg-[#00c5bd] border-white text-black shadow-[0_0_10px_#00c5bd]";
-          pulseClass = "pitch-ball-pulse";
-        } else if (z.opp > z.my && z.opp > 0) {
-          bg = "bg-[#ff4c4c] border-white text-white shadow-[0_0_10px_#ff4c4c]";
-        } else if (z.my > 0 && z.my === z.opp) {
-          bg = "bg-amber-500 border-white text-black";
-        }
-
-        if (isSel) {
-          bg += " ring-2 ring-[#40c4ff] scale-110 z-20 shadow-xl font-bold";
-        }
-
-        const node = document.createElement("button");
-        node.className = `absolute -translate-x-1/2 -translate-y-1/2 rounded-xl px-2 py-1 flex flex-col items-center border transition-all cursor-pointer ${bg} ${pulseClass}`;
-        node.style.left = member.x + "%";
-        node.style.top = member.y + "%";
-        
-        const shortName = member.name.split(" ")[0];
-        node.innerHTML = `
-          <span class="text-[9px] font-extrabold leading-tight">${zone}. ${shortName}</span>
-          <span class="text-[7px] opacity-75">${member.pos}</span>
-        `;
-        node.onclick = () => { selectedZone = zone; updateUI(); renderPitchNodes(); renderZonesBar(); renderSquadCircles(); };
-        container.appendChild(node);
-      });
-    }
-
-    function executeAction(type) {
-      let energyCost = 0;
-      if (type === 'roulette') {
-        energyCost = rouletteValues[currentRouletteIndex];
-      } else if (type === 'sprint') {
-        energyCost = sprintValues[currentSprintIndex];
-      } else if (type === 'power') {
-        energyCost = powerValues[currentPowerIndex];
-      }
-
-      if (player.energy < energyCost) {
-        logMessage(`⚠️ Нямаш достатъчно енергия за този ход (${energyCost}⚡)!`);
-        return;
-      }
-
-      player.energy -= energyCost;
-      document.getElementById("player-energy").innerText = player.energy;
-      document.getElementById("energy-fill").style.width = (player.energy / player.maxEnergy * 100) + "%";
-
-      const z = zones[selectedZone - 1];
-      const starter = squad[selectedZone - 1];
-      
-      let powerMultiplier = 1;
-      if (type === 'sprint') powerMultiplier = 1.5;
-      if (type === 'power') powerMultiplier = 2.5;
-      if (type === 'roulette') powerMultiplier = Math.random() < 0.3 ? 3 : 0.8;
-
-      let gain = Math.round(energyCost * (starter.attack / 20) * powerMultiplier);
-      z.my += gain;
-
-      let oppGain = Math.floor(Math.random() * (energyCost * 2)) + 1;
-      if (Math.random() > 0.5) {
-        z.opp += oppGain;
-      }
-
-      logMessage(`⚡ [${type.toUpperCase()}] Зона ${selectedZone}: +${gain} точки (Вложено: ${energyCost}⚡)`);
-
-      if (Math.random() > 0.6) {
-        const randomOppZone = Math.floor(Math.random() * NUM_ZONES);
-        zones[randomOppZone].opp += Math.floor(Math.random() * 5) + 2;
-      }
-
-      renderMatchesContent();
-      updateMatchScore();
-    }
-
-    function updateMatchScore() {
-      let myWonZones = zones.filter(z => z.my > z.opp && z.my > 0).length;
-      let oppWonZones = zones.filter(z => z.opp > z.my && z.opp > 0).length;
-      const scoreDisplay = document.getElementById("score-display");
-      if (scoreDisplay) {
-        scoreDisplay.innerText = `${myWonZones} - ${oppWonZones}`;
-      }
-    }
-
-    function logMessage(msg) {
-      const log = document.getElementById("match-log");
-      if(!log) return;
-      const div = document.createElement("div");
-      div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
-      log.prepend(div);
+    function saveData() {
+      localStorage.setItem('pitchClashPlayer', JSON.stringify(player));
     }
 
     function updateUI() {
-      const z = zones[selectedZone - 1];
-      const zoneTitle = document.getElementById("selected-zone-info");
-      if(zoneTitle) zoneTitle.innerText = `Зона ${selectedZone} (${ squad[selectedZone-1]?.pos || '' })`;
-      
-      const zoneActionTitle = document.getElementById("zone-action-title");
-      if(zoneActionTitle) zoneActionTitle.innerText = `Зона ${selectedZone}`;
-
-      const myScoreText = document.getElementById("my-zone-score-text");
-      const oppScoreText = document.getElementById("opp-zone-score-text");
-      const progressText = document.getElementById("zone-progress-text");
-      const progressBar = document.getElementById("zone-progress-bar");
-      const shareText = document.getElementById("zone-share-text");
-
-      if(myScoreText) myScoreText.innerText = `ТИ: ${z.my}`;
-      if(oppScoreText) oppScoreText.innerText = `${z.opp} :СЪПЕРНИК`;
-      if(progressText) progressText.innerText = `Налято: ТИ: ${z.my} | СЪПЕРНИК: ${z.opp}`;
-
-      let total = z.my + z.opp;
-      let myPercent = total === 0 ? 50 : Math.round((z.my / total) * 100);
-      if(progressBar) progressBar.style.width = myPercent + "%";
-      if(shareText) shareText.innerText = `дял ${myPercent}%`;
+      document.getElementById("player-energy").innerText = player.energy;
+      document.getElementById("player-max-energy").innerText = player.maxEnergy;
+      document.getElementById("energy-fill").style.width = (player.energy / player.maxEnergy * 100) + "%";
+      document.getElementById("player-coins").innerText = player.coins;
+      document.getElementById("player-gems").innerText = player.gems;
+      document.getElementById("player-level").innerText = player.level;
+      document.getElementById("xp-text").innerText = player.xp + " / " + player.maxXp;
+      document.getElementById("xp-fill").style.width = (player.xp / player.maxXp * 100) + "%";
     }
   </script>
 </body>
