@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pitch Clash - Зонални мачове на живо</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -26,15 +25,7 @@
     .pitch-ball-pulse {
       animation: pulse-gentle 1.5s infinite ease-in-out;
     }
-    @keyframes spin-fast {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .animate-spin-fast {
-      animation: spin-fast 0.6s linear infinite;
-    }
     
-    /* HomeBar стилове */
     .home-bar {
       position: fixed;
       bottom: 0;
@@ -321,22 +312,105 @@
           </div>
         `;
         renderMatchesContent();
+
       } else if (tabId === 'training') {
         titleElem.innerText = "Тренировъчен център";
         subtitleElem.style.display = "none";
-        contentElem.innerHTML = `<div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">Тук се намират тренировките за повишаване на уменията на играчите.</div>`;
+        contentElem.innerHTML = `
+          <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-4 space-y-4">
+            <p class="text-xs text-gray-300">Подобри качествата на играчите си, за да печелиш по-лесно мачовете!</p>
+            
+            <div class="bg-[#111216] border border-white/10 rounded-xl p-3 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-amber-400">🏃 Интензивна тренировка</p>
+                <p class="text-[10px] text-gray-400">Увеличава скоростта на целия отбор (+2)</p>
+              </div>
+              <button onclick="alert('Успешна тренировка!')" class="bg-[#00c5bd] text-black text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer">15 ⚡</button>
+            </div>
+
+            <div class="bg-[#111216] border border-white/10 rounded-xl p-3 flex items-center justify-between">
+              <div>
+                <p class="text-[10px] font-bold text-[#40c4ff]">🎯 Тренировка за техника</p>
+                <p class="text-[9px] text-gray-400">Подобрява успеваемостта в рулетката</p>
+              </div>
+              <button onclick="alert('Успешна тренировка!')" class="bg-[#40c4ff] text-black text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer">20 ⚡</button>
+            </div>
+          </div>
+        `;
+
       } else if (tabId === 'home') {
         titleElem.innerText = "Главно меню";
         subtitleElem.style.display = "none";
-        contentElem.innerHTML = `<div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">Добре дошли в Pitch Clash! Изберете Мачове от менюто долу, за да започнете игра.</div>`;
+        contentElem.innerHTML = `
+          <div class="space-y-3">
+            <div class="bg-gradient-to-r from-teal-900/40 to-[#1c2128] border border-[#00c5bd]/30 rounded-2xl p-4">
+              <h2 class="text-sm font-bold text-[#00c5bd] mb-1">⚽ Добре дошли в Pitch Clash!</h2>
+              <p class="text-xs text-gray-300">Твоят клуб е готов за нови битки. Влез в секция „Мачове“, за да се изправиш срещу съперници в реално време.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div onclick="changeTab('matches')" class="bg-[#1c2128] border border-white/10 rounded-xl p-4 text-center cursor-pointer hover:border-[#00c5bd] transition-all">
+                <span class="text-2xl">⚔️</span>
+                <p class="text-xs font-bold mt-2">Започни мач</p>
+              </div>
+              <div onclick="changeTab('team')" class="bg-[#1c2128] border border-white/10 rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition-all">
+                <span class="text-2xl">🛡️</span>
+                <p class="text-xs font-bold mt-2">Управление отбор</p>
+              </div>
+            </div>
+          </div>
+        `;
+
       } else if (tabId === 'team') {
         titleElem.innerText = "Управление на отбора";
         subtitleElem.style.display = "none";
-        contentElem.innerHTML = `<div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">Пълен списък с играчи, тактики и формации на вашия клуб.</div>`;
+        let squadListHtml = squad.map(m => `
+          <div class="bg-[#111216] border border-white/10 rounded-xl p-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-[#00c5bd]/20 border border-[#00c5bd] flex items-center justify-center text-[10px] font-bold">${m.pos}</div>
+              <div>
+                <p class="text-xs font-bold">${m.name}</p>
+                <p class="text-[9px] text-gray-400">Атака: ${m.attack} | Техника: ${m.tech}</p>
+              </div>
+            </div>
+            <span class="text-[9px] font-bold px-2 py-0.5 rounded ${m.starter ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">
+              ${m.starter ? 'Титуляр' : 'Резерва'}
+            </span>
+          </div>
+        `).join('');
+
+        contentElem.innerHTML = `
+          <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-4 space-y-3">
+            <p class="text-xs font-bold text-amber-400">Списък с футболисти (${squad.length})</p>
+            <div class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
+              ${squadListHtml}
+            </div>
+          </div>
+        `;
+
       } else if (tabId === 'profile') {
         titleElem.innerText = "Профил на мениджъра";
         subtitleElem.style.display = "none";
-        contentElem.innerHTML = `<div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">Статистика, постижения и профилни настройки на играча.</div>`;
+        contentElem.innerHTML = `
+          <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-4 space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-amber-500/20 border border-amber-500 rounded-full flex items-center justify-center text-xl font-bold text-amber-400">👑</div>
+              <div>
+                <p class="text-sm font-bold">Мениджър</p>
+                <p class="text-xs text-gray-400">Ниво ${player.level} • Клуб ФК Пич</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+              <div class="bg-[#111216] p-2.5 rounded-xl text-center">
+                <p class="text-[10px] text-gray-400">Спечелени мачове</p>
+                <p class="text-sm font-bold text-emerald-400">3</p>
+              </div>
+              <div class="bg-[#111216] p-2.5 rounded-xl text-center">
+                <p class="text-[10px] text-gray-400">Общ рейтинг</p>
+                <p class="text-sm font-bold text-[#40c4ff]">68 ОВР</p>
+              </div>
+            </div>
+          </div>
+        `;
       }
     }
 
@@ -550,7 +624,6 @@
       let gain = Math.round(energyCost * (starter.attack / 20) * powerMultiplier);
       z.my += gain;
 
-      // Симулация на отговор от съперника в същата или друга зона
       let oppGain = Math.floor(Math.random() * (energyCost * 2)) + 1;
       if (Math.random() > 0.5) {
         z.opp += oppGain;
@@ -558,7 +631,6 @@
 
       logMessage(`⚡ [${type.toUpperCase()}] Зона ${selectedZone}: +${gain} точки (Вложено: ${energyCost}⚡)`);
 
-      // Автоматичен отговор на съперника в друга случайна зона от време на време
       if (Math.random() > 0.6) {
         const randomOppZone = Math.floor(Math.random() * NUM_ZONES);
         zones[randomOppZone].opp += Math.floor(Math.random() * 5) + 2;
