@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pitch Clash - Headbar & Homebar</title>
+    <title>Pitch Clash - Всички страници</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { box-sizing: border-box; }
-        /* Стил за долната навигационна лента */
         .home-bar {
             position: fixed;
             bottom: 0;
@@ -35,9 +34,7 @@
             color: rgba(255, 255, 255, 0.5);
             transition: all 0.2s ease;
         }
-        .nav-btn:hover {
-            color: #ffffff;
-        }
+        .nav-btn:hover { color: #ffffff; }
         .nav-btn.active {
             color: #00e6c3;
             background-color: rgba(0, 137, 123, 0.15);
@@ -52,19 +49,13 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
-        .nav-btn span {
-            font-size: 10px;
-            font-weight: 600;
-            font-family: sans-serif;
-        }
+        .nav-btn span { font-size: 10px; font-weight: 600; font-family: sans-serif; }
         .page-section {
             display: none;
             flex-direction: column;
             gap: 12px;
         }
-        .page-section.active {
-            display: flex;
-        }
+        .page-section.active { display: flex; }
         .box-card { background: #1c2128; border: 1px solid rgba(255, 255, 258, 0.08); border-radius: 12px; padding: 12px; }
         .daily-gem-box { display: flex; justify-content: space-between; align-items: center; background: #1c2128; border: 1px solid rgba(64, 196, 255, 0.2); border-radius: 12px; padding: 10px 14px; }
         .profile-card { background: #1c2128; border: 1px solid rgba(255, 255, 258, 0.08); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
@@ -79,7 +70,7 @@
 </head>
 <body class="bg-[#111418] text-white min-h-screen pb-24">
 
-    <!-- 1. ГОРЕН XP / НИВО БАР И СТАТУСИ (HEADBAR) -->
+    <!-- ГОРЕН ХЕДЪР (HEADBAR) -->
     <div class="max-w-md mx-auto p-4 space-y-2">
         <div class="relative w-full bg-[#1c2128] border border-white/10 rounded-full p-1 flex items-center shadow-inner">
             <div class="absolute -left-1 flex items-center gap-1 bg-[#1c2128] border border-amber-500/50 px-2.5 py-1 rounded-full text-amber-400 font-bold text-xs shadow-md z-10">
@@ -115,8 +106,6 @@
         </div>
     </div>
 
-    <!-- СЪДЪРЖАНИЕ НА ТАБОВЕТЕ (SECTIONS) -->
-    
     <!-- 1. НАЧАЛО -->
     <div id="page-home" class="page-section active max-w-md mx-auto p-4 space-y-3">
         <div class="daily-gem-box">
@@ -175,16 +164,16 @@
         </div>
     </div>
 
-    <!-- 2. МАЧОВЕ -->
+    <!-- 2. МАЧОВЕ (MATCHES) -->
     <div id="page-matches" class="page-section max-w-md mx-auto p-4">
         <div class="box-card space-y-3">
             <div class="font-bold text-teal-400 text-sm">⚽ Календар на мачовете</div>
             <div class="text-zinc-400 text-[11px]">Изиграйте мач от лигата за точки и опит.</div>
-            <button class="w-full bg-teal-500 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer" onclick="playQuickMatch()">Започни PvP Мач (-10 ⚡)</button>
+            <button class="w-full bg-teal-500 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer hover:bg-teal-400" onclick="playQuickMatch()">Започни PvP Мач (-10 ⚡)</button>
         </div>
     </div>
 
-    <!-- 3. ТРЕНИРОВКИ -->
+    <!-- 3. ТРЕНИРОВКИ (TRAINING) -->
     <div id="page-training" class="page-section max-w-md mx-auto p-4">
         <div class="box-card space-y-3">
             <div class="font-bold text-teal-400 text-sm">🏋️ Тренировъчен Център</div>
@@ -193,17 +182,17 @@
                     <div class="font-bold text-xs">Интензивна тренировка</div>
                     <div class="text-[10px] text-zinc-400">Разход: 15 ⚡ | Награда: +50 XP</div>
                 </div>
-                <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="doTraining(15, 50)">Тренирай</button>
+                <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer hover:bg-sky-300" onclick="doTraining(15, 50)">Тренирай</button>
             </div>
         </div>
     </div>
 
-    <!-- 4. ОТБОР -->
+    <!-- 4. ОТБОР (TEAM / SQUAD) -->
     <div id="page-team" class="page-section max-w-md mx-auto p-4 space-y-3">
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-lg font-bold">Отбор</h1>
-                <p class="text-zinc-400 text-xs">Моят Клуб</p>
+                <p class="text-zinc-400 text-xs" id="squad-team-name">Моят Клуб</p>
             </div>
             <div>
                 <select class="bg-[#1c2128] border border-white/10 text-xs text-white rounded-lg px-2 py-1 outline-none">
@@ -232,7 +221,7 @@
         </div>
     </div>
 
-    <!-- 5. ПРОФИЛ -->
+    <!-- 5. ПРОФИЛ (PROFILE) -->
     <div id="page-profile" class="page-section max-w-md mx-auto p-4">
         <div class="box-card space-y-3">
             <div class="font-bold text-teal-400 text-sm">👤 Профил на мениджъра</div>
@@ -240,11 +229,11 @@
                 <label class="text-[10px] text-zinc-400">Име на играча:</label>
                 <input type="text" id="inputPlayerName" class="w-full bg-[#161b22] border border-white/10 rounded p-2 text-xs text-white mt-1 outline-none" value="Моят Клуб">
             </div>
-            <button class="w-full bg-emerald-500 text-black font-bold p-2.5 rounded text-xs cursor-pointer" onclick="saveProfileSettings()">Запази промените</button>
+            <button class="w-full bg-emerald-500 text-black font-bold p-2.5 rounded text-xs cursor-pointer hover:bg-emerald-400" onclick="saveProfileSettings()">Запази промените</button>
         </div>
     </div>
 
-    <!-- 6. МАГАЗИН (Допълнителен таб) -->
+    <!-- 6. МАГАЗИН (SHOP) -->
     <div id="page-shop" class="page-section max-w-md mx-auto p-4">
         <div class="box-card space-y-3">
             <div class="font-bold text-teal-400 text-sm">🛒 Клубен Магазин</div>
@@ -253,12 +242,12 @@
                     <div class="font-bold text-xs">Пакет Енергия (+50 ⚡)</div>
                     <div class="text-[10px] text-zinc-400">Цена: 5 💎</div>
                 </div>
-                <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="buyEnergyPack()">Купи</button>
+                <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer hover:bg-sky-300" onclick="buyEnergyPack()">Купи</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. ДОЛНА НАВИГАЦИОННА ЛЕНТА (HOME BAR) -->
+    <!-- ДОЛНА НАВИГАЦИОННА ЛЕНТА (HOMEBAR) -->
     <nav class="home-bar">
         <button onclick="changeTab('matches')" data-tab="matches" class="nav-btn">
             <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6m12 5h1.5a2.5 2.5 0 000-5H18M6 4h12v6a6 6 0 01-12 0V4zm6 11v4m-3 0h6"></path></svg>
@@ -282,7 +271,7 @@
         </button>
     </nav>
 
-    <!-- СКРИПТ ЗА ИГРАТА И ПРЕВКЛЮЧВАНЕТО НА ТАБОВЕТЕ -->
+    <!-- СКРИПТОВЕ ЗА НАВИГАЦИЯ И УПРАВЛЕНИЕ НА ДАННИТЕ -->
     <script>
         let energy = parseInt(localStorage.getItem('player-energy')) || 91;
         let diamonds = parseInt(localStorage.getItem('player-gems')) || 45;
@@ -322,6 +311,9 @@
             
             const profileDisplay = document.getElementById('profileNameDisplay');
             if (profileDisplay) profileDisplay.innerText = playerName;
+
+            const squadTeamName = document.getElementById('squad-team-name');
+            if (squadTeamName) squadTeamName.innerText = playerName;
             
             const nameInput = document.getElementById('inputPlayerName');
             if (nameInput) nameInput.value = playerName;
@@ -377,6 +369,5 @@
 
         updateUI();
     </script>
-
 </body>
 </html>
