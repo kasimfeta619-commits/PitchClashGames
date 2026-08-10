@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeBar</title>
+  <style>
+    body {
+      background-color: #111418;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .home-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #1B2028;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 40;
+    }
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      padding: 4px 0;
+      border-radius: 12px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.5);
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      color: #ffffff;
+    }
+    .nav-btn.active {
+      color: #00e6c3;
+      background-color: rgba(0, 137, 123, 0.15);
+    }
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+      margin-bottom: 4px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .nav-btn span {
+      font-size: 10px;
+      font-weight: 600;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Долна навигационна лента (HomeBar) -->
+  <nav class="home-bar">
+    
+    <!-- Мачове (По-красива и пропорционална купа) -->
+    <button onclick="changeTab('matches')" data-tab="matches" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6m12 5h1.5a2.5 2.5 0 000-5H18M6 4h12v6a6 6 0 01-12 0V4zm6 11v4m-3 0h6"></path></svg>
+      <span>Мачове</span>
+    </button>
+
+    <!-- Трен. (По-красив дъмбел с фитнес тежести) -->
+    <button onclick="changeTab('training')" data-tab="training" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M6.5 6h-3a1 1 0 00-1 1v10a1 1 0 001 1h3M17.5 6h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M6.5 12h11M2 10h2v4H2zm18 0h2v4h-2z"></path></svg>
+      <span>Трен.</span>
+    </button>
+
+    <!-- Начало (Активен по подразбиране) -->
+    <button onclick="changeTab('home')" data-tab="home" class="nav-btn active">
+      <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      <span>Начало</span>
+    </button>
+
+    <!-- Отбор -->
+    <button onclick="changeTab('team')" data-tab="team" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      <span>Отбор</span>
+    </button>
+
+    <!-- Профил -->
+    <button onclick="changeTab('profile')" data-tab="profile" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+      <span>Профил</span>
+    </button>
+
+  </nav>
+
+  <script>
+    function changeTab(tabId) {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
