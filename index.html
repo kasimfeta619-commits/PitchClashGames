@@ -3,447 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pitch Clash - Пълен Хъб</title>
+    <title>Pitch Clash - Headbar & Homebar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { box-sizing: border-box; transition: all 0.2s ease-in-out; }
-        body { background: #0b0c10; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; justify-content: center; height: 100vh; overflow: hidden; user-select: none; }
-        
-        .app-container { width: 100%; max-width: 420px; height: 100%; background: #111418; display: flex; flex-direction: column; position: relative; overflow: hidden; }
-        
-        /* ГОРЕН КОНТЕЙНЕР (XP БАР + РЕСУРСИ) */
-        .top-container { position: absolute; top: 0; left: 0; width: 100%; background: #161b22; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-        /* ОСНОВНО СЪДЪРЖАНИЕ (ТАБОВЕ) */
-        .content-container { position: absolute; top: 85px; bottom: 65px; left: 0; width: 100%; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
-        .tab-content { display: none; flex-direction: column; gap: 12px; width: 100%; }
-        .tab-content.active { display: flex; }
-
-        /* КАРТИ И СЕКЦИИ */
-        .box-card { background: #1c2128; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 12px; }
-        
-        /* ДНЕВЕН ДИАМАНТ */
+        * { box-sizing: border-box; }
+        /* Стил за долната навигационна лента */
+        .home-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1B2028;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 50;
+        }
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            padding: 4px 0;
+            border-radius: 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover {
+            color: #ffffff;
+        }
+        .nav-btn.active {
+            color: #00e6c3;
+            background-color: rgba(0, 137, 123, 0.15);
+        }
+        .nav-btn svg {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 4px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .nav-btn span {
+            font-size: 10px;
+            font-weight: 600;
+            font-family: sans-serif;
+        }
+        .page-section {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .page-section.active {
+            display: flex;
+        }
+        .box-card { background: #1c2128; border: 1px solid rgba(255, 255, 258, 0.08); border-radius: 12px; padding: 12px; }
         .daily-gem-box { display: flex; justify-content: space-between; align-items: center; background: #1c2128; border: 1px solid rgba(64, 196, 255, 0.2); border-radius: 12px; padding: 10px 14px; }
-        
-        /* ПРОФИЛ КАРТА */
-        .profile-card { background: #1c2128; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
-        .progress-bar-bg { width: 100%; background: #111418; border-radius: 9999px; height: 6px; overflow: hidden; position: relative; }
-        .progress-bar-fill { background: #40c4ff; height: 100%; border-radius: 9999px; }
-
-        /* ТРИ ГОЛЕМИ БУТОНА */
+        .profile-card { background: #1c2128; border: 1px solid rgba(255, 255, 258, 0.08); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
         .triple-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .menu-tile { border-radius: 12px; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border: none; font-weight: bold; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .menu-tile { border-radius: 12px; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border: none; font-weight: bold; color: #fff; }
         .tile-orange { background: linear-gradient(135deg, #d97706, #b45309); }
         .tile-purple { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
         .tile-blue { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
-
-        /* PVP СЕЗОНЕН ДУЕЛ БОКС */
         .pvp-card { background: linear-gradient(135deg, #0f292a, #133b3d); border: 1px solid #14b8a6; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-        .pvp-btn { background: #14b8a6; color: #0b0c10; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; text-align: center; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3); }
-
-        /* ПОСЛЕДНИ МАЧОВЕ */
-        .match-row { background: #161b22; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .match-badge { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; }
-        .badge-win { background: #065f46; color: #34d399; }
-        .badge-loss { background: #7f1d1d; color: #f87171; }
-
-        /* ДОЛНА НАВИГАЦИОННА ЛЕНТА (HomeBar) */
-        .home-bar { position: absolute; bottom: 0; left: 0; right: 0; background-color: #1B2028; border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 8px; display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 64px; padding: 4px 0; border-radius: 12px; background: transparent; border: none; cursor: pointer; color: rgba(255, 255, 255, 0.5); transition: all 0.2s ease; }
-        .nav-btn:hover { color: #ffffff; }
-        .nav-btn.active { color: #00e6c3; background-color: rgba(0, 137, 123, 0.15); }
-        .nav-btn svg { width: 20px; height: 20px; margin-bottom: 4px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-        .nav-btn span { font-size: 10px; font-weight: 600; font-family: sans-serif; }
+        .pvp-btn { background: #14b8a6; color: #0b0c10; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; }
     </style>
 </head>
-<body>
+<body class="bg-[#111418] text-white min-h-screen pb-24">
 
-<div class="app-container">
-    
-    <!-- ГОРЕН КОНТЕЙНЕР (XP БАР + РЕСУРСИ) -->
-    <div class="top-container">
+    <!-- 1. ГОРЕН XP / НИВО БАР И СТАТУСИ (HEADBAR) -->
+    <div class="max-w-md mx-auto p-4 space-y-2">
         <div class="relative w-full bg-[#1c2128] border border-white/10 rounded-full p-1 flex items-center shadow-inner">
             <div class="absolute -left-1 flex items-center gap-1 bg-[#1c2128] border border-amber-500/50 px-2.5 py-1 rounded-full text-amber-400 font-bold text-xs shadow-md z-10">
                 <span>★</span>
                 <span id="player-level">6</span>
             </div>
             <div class="w-full bg-[#252b36] rounded-full h-5 relative overflow-hidden flex items-center justify-center">
-                <div id="xp-fill" class="absolute left-0 top-0 bottom-0 bg-amber-400 rounded-full transition-all" style="width: 97%;"></div>
+                <div id="xp-fill" class="absolute left-0 top-0 bottom-0 bg-amber-400 rounded-full transition-all" style="width: 40%;"></div>
                 <span id="xp-text" class="relative z-10 text-[11px] font-bold text-black">2798 / 2880</span>
             </div>
         </div>
 
-        <div class="flex items-center gap-2 overflow-x-auto">
-            <div class="flex items-center gap-2 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5 flex-1 min-w-[100px]">
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+            <div class="flex items-center gap-2 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5 flex-1 min-w-[110px]">
                 <span class="text-amber-400 text-sm">⚡</span>
                 <div class="flex-1 bg-black/50 rounded-full h-2 overflow-hidden">
-                    <div id="energy-fill" class="bg-emerald-400 h-full rounded-full" style="width: 91%;"></div>
+                    <div id="energy-fill" class="bg-amber-400 h-full rounded-full" style="width: 91%;"></div>
                 </div>
                 <span id="player-energy" class="text-xs font-bold text-white">91</span>
             </div>
-
             <div class="flex items-center gap-1.5 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5">
                 <span class="text-amber-600 text-sm">🪙</span>
-                <span id="player-coins" class="text-xs font-bold text-white">7.96M</span>
+                <span id="player-coins" class="text-xs font-bold text-white">1,250</span>
             </div>
-
             <div class="flex items-center gap-1.5 bg-[#1c2128] border border-white/10 rounded-full px-3 py-1.5">
                 <span class="text-[#40c4ff] text-sm">💎</span>
-                <span id="player-gems" class="text-xs font-bold text-white">15</span>
+                <span id="player-gems" class="text-xs font-bold text-white">45</span>
             </div>
-
-            <button onclick="switchTab('shop')" class="flex items-center gap-1.5 bg-[#7c3aed] hover:bg-[#6d28d9] transition-all text-white font-bold px-3 py-1.5 rounded-full text-xs shadow-md cursor-pointer flex-shrink-0">
+            <button onclick="changeTab('shop')" class="flex items-center gap-1.5 bg-[#7c3aed] hover:bg-[#6d28d9] transition-all text-white font-bold px-3.5 py-1.5 rounded-full text-xs shadow-md cursor-pointer flex-shrink-0">
                 <span>🛒</span>
                 <span>Магазин</span>
             </button>
         </div>
     </div>
 
-    <!-- ОСНОВНО СЪДЪРЖАНИЕ -->
-    <div class="content-container">
-        
-        <!-- 1. НАЧАЛО (HOME) -->
-        <div id="tab-home" class="tab-content active">
-            <div class="daily-gem-box">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-[#40c4ff]/10 border border-[#40c4ff]/30 flex items-center justify-center text-[#40c4ff]">💎</div>
-                    <div>
-                        <div class="font-bold text-xs text-white">Дневен диамант</div>
-                        <div class="text-[10px] text-zinc-400">+1 💎 на всеки 24 часа</div>
-                    </div>
+    <!-- СЪДЪРЖАНИЕ НА ТАБОВЕТЕ (SECTIONS) -->
+    
+    <!-- 1. НАЧАЛО -->
+    <div id="page-home" class="page-section active max-w-md mx-auto p-4 space-y-3">
+        <div class="daily-gem-box">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#40c4ff]/10 border border-[#40c4ff]/30 flex items-center justify-center text-[#40c4ff]">💎</div>
+                <div>
+                    <div class="font-bold text-xs text-white">Дневен диамант</div>
+                    <div class="text-[10px] text-zinc-400">+1 💎 на всеки 24 часа</div>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="text-[9px] text-zinc-500 uppercase tracking-wider">след</div>
+                <div class="font-bold text-xs text-amber-400">18ч 14м 6с</div>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="font-bold text-sm text-white" id="profileNameDisplay">Моят Клуб</div>
+                    <div class="text-[11px] text-zinc-400">Академия А • ST</div>
                 </div>
                 <div class="text-right">
-                    <div class="text-[9px] text-zinc-500 uppercase tracking-wider">след</div>
-                    <div class="font-bold text-xs text-amber-400">18ч 14м 6с</div>
-                </div>
-            </div>
-
-            <div class="profile-card">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <div class="font-bold text-sm text-white" id="profileNameDisplay">kasim112233</div>
-                        <div class="text-[11px] text-zinc-400">Академия А • ST</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-[9px] text-zinc-500 uppercase font-bold tracking-wider">OVR</div>
-                        <div class="font-extrabold text-xl text-white leading-none">68</div>
-                    </div>
-                </div>
-                <div class="space-y-1 mt-1">
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: 40%;"></div>
-                    </div>
-                    <div class="flex justify-between text-[10px] text-zinc-400">
-                        <span></span>
-                        <div class="flex items-center gap-2">
-                            <span>2/5 победи</span>
-                            <span class="bg-zinc-800 border border-white/10 px-2 py-0.5 rounded text-[9px] text-amber-300 font-bold">Академия 3</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="triple-btns">
-                <button class="menu-tile tile-orange" onclick="switchTab('matches')">
-                    <span style="font-size: 18px;">🏆</span>
-                    <span style="font-size: 10px; letter-spacing: 0.5px;">СЪСТЕЗАНИЯ</span>
-                </button>
-                <button class="menu-tile tile-purple" onclick="switchTab('shop')">
-                    <span style="font-size: 18px;">🛒</span>
-                    <span style="font-size: 10px; letter-spacing: 0.5px;">МАГАЗИН</span>
-                </button>
-                <button class="menu-tile tile-blue" onclick="switchTab('team')">
-                    <span style="font-size: 18px;">🏅</span>
-                    <span style="font-size: 10px; letter-spacing: 0.5px;">ОТБОРНО</span>
-                </button>
-            </div>
-
-            <div class="pvp-card">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <div class="font-bold text-xs text-teal-300">PvP Сезонен Дуел</div>
-                        <div class="text-[10px] text-zinc-400">Сезон 1 • Академия 3</div>
-                    </div>
-                    <div class="text-teal-400 text-lg">🏆</div>
-                </div>
-                <div class="flex items-center gap-3 text-[10px] text-zinc-300">
-                    <span>🏆 2/5 победи</span>
-                    <span>•</span>
-                    <span>📅 3/26 мача</span>
-                    <span>•</span>
-                    <span>⚽ 6 гола</span>
-                </div>
-                <button class="pvp-btn" onclick="playQuickMatch()">
-                    <span>⚔️</span> ИГРАЙ СЕГА
-                </button>
-            </div>
-
-            <div class="space-y-2">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-zinc-300">Последни мачове</span>
-                    <span class="text-[#40c4ff] cursor-pointer hover:underline text-[11px]" onclick="switchTab('matches')">Виж всички →</span>
-                </div>
-
-                <div class="match-row">
-                    <div class="flex items-center gap-3">
-                        <div class="match-badge badge-win">П</div>
-                        <div class="text-[11px]">
-                            <div class="font-semibold">Академия А <span class="text-zinc-500 font-normal">vs</span> Ривал ФК</div>
-                            <div class="text-[9px] text-zinc-400">Академия 3 • ⚽ 2 🔺 0</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="font-bold text-xs text-white">11–0</div>
-                        <div class="text-[9px] text-amber-400">★ 40/10</div>
-                    </div>
+                    <div class="text-[9px] text-zinc-500 uppercase font-bold tracking-wider">OVR</div>
+                    <div class="font-extrabold text-xl text-white leading-none">68</div>
                 </div>
             </div>
         </div>
 
-        <!-- 2. МАЧОВЕ (MATCHES) -->
-        <div id="tab-matches" class="tab-content">
-            <div class="box-card space-y-3">
-                <div class="font-bold text-teal-400 text-sm">⚽ Календар на мачовете и Лиги</div>
-                <div class="text-zinc-400 text-[11px]">Изиграйте мач от лигата, за да печелите точки, опит и да подобрявате позициите на отбора си.</div>
-                <button class="w-full bg-teal-500 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer shadow-md" onclick="playQuickMatch()">Започни PvP Мач (-10 ⚡)</button>
-            </div>
-            <div class="box-card space-y-2">
-                <div class="font-bold text-xs text-zinc-300">Пълен архив мачове</div>
-                <div class="match-row">
-                    <div class="flex items-center gap-3">
-                        <div class="match-badge badge-win">П</div>
-                        <div class="text-[11px]">
-                            <div class="font-semibold">Академия А vs Ривал ФК</div>
-                            <div class="text-[9px] text-zinc-400">Академия 3</div>
-                        </div>
-                    </div>
-                    <div class="text-right font-bold text-xs">11–0</div>
-                </div>
-                <div class="match-row">
-                    <div class="flex items-center gap-3">
-                        <div class="match-badge badge-win">П</div>
-                        <div class="text-[11px]">
-                            <div class="font-semibold">Академия А vs Ривал ФК</div>
-                            <div class="text-[9px] text-zinc-400">Академия 3</div>
-                        </div>
-                    </div>
-                    <div class="text-right font-bold text-xs">8–3</div>
-                </div>
-            </div>
+        <div class="triple-btns">
+            <button class="menu-tile tile-orange" onclick="changeTab('matches')">
+                <span style="font-size: 18px;">🏆</span>
+                <span style="font-size: 10px;">СЪСТЕЗАНИЯ</span>
+            </button>
+            <button class="menu-tile tile-purple" onclick="changeTab('shop')">
+                <span style="font-size: 18px;">🛒</span>
+                <span style="font-size: 10px;">МАГАЗИН</span>
+            </button>
+            <button class="menu-tile tile-blue" onclick="changeTab('team')">
+                <span style="font-size: 18px;">🏅</span>
+                <span style="font-size: 10px;">ОТБОРНО</span>
+            </button>
         </div>
 
-        <!-- 3. ТРЕНИРОВКИ (TRAINING) -->
-        <div id="tab-training" class="tab-content">
-            <div class="box-card space-y-3">
-                <div class="font-bold text-teal-400 text-sm">🏋️ Тренировъчен Център</div>
-                <div class="text-zinc-400 text-[11px]">Повишавайте уменията на играча си чрез специализирани тренировъчни сесии.</div>
-                
-                <div class="flex justify-between items-center bg-[#161b22] p-2.5 rounded-lg border border-white/5">
-                    <div>
-                        <div class="font-bold text-xs">Интензивна тренировка</div>
-                        <div class="text-[10px] text-zinc-400">Разход: 15 ⚡ | Награда: +50 XP</div>
-                    </div>
-                    <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="doTraining(15, 50)">Тренирай</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. ОТБОР (TEAM) -->
-        <div id="tab-team" class="tab-content">
-            <div class="box-card space-y-3">
-                <div class="flex justify-between items-center">
-                    <div class="font-bold text-teal-400 text-sm">🏅 Отборен състав</div>
-                    <span class="text-xs bg-zinc-800 px-2 py-1 rounded text-amber-400 font-bold">11 / 11</span>
-                </div>
-
-                <div class="relative w-full rounded-xl overflow-hidden bg-gradient-to-b from-green-800 to-green-900 border border-white/10 p-4 text-center" style="height: 160px;">
-                    <div class="text-xs text-white/90 font-bold mb-1">Формация: 4-4-2</div>
-                    <div class="text-[10px] text-zinc-200">Вашият отбор е подреден на терена и готов за следващия двубой.</div>
-                </div>
-
-                <div class="space-y-2 text-[11px]">
-                    <div class="flex justify-between bg-[#161b22] p-2.5 rounded border border-white/5 items-center">
-                        <div>
-                            <span class="font-bold" id="squadPlayerName">10. kasim112233</span>
-                            <span class="text-[10px] text-zinc-400 block">Нападател (ST)</span>
-                        </div>
-                        <span class="text-amber-400 font-bold">OVR 68</span>
-                    </div>
-                    <div class="flex justify-between bg-[#161b22] p-2.5 rounded border border-white/5 items-center">
-                        <div>
-                            <span class="font-bold">7. Ив. Иванов</span>
-                            <span class="text-[10px] text-zinc-400 block">Полузащитник (CAM)</span>
-                        </div>
-                        <span class="text-amber-400 font-bold">OVR 65</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. ПРОФИЛ (PROFILE) -->
-        <div id="tab-profile" class="tab-content">
-            <div class="box-card space-y-3">
-                <div class="font-bold text-teal-400 text-sm">👤 Профил на мениджъра</div>
+        <div class="pvp-card">
+            <div class="flex justify-between items-center">
                 <div>
-                    <label class="text-[10px] text-zinc-400">Име на играча:</label>
-                    <input type="text" id="inputPlayerName" class="w-full bg-[#161b22] border border-white/10 rounded p-2 text-xs text-white mt-1 outline-none focus:border-[#40c4ff]" value="kasim112233">
+                    <div class="font-bold text-xs text-teal-300">PvP Сезонен Дуел</div>
+                    <div class="text-[10px] text-zinc-400">Сезон 1 • Академия 3</div>
                 </div>
-                <button class="w-full bg-emerald-500 text-black font-bold p-2.5 rounded text-xs cursor-pointer shadow-md" onclick="saveProfileSettings()">Запази промените</button>
+                <div class="text-teal-400 text-lg">🏆</div>
             </div>
+            <button class="pvp-btn" onclick="playQuickMatch()">
+                <span>⚔️</span> ИГРАЙ СЕГА (-10 ⚡)
+            </button>
         </div>
-
-        <!-- 6. МАГАЗИН (SHOP) -->
-        <div id="tab-shop" class="tab-content">
-            <div class="box-card space-y-3">
-                <div class="font-bold text-teal-400 text-sm">🛒 Клубен Магазин</div>
-                <div class="flex justify-between items-center bg-[#161b22] p-2.5 rounded-lg border border-white/5">
-                    <div>
-                        <div class="font-bold text-xs">Пакет Енергия (+50 ⚡)</div>
-                        <div class="text-[10px] text-zinc-400">Цена: 5 💎</div>
-                    </div>
-                    <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="buyEnergyPack()">Купи</button>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- ДОЛНА НАВИГАЦИОННА ЛЕНТА -->
+    <!-- 2. МАЧОВЕ -->
+    <div id="page-matches" class="page-section max-w-md mx-auto p-4">
+        <div class="box-card space-y-3">
+            <div class="font-bold text-teal-400 text-sm">⚽ Календар на мачовете</div>
+            <div class="text-zinc-400 text-[11px]">Изиграйте мач от лигата за точки и опит.</div>
+            <button class="w-full bg-teal-500 text-black font-bold p-2.5 rounded-lg text-xs cursor-pointer" onclick="playQuickMatch()">Започни PvP Мач (-10 ⚡)</button>
+        </div>
+    </div>
+
+    <!-- 3. ТРЕНИРОВКИ -->
+    <div id="page-training" class="page-section max-w-md mx-auto p-4">
+        <div class="box-card space-y-3">
+            <div class="font-bold text-teal-400 text-sm">🏋️ Тренировъчен Център</div>
+            <div class="flex justify-between items-center bg-[#161b22] p-2.5 rounded-lg border border-white/5">
+                <div>
+                    <div class="font-bold text-xs">Интензивна тренировка</div>
+                    <div class="text-[10px] text-zinc-400">Разход: 15 ⚡ | Награда: +50 XP</div>
+                </div>
+                <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="doTraining(15, 50)">Тренирай</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ОТБОР -->
+    <div id="page-team" class="page-section max-w-md mx-auto p-4 space-y-3">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-lg font-bold">Отбор</h1>
+                <p class="text-zinc-400 text-xs">Моят Клуб</p>
+            </div>
+            <div>
+                <select class="bg-[#1c2128] border border-white/10 text-xs text-white rounded-lg px-2 py-1 outline-none">
+                    <option>4-4-2</option>
+                    <option>4-3-3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <span class="font-bold text-xs">Състав: 11/11</span>
+            <div class="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                <div class="h-full bg-emerald-500 w-full"></div>
+            </div>
+        </div>
+
+        <div class="relative w-full rounded-2xl overflow-hidden bg-gradient-to-b from-green-800 to-green-900 border border-white/10" style="padding-bottom: 130%;">
+            <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 100 140" preserveAspectRatio="none">
+                <rect x="1" y="1" width="98" height="138" fill="none" stroke="white" stroke-width="0.8" />
+                <line x1="1" y1="70" x2="99" y2="70" stroke="white" stroke-width="0.6" />
+                <circle cx="50" cy="70" r="12" fill="none" stroke="white" stroke-width="0.6" />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-around p-4 text-center">
+                <div class="text-xs text-white/80 font-bold">Оптимален изглед на формацията (4-4-2)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. ПРОФИЛ -->
+    <div id="page-profile" class="page-section max-w-md mx-auto p-4">
+        <div class="box-card space-y-3">
+            <div class="font-bold text-teal-400 text-sm">👤 Профил на мениджъра</div>
+            <div>
+                <label class="text-[10px] text-zinc-400">Име на играча:</label>
+                <input type="text" id="inputPlayerName" class="w-full bg-[#161b22] border border-white/10 rounded p-2 text-xs text-white mt-1 outline-none" value="Моят Клуб">
+            </div>
+            <button class="w-full bg-emerald-500 text-black font-bold p-2.5 rounded text-xs cursor-pointer" onclick="saveProfileSettings()">Запази промените</button>
+        </div>
+    </div>
+
+    <!-- 6. МАГАЗИН (Допълнителен таб) -->
+    <div id="page-shop" class="page-section max-w-md mx-auto p-4">
+        <div class="box-card space-y-3">
+            <div class="font-bold text-teal-400 text-sm">🛒 Клубен Магазин</div>
+            <div class="flex justify-between items-center bg-[#161b22] p-2.5 rounded-lg border border-white/5">
+                <div>
+                    <div class="font-bold text-xs">Пакет Енергия (+50 ⚡)</div>
+                    <div class="text-[10px] text-zinc-400">Цена: 5 💎</div>
+                </div>
+                <button class="bg-[#40c4ff] text-black font-bold px-3 py-1.5 rounded text-xs cursor-pointer" onclick="buyEnergyPack()">Купи</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ДОЛНА НАВИГАЦИОННА ЛЕНТА (HOME BAR) -->
     <nav class="home-bar">
-        <button onclick="switchTab('matches')" data-tab="matches" class="nav-btn">
+        <button onclick="changeTab('matches')" data-tab="matches" class="nav-btn">
             <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6m12 5h1.5a2.5 2.5 0 000-5H18M6 4h12v6a6 6 0 01-12 0V4zm6 11v4m-3 0h6"></path></svg>
             <span>Мачове</span>
         </button>
-
-        <button onclick="switchTab('training')" data-tab="training" class="nav-btn">
+        <button onclick="changeTab('training')" data-tab="training" class="nav-btn">
             <svg viewBox="0 0 24 24"><path d="M6.5 6h-3a1 1 0 00-1 1v10a1 1 0 001 1h3M17.5 6h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M6.5 12h11M2 10h2v4H2zm18 0h2v4h-2z"></path></svg>
             <span>Трен.</span>
         </button>
-
-        <button onclick="switchTab('home')" data-tab="home" class="nav-btn active">
+        <button onclick="changeTab('home')" data-tab="home" class="nav-btn active">
             <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             <span>Начало</span>
         </button>
-
-        <button onclick="switchTab('team')" data-tab="team" class="nav-btn">
+        <button onclick="changeTab('team')" data-tab="team" class="nav-btn">
             <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             <span>Отбор</span>
         </button>
-
-        <button onclick="switchTab('profile')" data-tab="profile" class="nav-btn">
+        <button onclick="changeTab('profile')" data-tab="profile" class="nav-btn">
             <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
             <span>Профил</span>
         </button>
     </nav>
 
-</div>
+    <!-- СКРИПТ ЗА ИГРАТА И ПРЕВКЛЮЧВАНЕТО НА ТАБОВЕТЕ -->
+    <script>
+        let energy = parseInt(localStorage.getItem('player-energy')) || 91;
+        let diamonds = parseInt(localStorage.getItem('player-gems')) || 45;
+        let playerLevel = parseInt(localStorage.getItem('player-level')) || 6;
+        let playerXp = parseInt(localStorage.getItem('player-xp')) || 2798;
+        let playerName = localStorage.getItem('playerName') || 'Моят Клуб';
 
-<script>
-    const MAX_ENERGY = 100;
-    
-    let energy = parseInt(localStorage.getItem('player-energy')) ?? 91;
-    let coins = localStorage.getItem('player-coins-str') || '7.96M';
-    let diamonds = parseInt(localStorage.getItem('player-gems')) ?? 15;
-    let playerLevel = parseInt(localStorage.getItem('player-level')) ?? 6;
-    let playerXp = parseInt(localStorage.getItem('player-xp')) ?? 2798;
-    let playerName = localStorage.getItem('playerName') || 'kasim112233';
+        function changeTab(tabId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
 
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        let target = document.getElementById('tab-' + tabId);
-        if (target) target.classList.add('active');
-
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            if (btn.getAttribute('data-tab') === tabId) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(`page-${tabId}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
             }
-        });
-        updateUI();
-    }
-
-    function updateUI() {
-        document.getElementById('player-energy').innerText = energy;
-        document.getElementById('energy-fill').style.width = (energy / MAX_ENERGY) * 100 + '%';
-        document.getElementById('player-coins').innerText = coins;
-        document.getElementById('player-gems').innerText = diamonds;
-        document.getElementById('player-level').innerText = playerLevel;
-        
-        let xpMax = 2880;
-        let xpPercent = Math.min(100, (playerXp / xpMax) * 100);
-        document.getElementById('xp-fill').style.width = xpPercent + '%';
-        document.getElementById('xp-text').innerText = playerXp + " / " + xpMax;
-        
-        document.getElementById('profileNameDisplay').innerText = playerName;
-        document.getElementById('inputPlayerName').value = playerName;
-        document.getElementById('squadPlayerName').innerText = "10. " + playerName;
-
-        localStorage.setItem('player-energy', energy);
-        localStorage.setItem('player-gems', diamonds);
-        localStorage.setItem('player-level', playerLevel);
-        localStorage.setItem('player-xp', playerXp);
-        localStorage.setItem('playerName', playerName);
-    }
-
-    function playQuickMatch() {
-        if (energy < 10) {
-            alert("❌ Нямате достатъчно енергия!");
-            return;
+            updateUI();
         }
-        energy -= 10;
-        playerXp += 40;
-        if (playerXp >= 2880) {
-            playerXp -= 2880;
-            playerLevel += 1;
-            alert(`🎉 Поздравления! Достигнахте ниво ${playerLevel}!`);
-        } else {
-            alert("⚽ Мачът завърши успешно! Спечелихте опит.");
-        }
-        updateUI();
-    }
 
-    function doTraining(cost, xpGain) {
-        if (energy < cost) {
-            alert("❌ Нямате достатъчно енергия!");
-            return;
+        function updateUI() {
+            document.getElementById('player-energy').innerText = energy;
+            document.getElementById('energy-fill').style.width = energy + '%';
+            document.getElementById('player-gems').innerText = diamonds;
+            document.getElementById('player-level').innerText = playerLevel;
+            
+            let currentXpInLevel = playerXp % 2880;
+            document.getElementById('xp-fill').style.width = (currentXpInLevel / 2880) * 100 + '%';
+            document.getElementById('xp-text').innerText = currentXpInLevel + ' / 2880';
+            
+            const profileDisplay = document.getElementById('profileNameDisplay');
+            if (profileDisplay) profileDisplay.innerText = playerName;
+            
+            const nameInput = document.getElementById('inputPlayerName');
+            if (nameInput) nameInput.value = playerName;
+
+            localStorage.setItem('player-energy', energy);
+            localStorage.setItem('player-gems', diamonds);
+            localStorage.setItem('player-level', playerLevel);
+            localStorage.setItem('player-xp', playerXp);
+            localStorage.setItem('playerName', playerName);
         }
-        energy -= cost;
-        playerXp += xpGain;
-        if (playerXp >= 2880) {
-            playerXp -= 2880;
-            playerLevel += 1;
-            alert(`🎉 Поздравления! Достигнахте ниво ${playerLevel}!`);
-        } else {
+
+        function playQuickMatch() {
+            if (energy < 10) {
+                alert("❌ Нямате достатъчно енергия!");
+                return;
+            }
+            energy -= 10;
+            playerXp += 40;
+            updateUI();
+            alert("⚽ Мачът завърши успешно (+40 XP)!");
+        }
+
+        function doTraining(cost, xpGain) {
+            if (energy < cost) {
+                alert("❌ Нямате достатъчно енергия!");
+                return;
+            }
+            energy -= cost;
+            playerXp += xpGain;
+            updateUI();
             alert(`🏋️ Тренировката завърши успешно (+${xpGain} XP)!`);
         }
-        updateUI();
-    }
 
-    function buyEnergyPack() {
-        if (diamonds < 5) {
-            alert("❌ Нямате достатъчно диаманти!");
-            return;
-        }
-        diamonds -= 5;
-        energy = Math.min(MAX_ENERGY, energy + 50);
-        alert("⚡ Успешно закупихте енергия!");
-        updateUI();
-    }
-
-    function saveProfileSettings() {
-        let inputVal = document.getElementById('inputPlayerName').value.trim();
-        if(inputVal !== "") {
-            playerName = inputVal;
-            alert("💾 Профилът е обновен!");
+        function buyEnergyPack() {
+            if (diamonds < 5) {
+                alert("❌ Нямате достатъчно диаманти!");
+                return;
+            }
+            diamonds -= 5;
+            energy = Math.min(100, energy + 50);
             updateUI();
-        } else {
-            alert("❌ Името не може да бъде празно!");
+            alert("⚡ Успешно закупихте енергия!");
         }
-    }
 
-    updateUI();
-</script>
+        function saveProfileSettings() {
+            let val = document.getElementById('inputPlayerName').value.trim();
+            if (val) {
+                playerName = val;
+                updateUI();
+                alert("💾 Профилът е обновен!");
+            }
+        }
+
+        updateUI();
+    </script>
 
 </body>
 </html>
