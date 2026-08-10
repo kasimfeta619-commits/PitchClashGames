@@ -26,13 +26,6 @@
     .pitch-ball-pulse {
       animation: pulse-gentle 1.5s infinite ease-in-out;
     }
-    @keyframes spin-fast {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .animate-spin-fast {
-      animation: spin-fast 0.6s linear infinite;
-    }
     
     /* HomeBar стилове */
     .home-bar {
@@ -60,6 +53,7 @@
       border: none;
       cursor: pointer;
       color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
       transition: all 0.2s ease;
     }
     .nav-btn:hover {
@@ -137,165 +131,132 @@
       </div>
     </div>
 
-    <!-- ОСНОВЕН ДИНАМИЧЕН КОНТЕЙНЕР (Секциите са разделени предварително за стабилност) -->
+    <!-- ОСНОВЕН ДИНАМИЧЕН КОНТЕЙНЕР ЗА МАЧОВЕ -->
     <div id="tab-content" class="space-y-3">
-      
-      <!-- 1. МАЧОВЕ (matches) -->
-      <div id="section-matches" class="space-y-3">
-        <div class="flex items-center justify-between bg-[#1c2128] border border-white/10 rounded-2xl px-4 py-2.5">
-          <div class="flex items-center gap-2 flex-1">
-            <div class="w-9 h-9 bg-[#00c5bd]/20 border border-[#00c5bd]/50 rounded-xl flex items-center justify-center">
-              <span class="text-[10px] font-bold text-[#00c5bd]">МОЯ</span>
-            </div>
-            <div>
-              <p class="text-[9px] text-white/40 font-bold uppercase">Мой отбор</p>
-              <p class="text-white text-xs font-bold truncate max-w-24">Моят отбор</p>
-            </div>
-          </div>
-          <div class="flex flex-col items-center px-2">
-            <span class="text-[9px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">LIVE МАЧ</span>
-            <div id="score-display" class="font-bold text-lg my-0.5">0 - 0</div>
-          </div>
-          <div class="flex items-center gap-2 flex-1 justify-end text-right">
-            <div>
-              <p class="text-[9px] text-white/40 font-bold uppercase">Съперник</p>
-              <p class="text-white text-xs font-bold truncate max-w-24">Ривал ФК</p>
-            </div>
-            <div class="w-9 h-9 bg-[#ff4c4c]/20 border border-[#ff4c4c]/50 rounded-xl flex items-center justify-center">
-              <span class="text-[10px] font-bold text-[#ff4c4c]">РИВ</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-3">
-          <div class="flex items-center justify-between mb-2">
-            <p id="selected-zone-info" class="text-[10px] text-white/50 font-bold uppercase tracking-wide">Зона 11 (НАП)</p>
-          </div>
-          <div id="zones-bar" class="flex items-center gap-2 overflow-x-auto pb-2 pt-1"></div>
-        </div>
-
-        <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#2e8b57]" style="aspect-ratio:3/4">
-          <div class="absolute inset-2 border-2 border-white/30 rounded-lg pointer-events-none"></div>
-          <div class="absolute left-2 right-2 top-1/2 h-0.5 bg-white/30 pointer-events-none"></div>
-          <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-2 border-white/30 rounded-full pointer-events-none"></div>
-          <div class="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-white/15 pointer-events-none"></div>
-          <div id="pitch-nodes"></div>
-        </div>
-
-        <div id="action-panel" class="bg-[#1c2128] border border-white/15 rounded-2xl p-4 space-y-3">
-          <div class="flex items-center justify-between">
-            <p id="zone-action-title" class="text-xs font-bold text-[#40c4ff]">Зона 11</p>
-            <span id="zone-progress-text" class="text-[10px] text-white/40">Налято: ТИ: 0 | СЪПЕРНИК: 0</span>
+      <div class="flex items-center justify-between bg-[#1c2128] border border-white/10 rounded-2xl px-4 py-2.5">
+        <div class="flex items-center gap-2 flex-1">
+          <div class="w-9 h-9 bg-[#00c5bd]/20 border border-[#00c5bd]/50 rounded-xl flex items-center justify-center">
+            <span class="text-[10px] font-bold text-[#00c5bd]">МОЯ</span>
           </div>
           <div>
-            <div class="flex items-center justify-between text-[9px] mb-1">
-              <span class="text-[#00c5bd] font-bold" id="my-zone-score-text">ТИ: 0</span>
-              <span id="zone-share-text" class="text-white/40">дял 50%</span>
-              <span class="text-[#ff4c4c] font-bold" id="opp-zone-score-text">0 :СЪПЕРНИК</span>
-            </div>
-            <div class="flex h-3 rounded-full overflow-hidden bg-[#ff4c4c]/30">
-              <div id="zone-progress-bar" class="h-full bg-gradient-to-r from-[#00c5bd] to-[#40c4ff] transition-all" style="width:50%"></div>
-            </div>
-          </div>
-          <div class="grid grid-cols-3 gap-2 pt-1">
-            <div id="roulette-box" class="bg-gradient-to-br from-purple-900/45 to-pink-900/45 border border-purple-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
-              <button id="roulette-main-btn" onclick="executeAction('roulette')" class="w-full cursor-pointer">
-                <p class="text-[10px] font-bold text-purple-300 flex items-center justify-center gap-1"><span id="roulette-icon">🎰</span> Рулетка</p>
-                <p class="text-[9px] text-purple-400 font-bold" id="roulette-val-display">1 ⚡</p>
-              </button>
-              <div class="flex items-center justify-center gap-1 border-t border-purple-500/30 pt-1 mt-0.5">
-                <span class="text-[8px] text-white/60">Залог:</span>
-                <button id="roulette-cycle-btn" onclick="cycleRouletteEnergy(event)" class="bg-purple-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-purple-400 transition-all">1 ⚡</button>
-              </div>
-            </div>
-            <div class="bg-[#00c5bd]/15 border border-[#00c5bd]/40 rounded-xl p-1.5 text-center flex flex-col justify-between">
-              <button onclick="executeAction('sprint')" class="w-full cursor-pointer">
-                <p class="text-[10px] font-bold text-white">Бърз спринт</p>
-                <p class="text-[9px] font-bold text-[#00c5bd]" id="sprint-val-display">5 ⚡</p>
-              </button>
-              <div class="flex items-center justify-center gap-1 border-t border-[#00c5bd]/30 pt-1 mt-0.5">
-                <span class="text-[8px] text-white/60">Избор:</span>
-                <button onclick="cycleSprintEnergy(event)" class="bg-[#00c5bd] text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-[#40c4ff] transition-all" id="sprint-cycle-btn">5 ⚡</button>
-              </div>
-            </div>
-            <div id="power-box" class="bg-gradient-to-br from-amber-900/45 to-orange-900/45 border border-amber-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
-              <button id="power-main-btn" onclick="executeAction('power')" class="w-full cursor-pointer">
-                <p class="text-[10px] font-bold text-amber-300">Мощен удар</p>
-                <p class="text-[9px] text-amber-400 font-bold" id="power-val-display">20 ⚡</p>
-              </button>
-              <div class="flex items-center justify-center gap-1 border-t border-amber-500/30 pt-1 mt-0.5">
-                <span class="text-[8px] text-white/60">Залог:</span>
-                <button id="power-cycle-btn" onclick="cyclePowerEnergy(event)" class="bg-amber-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-amber-400 transition-all">20 ⚡</button>
-              </div>
-            </div>
-          </div>
-          <div id="match-log" class="bg-[#111216] rounded-xl p-2.5 h-16 overflow-y-auto space-y-1 text-[11px] text-white/60">
-            <div>[00:00] Мачът стартира. Избери зона и направи ход.</div>
+            <p class="text-[9px] text-white/40 font-bold uppercase">Мой отбор</p>
+            <p class="text-white text-xs font-bold truncate max-w-24">Моят отбор</p>
           </div>
         </div>
-
-        <div class="bg-[#1c2128] border border-amber-500/30 rounded-2xl p-3 space-y-3">
-          <div class="flex items-center justify-between">
-            <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wide">👑 Състав на Отбора (Цъкни за смяна в Зона <span id="current-selected-zone-num">11</span>)</p>
+        <div class="flex flex-col items-center px-2">
+          <span class="text-[9px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">LIVE МАЧ</span>
+          <div id="score-display" class="font-bold text-lg my-0.5">0 - 0</div>
+        </div>
+        <div class="flex items-center gap-2 flex-1 justify-end text-right">
+          <div>
+            <p class="text-[9px] text-white/40 font-bold uppercase">Съперник</p>
+            <p class="text-white text-xs font-bold truncate max-w-24">Ривал ФК</p>
           </div>
-          <div id="squad-circles-container" class="flex items-center gap-3 overflow-x-auto pb-2 pt-1"></div>
+          <div class="w-9 h-9 bg-[#ff4c4c]/20 border border-[#ff4c4c]/50 rounded-xl flex items-center justify-center">
+            <span class="text-[10px] font-bold text-[#ff4c4c]">РИВ</span>
+          </div>
         </div>
       </div>
 
-      <!-- 2. ТРЕНИРОВКИ (training) -->
-      <div id="section-training" class="space-y-3 hidden">
-        <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">
-          Тук се намират тренировките за повишаване на уменията на играчите.
+      <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-3">
+        <div class="flex items-center justify-between mb-2">
+          <p id="selected-zone-info" class="text-[10px] text-white/50 font-bold uppercase tracking-wide">Зона 11 (НАП)</p>
+        </div>
+        <div id="zones-bar" class="flex items-center gap-2 overflow-x-auto pb-2 pt-1"></div>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#2e8b57]" style="aspect-ratio:3/4">
+        <div class="absolute inset-2 border-2 border-white/30 rounded-lg pointer-events-none"></div>
+        <div class="absolute left-2 right-2 top-1/2 h-0.5 bg-white/30 pointer-events-none"></div>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-2 border-white/30 rounded-full pointer-events-none"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-white/15 pointer-events-none"></div>
+        <div id="pitch-nodes"></div>
+      </div>
+
+      <div id="action-panel" class="bg-[#1c2128] border border-white/15 rounded-2xl p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <p id="zone-action-title" class="text-xs font-bold text-[#40c4ff]">Зона 11</p>
+          <span id="zone-progress-text" class="text-[10px] text-white/40">Налято: ТИ: 0 | СЪПЕРНИК: 0</span>
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-[9px] mb-1">
+            <span class="text-[#00c5bd] font-bold" id="my-zone-score-text">ТИ: 0</span>
+            <span id="zone-share-text" class="text-white/40">дял 50%</span>
+            <span class="text-[#ff4c4c] font-bold" id="opp-zone-score-text">0 :СЪПЕРНИК</span>
+          </div>
+          <div class="flex h-3 rounded-full overflow-hidden bg-[#ff4c4c]/30">
+            <div id="zone-progress-bar" class="h-full bg-gradient-to-r from-[#00c5bd] to-[#40c4ff] transition-all" style="width:50%"></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 pt-1">
+          <div id="roulette-box" class="bg-gradient-to-br from-purple-900/45 to-pink-900/45 border border-purple-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
+            <button id="roulette-main-btn" onclick="executeAction('roulette')" class="w-full cursor-pointer">
+              <p class="text-[10px] font-bold text-purple-300 flex items-center justify-center gap-1"><span id="roulette-icon">🎰</span> Рулетка</p>
+              <p class="text-[9px] text-purple-400 font-bold" id="roulette-val-display">1 ⚡</p>
+            </button>
+            <div class="flex items-center justify-center gap-1 border-t border-purple-500/30 pt-1 mt-0.5">
+              <span class="text-[8px] text-white/60">Залог:</span>
+              <button id="roulette-cycle-btn" onclick="cycleRouletteEnergy(event)" class="bg-purple-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-purple-400 transition-all">1 ⚡</button>
+            </div>
+          </div>
+          <div class="bg-[#00c5bd]/15 border border-[#00c5bd]/40 rounded-xl p-1.5 text-center flex flex-col justify-between">
+            <button onclick="executeAction('sprint')" class="w-full cursor-pointer">
+              <p class="text-[10px] font-bold text-white">Бърз спринт</p>
+              <p class="text-[9px] font-bold text-[#00c5bd]" id="sprint-val-display">5 ⚡</p>
+            </button>
+            <div class="flex items-center justify-center gap-1 border-t border-[#00c5bd]/30 pt-1 mt-0.5">
+              <span class="text-[8px] text-white/60">Избор:</span>
+              <button onclick="cycleSprintEnergy(event)" class="bg-[#00c5bd] text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-[#40c4ff] transition-all" id="sprint-cycle-btn">5 ⚡</button>
+            </div>
+          </div>
+          <div id="power-box" class="bg-gradient-to-br from-amber-900/45 to-orange-900/45 border border-amber-500/50 rounded-xl p-1.5 text-center flex flex-col justify-between shadow-md">
+            <button id="power-main-btn" onclick="executeAction('power')" class="w-full cursor-pointer">
+              <p class="text-[10px] font-bold text-amber-300">Мощен удар</p>
+              <p class="text-[9px] text-amber-400 font-bold" id="power-val-display">20 ⚡</p>
+            </button>
+            <div class="flex items-center justify-center gap-1 border-t border-amber-500/30 pt-1 mt-0.5">
+              <span class="text-[8px] text-white/60">Залог:</span>
+              <button id="power-cycle-btn" onclick="cyclePowerEnergy(event)" class="bg-amber-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-md cursor-pointer hover:bg-amber-400 transition-all">20 ⚡</button>
+            </div>
+          </div>
+        </div>
+        <div id="match-log" class="bg-[#111216] rounded-xl p-2.5 h-16 overflow-y-auto space-y-1 text-[11px] text-white/60">
+          <div>[00:00] Мачът стартира. Избери зона и направи ход.</div>
         </div>
       </div>
 
-      <!-- 3. НАЧАЛО (home) -->
-      <div id="section-home" class="space-y-3 hidden">
-        <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">
-          Добре дошли в Pitch Clash! Изберете Мачове от менюто долу, за да започнете игра.
+      <div class="bg-[#1c2128] border border-amber-500/30 rounded-2xl p-3 space-y-3">
+        <div class="flex items-center justify-between">
+          <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wide">👑 Състав на Отбора (Цъкни за смяна в Зона <span id="current-selected-zone-num">11</span>)</p>
         </div>
+        <div id="squad-circles-container" class="flex items-center gap-3 overflow-x-auto pb-2 pt-1"></div>
       </div>
-
-      <!-- 4. ОТБОР (team) -->
-      <div id="section-team" class="space-y-3 hidden">
-        <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">
-          Пълен списък с играчи, тактики и формации на вашия клуб.
-        </div>
-      </div>
-
-      <!-- 5. ПРОФИЛ (profile) -->
-      <div id="section-profile" class="space-y-3 hidden">
-        <div class="bg-[#1c2128] border border-white/10 rounded-2xl p-6 text-center text-gray-400 text-sm">
-          Статистика, постижения и профилни настройки на играча.
-        </div>
-      </div>
-
     </div>
 
   </div>
 
-  <!-- Долна навигационна лента (HomeBar) -->
+  <!-- Долна навигационна лента с реални връзки -->
   <nav class="home-bar">
-    <button onclick="changeTab('matches')" data-tab="matches" class="nav-btn active">
+    <a href="matches.html" class="nav-btn active">
       <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6m12 5h1.5a2.5 2.5 0 000-5H18M6 4h12v6a6 6 0 01-12 0V4zm6 11v4m-3 0h6"></path></svg>
       <span>Мачове</span>
-    </button>
-    <button onclick="changeTab('training')" data-tab="training" class="nav-btn">
+    </a>
+    <a href="training.html" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M6.5 6h-3a1 1 0 00-1 1v10a1 1 0 001 1h3M17.5 6h3a1 1 0 011 1v10a1 1 0 01-1 1h-3M6.5 12h11M2 10h2v4H2zm18 0h2v4h-2z"></path></svg>
       <span>Трен.</span>
-    </button>
-    <button onclick="changeTab('home')" data-tab="home" class="nav-btn">
+    </a>
+    <a href="index.html" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
       <span>Начало</span>
-    </button>
-    <button onclick="changeTab('team')" data-tab="team" class="nav-btn">
+    </a>
+    <a href="team.html" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
       <span>Отбор</span>
-    </button>
-    <button onclick="changeTab('profile')" data-tab="profile" class="nav-btn">
+    </a>
+    <a href="profile.html" class="nav-btn">
       <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
       <span>Профил</span>
-    </button>
+    </a>
   </nav>
 
   <script>
@@ -318,7 +279,20 @@
       { id: 14, name: "Илиян Р.", pos: "НАП", attack: 80, tech: 70, speed: 75, starter: false }
     ];
 
-    let player = { energy: 100, maxEnergy: 100, coins: 500, gems: 10, level: 1, xp: 150 };
+    // Синхронизиране на играча с localStorage, за да се пазят парите, диамантите и енергията между страниците
+    let player = JSON.parse(localStorage.getItem('pitch_clash_player')) || { 
+      energy: 100, 
+      maxEnergy: 100, 
+      coins: 500, 
+      gems: 10, 
+      level: 1, 
+      xp: 150 
+    };
+
+    function savePlayer() {
+      localStorage.setItem('pitch_clash_player', JSON.stringify(player));
+    }
+
     let selectedZone = 11;
     let zones = Array.from({length: NUM_ZONES}, (_, i) => ({ zone: i+1, status: "pending", my: 0, opp: 0 }));
 
@@ -333,51 +307,7 @@
 
     function init() {
       renderMatchesContent();
-      changeTab('matches');
-    }
-
-    function changeTab(tabId) {
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        if (btn.getAttribute('data-tab') === tabId) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-
-      const titleElem = document.getElementById("page-title");
-      const subtitleElem = document.getElementById("match-subtitle");
-
-      // Скриване на всички подсекции
-      document.getElementById("section-matches").classList.add("hidden");
-      document.getElementById("section-training").classList.add("hidden");
-      document.getElementById("section-home").classList.add("hidden");
-      document.getElementById("section-team").classList.add("hidden");
-      document.getElementById("section-profile").classList.add("hidden");
-
-      // Показване на актуалната и корекция на заглавията
-      if (tabId === 'matches') {
-        titleElem.innerText = "Pitch Clash";
-        subtitleElem.innerText = "Зонални двубои на живо";
-        subtitleElem.style.display = "block";
-        document.getElementById("section-matches").classList.remove("hidden");
-      } else if (tabId === 'training') {
-        titleElem.innerText = "Тренировъчен център";
-        subtitleElem.style.display = "none";
-        document.getElementById("section-training").classList.remove("hidden");
-      } else if (tabId === 'home') {
-        titleElem.innerText = "Главно меню";
-        subtitleElem.style.display = "none";
-        document.getElementById("section-home").classList.remove("hidden");
-      } else if (tabId === 'team') {
-        titleElem.innerText = "Управление на отбора";
-        subtitleElem.style.display = "none";
-        document.getElementById("section-team").classList.remove("hidden");
-      } else if (tabId === 'profile') {
-        titleElem.innerText = "Профил на мениджъра";
-        subtitleElem.style.display = "none";
-        document.getElementById("section-profile").classList.remove("hidden");
-      }
+      updateHeaderUI();
     }
 
     function renderMatchesContent() {
@@ -576,8 +506,8 @@
       }
 
       player.energy -= energyCost;
-      document.getElementById("player-energy").innerText = player.energy;
-      document.getElementById("energy-fill").style.width = (player.energy / player.maxEnergy * 100) + "%";
+      savePlayer();
+      updateHeaderUI();
 
       const z = zones[selectedZone - 1];
       const starter = squad[selectedZone - 1];
@@ -604,6 +534,17 @@
 
       renderMatchesContent();
       updateMatchScore();
+    }
+
+    function updateHeaderUI() {
+      document.getElementById("player-level").innerText = player.level || 1;
+      document.getElementById("player-energy").innerText = player.energy;
+      document.getElementById("player-max-energy").innerText = player.maxEnergy;
+      document.getElementById("energy-fill").style.width = (player.energy / player.maxEnergy * 100) + "%";
+      document.getElementById("player-coins").innerText = player.coins;
+      document.getElementById("player-gems").innerText = player.gems;
+      document.getElementById("xp-text").innerText = `${player.xp || 150} / 400`;
+      document.getElementById("xp-fill").style.width = (((player.xp || 150) / 400) * 100) + "%";
     }
 
     function updateMatchScore() {
