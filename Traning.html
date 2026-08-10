@@ -154,9 +154,9 @@
 
     const COACH_SLOTS = [
       { id: "attack",  label: "Треньор по Атака",   icon: "⚽", stat: "attack",    color: "#ff4c4c" },
-      { id: "defense", label: "Треньор по Защита",  icon: "🛡️", stat: "defense",   color: "#40c4ff" },
+      { id: "defense", label: "Треньор по Защита",   icon: "🛡️", stat: "defense",    color: "#40c4ff" },
       { id: "tactic",  label: "Треньор по Тактика", icon: "🎯", stat: "technique", color: "#a060ec" },
-      { id: "sprint",  label: "Треньор по Спринт",  icon: "⚡", stat: "speed",     color: "#ffd600" },
+      { id: "sprint",  label: "Треньор по Спринт",   icon: "⚡", stat: "speed",      color: "#ffd600" },
     ];
 
     const COACH_LEVELS = [
@@ -164,7 +164,6 @@
       { level: 4, cost: 2000 }, { level: 5, cost: 3000 }, { level: 6, cost: 4000 }, { level: 7, cost: 5000 },
     ];
 
-    // Локални данни (могат да се пазят в localStorage)
     let gameData = JSON.parse(localStorage.getItem('pitchClashPlayer')) || {
       coins: 1250, gems: 45, energy: 100, max_energy: 100, xp: 35,
       attack: 50, defense: 50, technique: 50, speed: 50,
@@ -222,7 +221,6 @@
       const coaches = gameData.training_coaches || {};
       const coachLevel = coaches[slotId] || 0;
       
-      // Проверка за кулдаун
       const cooldowns = gameData.coach_cooldowns || {};
       const lastTime = cooldowns[slotId] ? new Date(cooldowns[slotId]).getTime() : 0;
       const cdMs = coachCooldownMs(coachLevel || 1);
@@ -239,7 +237,6 @@
       gameData[slot.stat] = Math.min(99, currentStat + gain);
       gameData.energy -= 20;
       
-      // XP и Серии
       const xpGain = 25;
       gameData.xp = (gameData.xp || 0) + xpGain;
       gameData.training_streak = (gameData.training_streak || 0) + 1;
@@ -261,7 +258,6 @@
     }
 
     function renderUI() {
-      // Обновяване на хедъра
       document.getElementById('player-level').innerText = "1";
       document.getElementById('player-energy').innerText = gameData.energy;
       document.getElementById('player-coins').innerText = gameData.coins.toLocaleString();
@@ -277,7 +273,6 @@
       Object.values(coaches).forEach(l => totalPower += Number(l) || 0);
       document.getElementById('lbl-total-coach').innerText = totalPower;
 
-      // Генериране на слотовете
       const container = document.getElementById('coaches-container');
       let html = "";
 
@@ -286,7 +281,6 @@
         const hired = coachLevel > 0;
         const currentStat = gameData[slot.stat] || 50;
 
-        // Изчисляване на кулдаун
         let cdText = "Готов";
         let isReady = true;
         if (hired && gameData.coach_cooldowns && gameData.coach_cooldowns[slot.id]) {
@@ -356,7 +350,6 @@
       container.innerHTML = html;
     }
 
-    // Автоматично обновяване на таймерите всяка секунда
     setInterval(renderUI, 1000);
     renderUI();
   </script>
